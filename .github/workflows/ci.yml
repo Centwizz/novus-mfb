@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: novus
+          POSTGRES_PASSWORD: novus_dev_password
+          POSTGRES_DB: novus_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U novus"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://novus:novus_dev_password@localhost:5432/novus_test?schema=public
+      AUTH_SECRET: ci-secret-value-that-is-long-enough-to-pass-validation
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npm run prisma:generate --workspace=apps/api
+
+      - name: Apply migrations
+        run: npm run prisma:deploy --workspace=apps/api
+
+      - name: Typecheck
+        run: npm run typecheck --workspaces --if-present
+
+      - name: Lint
+        run: npm run lint --workspaces --if-present
+
+      - name: Unit & integration tests
+        run: npm run test --workspaces --if-present
+
+      - name: Build
+        run: npm run build --workspaces --if-present
