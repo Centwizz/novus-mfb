@@ -296,11 +296,15 @@ These are known, deliberate, or unverifiable-without-assets differences:
 | Check | Result |
 | --- | --- |
 | `npm run typecheck --workspace=apps/web` | **PASS** — 0 errors |
-| `npm run lint --workspace=apps/web` | see below |
-| `next build` (route generation) | see below |
-| `npm run test --workspace=apps/web` (Vitest) | see below |
+| `npm run lint --workspace=apps/web` | **PASS** — `eslint .`, 0 errors, 0 warnings |
+| `npm run build --workspace=apps/web` | **PASS** — compiled in 53s, **25/25** static pages generated |
+| `npm run test --workspace=apps/web` (Vitest) | **PASS** — 14/14 tests |
+| Live `GET /` on the dev server | **HTTP 200**, all corrected sections present |
+| All other public routes | **HTTP 200** |
+| Rendered section order | **matches the verified reference order** |
 | Reference CSS values read directly from `opayweb.com` stylesheets | **DONE** — all numbers above are measured, not estimated |
 | Reference banner image dimensions measured from the downloaded file | **DONE** — `indexBanner.jpg` 2304×918, `headerBannerMobile.jpg` 720×1158, `foot-bc.png` 2303×556 |
+| Playwright E2E specs authored (`e2e/reference-fidelity.spec.ts`) | **AUTHORED, NOT RUN** — no browser installed |
 
 ### What could NOT be verified
 
@@ -311,9 +315,42 @@ These are known, deliberate, or unverifiable-without-assets differences:
   be inspected.
 - The reference's non-homepage pages were not inspected for this task.
 
-### Process note
+### Live render evidence (dev server, `http://localhost:3000`)
 
-Two `next build` runs and one `next dev` run failed with
-`EPERM: operation not permitted, open '.next\trace'` — a **Windows file lock** on the Next.js trace
-file, caused by a concurrently running build, not by the code. `.next` was cleared and the build
-re-run; this is recorded because the failures were real and the cause was environmental.
+| Check | Result |
+| --- | --- |
+| `GET /` | **HTTP 200**, 243,159 bytes |
+| All 15 other public routes | **HTTP 200** (no regression from the fixed-header offset) |
+| Served CSS contains `aspect-ratio: 1920/800`, `390/844`, `622/455`, `1004/425`, `49.56/27.56` | **YES** — all matched in the served stylesheet |
+| Served CSS contains `h-nav`, `gutter`, `15.55vw` tokens | **YES** |
+
+**Rendered document order of section landmarks** (extracted from the live HTML with scripts/styles
+stripped). This is the key structural proof that the correction landed:
+
+```
+  [20826] Beyond the Branch              ← hero
+  [23656] Our Services                   ← services heading
+  [24129] Fund your account...           ←   service row 1
+  [27276] Novus debit cards...           ←   service row 2
+  [29785] Novus Savings                  ←   service row 3
+  [35343] scan and download              ← download-app band
+  [35990] what our customers think       ← testimonials
+  [42050] Your security and privacy      ← security band
+  [43907] Customer satisfaction          ← satisfaction
+  [49096] Support that is always...      ← Novus addition
+  [53601] Frequently asked...            ← Novus addition
+```
+
+This matches the verified reference order exactly (Hero → Services → Download → Testimonials →
+Security → Satisfaction), with the two documented Novus-only sections placed last.
+
+### Failed attempts (recorded honestly)
+
+Three `next build` runs and two `next dev` runs initially failed with
+`EPERM: operation not permitted, open 'C:\Novusweb\apps\web\.next\trace'` — a **Windows file lock**
+on the Next.js trace file, held by a concurrently running build, **not** a code defect. `.next` was
+deleted and the build re-run cleanly; it then compiled and generated all 25 pages.
+
+Separately, one build was attempted with `NEXT_DIST_DIR=.next-check` to avoid the lock; that failed
+with `Invariant: no direct app page entry found for /_not-found`, which is a Next.js limitation when
+the dist directory is renamed — also not a code defect. The standard `npm run build` was used instead.
