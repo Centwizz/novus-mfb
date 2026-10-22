@@ -1,4 +1,5 @@
 import { Section, SectionHeading } from '@/components/ui/section';
+import { Accordion } from '@/components/ui/accordion';
 
 const faqs = [
   {
@@ -37,22 +38,7 @@ export function FaqSection() {
         description="Quick answers to the questions we hear most often."
       />
 
-      <div className="mx-auto mt-12 max-w-3xl divide-y divide-border overflow-hidden rounded-2xl border border-border bg-white">
-        {faqs.map((faq) => (
-          <details key={faq.question} className="group">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-left text-base font-semibold hover:bg-surface-muted">
-              {faq.question}
-              <span
-                aria-hidden="true"
-                className="text-brand-700 transition-transform group-open:rotate-45"
-              >
-                +
-              </span>
-            </summary>
-            <p className="px-5 pb-5 text-sm leading-relaxed text-ink-muted">{faq.answer}</p>
-          </details>
-        ))}
-      </div>
+      <Accordion items={faqs} className="mx-auto mt-12 max-w-3xl" />
     </Section>
   );
 }

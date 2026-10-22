@@ -40,19 +40,26 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
       dependency, not a code defect).
 
 ### PHASE 2: NOVUS MFB DESIGN SYSTEM & FRONTEND REPLICATION
-- [ ] Design system with tokens (from logo)
-- [ ] Reusable components
-- [ ] Homepage replication
-- [ ] Other public pages
-- [ ] Navigation
-- [ ] Responsive design
-- [ ] Visual verification
+- [x] Design system with tokens (from logo) — `docs/DESIGN_SYSTEM.md`, `tailwind.config.ts`
+- [x] Reusable components — `ui/` primitives (button, card, form, section, page-header,
+      legal-page, accordion), `layout/` (header, footer, auth-shell), `brand/logo`, `chat/`
+- [x] Homepage replication — hero, services, security, support, FAQ, CTA sections
+- [x] Other public pages — about, personal, savings, loans, business, security, contact, faq,
+      newsroom, careers, report, privacy-policy, terms-and-conditions
+- [x] Navigation — header dropdowns + mobile drawer, footer groups, integrity test (14 routes)
+- [x] Responsive design — mobile-first layouts, mobile overflow E2E test, `prefers-reduced-motion`
+- [x] Visual verification — `e2e/design-system.spec.ts` (routes render, one h1, image alt text,
+      CTA targets, no unverified claims). Owner visual review still recommended.
+
+> **Deferred:** full Playwright E2E execution needs both dev servers running; the database-backed
+> specs additionally need PostgreSQL (see `docs/POSTGRES_SETUP_CHECKLIST.md`).
 
 ### PHASE 3: DATABASE DESIGN & BACKEND ARCHITECTURE
-- [ ] Prisma schema design
-- [ ] NestJS modules
-- [ ] API conventions
-- [ ] Migrations and seeds
+- [x] Prisma schema design — 16 models in `apps/api/prisma/schema.prisma`
+- [x] NestJS modules — health, chatbot, contact, auth (scaffold), prisma, config
+- [x] API conventions — `/api/v1` versioning, exception filter, logging + request IDs
+- [ ] Migrations and seeds — migration SQL and seed written; **applying them is blocked on
+      PostgreSQL** (see `docs/POSTGRES_SETUP_CHECKLIST.md`)
 
 ### PHASE 4: CUSTOMER AUTHENTICATION & ACCOUNT MANAGEMENT
 - [ ] Registration/login/logout
@@ -94,24 +101,29 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
 - [ ] Complete docs, handover report
 
 ## 4. Critical Prerequisites
-- [ ] Novus MFB Logo (official file)
-- [ ] Brand colors
-- [ ] Business info/contact details
+- [x] Novus MFB Logo (official file) — `assets/novusmfb logo.png`
+- [x] Brand colors — sampled from the logo; **confirmation still recommended**
+- [ ] Business info/contact details — placeholders in `site-config.ts`
 - [ ] Product descriptions/terms
-- [ ] Regulatory/legal wording
-- [ ] Support channels
-- [ ] AI provider credentials
+- [ ] Regulatory/legal wording — badges hidden until verified
+- [ ] Support channels — hotline/WhatsApp not configured
+- [ ] AI provider credentials — Nova runs in demo mode until provided
 - [ ] Email/SMS provider
 - [ ] Hosting/domain
 - [ ] Banking API credentials (if applicable)
+- [ ] PostgreSQL installed locally (deferred by owner — see `docs/POSTGRES_SETUP_CHECKLIST.md`)
 
 ## 5. Risks
-- Empty repo, starting fresh
-- No logo/colors provided
-- Cannot see internal OPay architecture
-- Must not copy proprietary code/assets
-- Must not make unverified regulatory claims
-- AI/banking integrations need credentials
+- No verified business/contact/product/regulatory content yet — no such claims are made
+- Cannot see internal OPay architecture; only publicly observable patterns are replicated
+- Must not copy proprietary OPay code/assets — all implementation is original
+- AI/banking integrations need credentials before they can go live
+- Local environment: no Docker/PostgreSQL, slow network, Prisma binary host unreachable
+  (mitigated; see `docs/PHASE_1_VERIFICATION.md` §4)
 
-## Phase 0 Status
-In progress - creating docs
+## Phase Status
+- Phase 0: complete (all docs)
+- Phase 1: complete and verified (`docs/PHASE_1_VERIFICATION.md`)
+- Phase 2: complete (pending owner visual review)
+- Phase 3: schema, modules and conventions in place; migration/seed application blocked on
+  PostgreSQL (deferred by owner)
