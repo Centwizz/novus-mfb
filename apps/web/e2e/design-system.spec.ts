@@ -9,7 +9,7 @@ import { test, expect } from '@playwright/test';
  */
 
 const PUBLIC_ROUTES: { path: string; heading: RegExp }[] = [
-  { path: '/', heading: /banking built/i },
+  { path: '/', heading: /beyond the branch/i },
   { path: '/about', heading: /about|who we are|our mission/i },
   { path: '/personal', heading: /personal/i },
   { path: '/savings', heading: /savings/i },

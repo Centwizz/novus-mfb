@@ -5,20 +5,30 @@ import { siteConfig } from '@/lib/site-config';
 
 interface LogoProps {
   className?: string;
-  /** Rendered height of the mark in pixels. */
+  /** Rendered height of the square mark in pixels. */
   height?: number;
   withWordmark?: boolean;
   href?: string | null;
+  /** Colour treatment for the wordmark when placed over a dark surface. */
+  tone?: 'default' | 'inverse';
 }
 
 /**
  * Novus MFB logo lockup.
  *
- * The mark is the owner-supplied asset (public/brand/novus-mfb-logo.png). The
- * wordmark beside it is rendered in the site font so the lockup stays crisp and
- * accessible at any size.
+ * The reference site uses a wide wordmark logo (113x47). The owner-supplied Novus
+ * asset is a SQUARE mark (204x204), so stretching it to 113x47 would distort it —
+ * which the brand rules forbid. Instead the square mark is rendered at its natural
+ * 1:1 ratio (47px tall on desktop) with the wordmark set in type beside it, so the
+ * lockup occupies the same visual slot as the reference without deforming the mark.
  */
-export function Logo({ className, height = 40, withWordmark = true, href = '/' }: LogoProps) {
+export function Logo({
+  className,
+  height = 40,
+  withWordmark = true,
+  href = '/',
+  tone = 'default',
+}: LogoProps) {
   const content = (
     <span className={cn('inline-flex items-center gap-2.5', className)}>
       <Image
@@ -27,13 +37,25 @@ export function Logo({ className, height = 40, withWordmark = true, href = '/' }
         width={height}
         height={height}
         priority
-        className="h-auto w-auto"
+        className="h-auto w-auto shrink-0"
         style={{ height }}
       />
       {withWordmark ? (
         <span className="flex flex-col leading-none">
-          <span className="text-lg font-bold tracking-tight text-brand-700">{siteConfig.name}</span>
-          <span className="text-[10px] font-medium uppercase tracking-widest text-ink-subtle">
+          <span
+            className={cn(
+              'text-lg font-bold tracking-tight',
+              tone === 'inverse' ? 'text-white' : 'text-brand-700',
+            )}
+          >
+            {siteConfig.name}
+          </span>
+          <span
+            className={cn(
+              'text-[10px] font-medium uppercase tracking-widest',
+              tone === 'inverse' ? 'text-white/70' : 'text-ink-subtle',
+            )}
+          >
             Microfinance Bank
           </span>
         </span>

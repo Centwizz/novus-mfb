@@ -47,7 +47,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <Header />
-        <main id="main" className="flex-1">
+        {/* The header is fixed (matching the reference), so page content must be
+            pushed down by the header height: 15.55vw on mobile, 80px on desktop. */}
+        <main id="main" className="flex-1 pt-[15.55vw] lg:pt-nav">
           {children}
         </main>
         <Footer />

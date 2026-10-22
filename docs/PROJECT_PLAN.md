@@ -124,6 +124,15 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
 ## Phase Status
 - Phase 0: complete (all docs)
 - Phase 1: complete and verified (`docs/PHASE_1_VERIFICATION.md`)
-- Phase 2: complete (pending owner visual review)
+- Phase 2: **superseded** — the first visual pass did not match the reference. See below.
+- Phase 2b (UI reference correction): **complete, awaiting owner visual review.**
+  Audit, mismatch report and corrections are recorded in `docs/UI_REFERENCE_COMPARISON.md`.
+  The homepage was rebuilt to the reference's verified layout: photo-style full-bleed hero
+  (aspect 1920/800) with overlaid text, three alternating full-width "Our Services" panels,
+  a new download-app band, a new testimonials section, a solid-brand-band security section
+  with media tiles, a new customer-satisfaction section, and a five-column footer with a
+  separate bottom bar. Verified: typecheck PASS, lint PASS (0/0), `next build` PASS
+  (25/25 pages), web unit tests 14/14 PASS. **Not verified: any visual/pixel comparison —
+  no browser is available in this environment.**
 - Phase 3: schema, modules and conventions in place; migration/seed application blocked on
   PostgreSQL (deferred by owner)
