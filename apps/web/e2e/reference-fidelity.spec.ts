@@ -42,9 +42,11 @@ test.describe('Homepage structure matches the reference', () => {
 
     // Each landmark must come after the previous one.
     for (let i = 1; i < keys.length; i += 1) {
-      const prev = order[keys[i - 1]] as number;
-      const curr = order[keys[i]] as number;
-      expect(curr, `${keys[i]} should follow ${keys[i - 1]}`).toBeGreaterThan(prev);
+      const prevKey = keys[i - 1]!;
+      const currKey = keys[i]!;
+      const prev = order[prevKey] as number;
+      const curr = order[currKey] as number;
+      expect(curr, `${currKey} should follow ${prevKey}`).toBeGreaterThan(prev);
     }
   });
 

@@ -64,23 +64,50 @@ utilities, changing a token updates the whole interface at once.
 - **Family:** Inter (loaded via `next/font`), falling back to the system UI stack.
 - Headings are `font-semibold`, `tracking-tight`, with `text-wrap: balance`.
 - Body copy uses `text-wrap: pretty`.
-- The type scale uses Tailwind's defaults; hero headings go up to `text-6xl` on large screens.
+- The public site's heading sizes are **derived from the reference site's own CSS**, expressed in
+  viewport units so they scale the same way the reference does. Examples:
+  - Hero `h1`: `4.17vw` desktop (~60px at 1440px) / `11.11vw` mobile, `font-weight: 700`,
+    `line-height: 1.2`.
+  - Section titles: `3.1vw` desktop / `7vw` mobile, `font-weight: 600`.
+  - Service row titles: `2.78vw`, `font-weight: 700`.
+  Inner pages (app and auth screens) still use Tailwind's default type scale.
+
+## 4a. Layout dimensions derived from the reference
+
+These are **measured** values from `opayweb.com`'s stylesheets, not choices made here. See
+`docs/UI_REFERENCE_COMPARISON.md` for the full derivation.
+
+| Element | Desktop | Mobile |
+| --- | --- | --- |
+| Header height | **80px** (`h-nav`) | **15.55vw** |
+| Header gutters | **80px** (`px-gutter`) | `5.2vw` |
+| Section side padding | `5.65vw` (`spacing.section`) | `5.65vw` |
+| Homepage hero ratio | **1920 / 800** | **390 / 844** |
+| Service image ratio | **622 / 455** | same |
+| Security tile ratio | **1004 / 425** | same |
+| Download-app art ratio | **49.56 / 27.56** | same |
+| Footer column widths | `9vw / 10.17vw / 9.5vw / 10.17vw / 38vw` | stacked, 50% pairs |
 
 ## 5. Radius & elevation
+
+Sections built to the reference use **small, measured radii** rather than the large soft radii used
+on inner pages — the reference's corners are tight.
 
 | Token | Value |
 | --- | --- |
 | `rounded-xl` | `0.875rem` |
-| `rounded-2xl` | `1.25rem` (default for cards and inputs) |
-| `rounded-3xl` | `1.75rem` (hero panels, chat window) |
-| `shadow-card` | Resting card elevation |
-| `shadow-card-hover` | Hover elevation |
-| `shadow-header` | Subtle sticky-header separator |
+| `rounded-2xl` | `1.25rem` (default for inner-page cards and inputs) |
+| `rounded-3xl` | `1.75rem` (chat window) |
+| `rounded-lg` | `0.5rem` — download-app band (reference: `border-radius: 8px`) |
+| `shadow-card` | Resting card elevation (inner pages) |
+| `shadow-card-hover` | Hover elevation (inner pages) |
+| Always-on header shadow | `0 0 22px rgba(0,0,0,0.1)` — matches the reference; not scroll-dependent |
 
 ## 6. Motion
 
 - `animate-fade-in` — 0.4s, entrance fade + slight rise.
-- `animate-slide-up` — 0.5s, used for hero/secondary content.
+- `animate-fade-up` / `fade-up-250` / `fade-up-500` — the reference's staged hero entrance
+  (title, then subtitle, then badges).
 - `animate-typing-dot` — Nova's typing indicator.
 - **Reduced motion:** all animation is disabled when the user sets
   `prefers-reduced-motion: reduce` (see `globals.css`).
@@ -105,9 +132,24 @@ All live under `apps/web/src/components`.
 
 | Component | Purpose |
 | --- | --- |
-| `Header` | Sticky nav, dropdown groups, mobile drawer, CTA |
-| `Footer` | Multi-column link groups, contact info, legal row |
+| `Header` | Fixed 80px nav, dropdown groups, slide-down mobile menu, account CTAs |
+| `Footer` | Five reference-derived columns + separate bottom bar with social chips |
 | `AuthShell` | Split brand/auth panel for login and registration |
+
+### Homepage sections (`sections/`)
+
+Built to the reference's measured geometry. Each image slot has a paired original SVG artwork
+component, so real imagery can be dropped in without any layout change.
+
+| Component | Purpose |
+| --- | --- |
+| `Hero` + `HeroBannerArt` | Full-bleed banner (1920/800) with overlaid, bottom-pinned text and store badges |
+| `ServicesSection` + `ServiceArt` | Three alternating full-width panels with 622/455 imagery |
+| `DownloadAppSection` + `DownloadAppArt` | Neutral band, phone art (49.56/27.56) and QR slot |
+| `TestimonialsSection` | Customer quote cards (placeholders until verified quotes are supplied) |
+| `SecuritySection` + `SecurityTileArt` | Solid brand band with two 1004/425 tiles and three text blocks |
+| `SatisfactionSection` + `SatisfactionVideoArt` | Text, hotline block and two media tiles |
+| `SupportSection`, `FaqSection`, `CtaSection` | Novus-only additions, placed after the reference sections |
 
 ### Branding & assistant
 
@@ -141,6 +183,10 @@ All live under `apps/web/src/components`.
 | Unit | `tests/navigation.test.ts` | Every header/footer link maps to a real route |
 | E2E | `e2e/public-site.spec.ts` | Hero, nav resolution, Nova launcher, mobile overflow |
 | E2E | `e2e/design-system.spec.ts` | All routes render, one h1, image alt text, CTA targets, no unverified claims |
+| E2E | `e2e/reference-fidelity.spec.ts` | Homepage section order, 80px fixed header, full-bleed hero with white overlaid heading, three full-width service rows, five-column footer, no horizontal scroll at five reference viewports, placeholder honesty |
+
+> `e2e/reference-fidelity.spec.ts` is **authored but not yet executed** — no browser is installed in
+> the current environment. It will run once `npx playwright install` has been performed.
 
 Commands (from the repository root):
 
