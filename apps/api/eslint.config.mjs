@@ -16,6 +16,8 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      // The API legitimately logs to the console for local/dev observability.
+      'no-console': 'off',
     },
   },
 );

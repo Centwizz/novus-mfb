@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { AlertTriangle, KeyRound, Lock, ShieldCheck } from 'lucide-react';
+import { KeyRound, Lock, ShieldCheck } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { FeatureCard } from '@/components/ui/card';

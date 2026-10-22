@@ -36,15 +36,12 @@ async function main() {
     create: { userId: customer.id, preferredLanguage: 'en' },
   });
 
-  // eslint-disable-next-line no-console
   console.log('\nSeeded demo accounts (development only):');
-  // eslint-disable-next-line no-console
   console.table([
     { role: 'ADMIN', email: admin.email, password: demoPassword },
     { role: 'SUPPORT_AGENT', email: agent.email, password: demoPassword },
     { role: 'CUSTOMER', email: customer.email, password: demoPassword },
   ]);
-  // eslint-disable-next-line no-console
   console.log('\nDevelopment-only credentials. Do not reuse in any real environment.\n');
 }
 
@@ -71,7 +68,6 @@ function upsertUser(
 
 main()
   .catch((error) => {
-    // eslint-disable-next-line no-console
     console.error(error);
     process.exitCode = 1;
   })

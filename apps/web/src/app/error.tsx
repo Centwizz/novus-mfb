@@ -12,7 +12,6 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     // Log to the console for local debugging; production monitoring is added later.
-    // eslint-disable-next-line no-console
     console.error(error);
   }, [error]);
 

@@ -4,22 +4,23 @@
 Build a complete web platform for Novus MFB modeled after https://www.opayweb.com/ with original implementation, full backend, database, authentication, support portal, AI chatbot (Nova), admin dashboard, security controls, tests, and deployment configuration.
 
 ## 2. Current State (Phase 0 Audit)
-- **Repository:** C:\Novusweb - Currently empty (no existing files)
-- **Git:** Not a git repo
-- **Reference site:** OPay web studied - marketing-focused fintech site
-- **Logo/Branding:** Not yet provided by owner (CRITICAL - needed)
+- **Repository:** C:\Novusweb - Initialised as a git repo with the full monorepo foundation
+- **Git:** Initialised; Phase 1 foundation committed
+- **Reference site:** OPay web studied - marketing-focused fintech site (`docs/REFERENCE_AUDIT.md`)
+- **Logo/Branding:** Supplied by owner (`assets/novusmfb logo.png`); colours extracted — primary
+  `#010065`, accent `#FF0000`
 
 ## 3. Project Phases
 
 ### PHASE 0: REPOSITORY AUDIT, REFERENCE RESEARCH & TECHNICAL PLAN (CURRENT)
 - [x] Inspect reference website structure
 - [x] Create reference audit
-- [ ] Create architecture plan
-- [ ] Create tech stack doc
-- [ ] Create security plan
-- [ ] Create testing plan
-- [ ] Document risks and prerequisites
-- [ ] Request approval to move to Phase 1
+- [x] Create architecture plan
+- [x] Create tech stack doc
+- [x] Create security plan
+- [x] Create testing plan
+- [x] Document risks and prerequisites
+- [x] Request approval to move to Phase 1
 
 ### PHASE 1: PROJECT FOUNDATION & DEVELOPMENT ENVIRONMENT
 - [x] Initialize monorepo structure
@@ -33,7 +34,10 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
 - [x] Root README
 - [x] CI checks
 - [x] Health check endpoints
-- [ ] Verify frontend/backend run (pending npm install + local run)
+- [x] Verify frontend/backend run — see `docs/PHASE_1_VERIFICATION.md`. API booted and
+      health/docs/contact endpoints verified 200/202/400 as designed; web app built (25 routes).
+      Database-backed endpoints remain unverified until PostgreSQL is reachable (environment
+      dependency, not a code defect).
 
 ### PHASE 2: NOVUS MFB DESIGN SYSTEM & FRONTEND REPLICATION
 - [ ] Design system with tokens (from logo)

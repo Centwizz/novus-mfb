@@ -8,13 +8,12 @@ export type SupportedLanguage = 'en' | 'pcm' | 'yo' | 'ig' | 'ha';
  * the customer can always override the detected language.
  */
 
-const MARKERS: Record<SupportedLanguage, string[]> = {
+const MARKERS: Record<Exclude<SupportedLanguage, 'en'>, string[]> = {
   pcm: [
     'abeg',
     'wetin',
     'dey',
-    'na ',
-    ' no wahala',
+    'no wahala',
     'sabi',
     'shey',
     'make i',
@@ -28,7 +27,6 @@ const MARKERS: Record<SupportedLanguage, string[]> = {
     'jowo',
     'jọwọ',
     'bawo',
-    'ṣe',
     'pele',
     'e ku',
     'mo fe',
@@ -51,7 +49,7 @@ const MARKERS: Record<SupportedLanguage, string[]> = {
     'ọfma',
   ],
   ha: [
-    'don Allah',
+    'don allah',
     'yaya',
     'sannu',
     'nagode',
@@ -62,18 +60,34 @@ const MARKERS: Record<SupportedLanguage, string[]> = {
     'lafiya',
     'madalla',
   ],
-  en: [],
 };
 
+/**
+ * Scores each language by the total length of the markers it matches, then picks
+ * the strongest match. Scoring (rather than first-match-wins) avoids one generic
+ * marker in an earlier language masking a longer, more specific match in another
+ * (e.g. Pidgin "na" vs Hausa "sannu").
+ */
 export function detectLanguage(text: string): SupportedLanguage {
   const normalized = ` ${text.toLowerCase()} `;
+  let best: SupportedLanguage = 'en';
+  let bestScore = 0;
 
-  for (const lang of ['pcm', 'yo', 'ig', 'ha'] as const) {
-    for (const marker of MARKERS[lang]) {
-      if (normalized.includes(marker)) return lang;
+  for (const [lang, markers] of Object.entries(MARKERS) as [
+    Exclude<SupportedLanguage, 'en'>,
+    string[],
+  ][]) {
+    let score = 0;
+    for (const marker of markers) {
+      if (normalized.includes(marker)) score += marker.length;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      best = lang;
     }
   }
-  return 'en';
+
+  return best;
 }
 
 export const LANGUAGE_LABELS: Record<SupportedLanguage, string> = {

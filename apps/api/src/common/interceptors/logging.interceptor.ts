@@ -31,12 +31,10 @@ export class LoggingInterceptor implements NestInterceptor {
       tap({
         next: () => {
           const ms = Date.now() - start;
-          // eslint-disable-next-line no-console
           console.log(`${method} ${originalUrl} ${response.statusCode} ${ms}ms [${requestId}]`);
         },
         error: () => {
           const ms = Date.now() - start;
-          // eslint-disable-next-line no-console
           console.log(`${method} ${originalUrl} ERROR ${ms}ms [${requestId}]`);
         },
       }),
