@@ -1,5 +1,6 @@
 import { QrCode } from 'lucide-react';
-import { DownloadAppArt } from './download-app-art';
+import { SmartImage } from '@/components/ui/smart-image';
+import { homeImages } from '@/lib/images';
 
 /**
  * "Download the app" band — present in the reference and missing from the previous build.
@@ -18,12 +19,20 @@ import { DownloadAppArt } from './download-app-art';
 export function DownloadAppSection() {
   return (
     <section className="w-full bg-band">
+      {/* The band has no visible heading by design; the heading still exists so
+          the section is named in the document outline and by screen readers. */}
+      <h2 className="sr-only">Download the Novus MFB app</h2>
       <div className="w-full px-[5.65vw] py-[4.04vw]">
         <div className="flex flex-col items-center lg:flex-row lg:items-center lg:justify-start">
-          {/* Phone / app artwork */}
+          {/* Phone / app artwork. Source file:
+              apps/web/public/images/home/mobile-banking.webp */}
           <div className="relative h-auto w-full shrink-0 overflow-hidden rounded-lg lg:aspect-[49.56/27.56] lg:h-auto lg:w-[49.56vw]">
             <div className="aspect-[49.56/27.56] w-full">
-              <DownloadAppArt className="h-full w-full" />
+              <SmartImage
+                slot={homeImages.downloadApp}
+                sizes="(min-width: 1024px) 50vw, 90vw"
+                className="h-full w-full"
+              />
             </div>
           </div>
 
@@ -34,17 +43,17 @@ export function DownloadAppSection() {
             </div>
 
             <div className="mt-[1.39vw] text-[5vw] lg:text-[2.08vw]">
-              <p className="text-ink-brand">
-                Use your phone camera to scan and download the {`Novus`} app.
+              <p className="font-semibold text-ink-brand">
+                The {`Novus`} MFB app is coming soon.
               </p>
-              <p className="mt-1 font-normal text-ink-brand">
-                Available on{' '}
+              <p className="mt-1 text-ink-brand">
+                It will be available on{' '}
                 <span className="font-semibold text-brand-700">iOS</span> and{' '}
-                <span className="font-semibold text-brand-700">Android</span>
+                <span className="font-semibold text-brand-700">Android</span>.
               </p>
-              <p className="mt-2 text-[3.4vw] text-ink-muted lg:text-[1vw]">
-                The mobile app is not published yet. This section will be activated once the
-                app is released.
+              <p className="mt-2 text-[3.4vw] text-ink-muted lg:text-[max(13px,1vw)]">
+                When the app is released this space will hold a working QR code and direct store
+                links. Until then you can use every service on this website.
               </p>
             </div>
           </div>
@@ -62,7 +71,7 @@ function QrPlaceholder() {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-2 border-2 border-dashed border-brand-200 bg-white text-center">
       <QrCode className="h-1/3 w-1/3 text-brand-300" aria-hidden="true" />
-      <span className="px-2 text-[2.6vw] font-medium text-ink-subtle lg:text-[0.7vw]">
+      <span className="px-2 text-[2.6vw] font-medium text-ink-subtle lg:text-[max(12px,0.7vw)]">
         QR code available at launch
       </span>
     </div>

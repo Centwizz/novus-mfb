@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { BadgeCheck, Briefcase, Clock, FileText } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageBanner } from '@/components/ui/page-banner';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { FeatureCard } from '@/components/ui/card';
 import { CtaSection } from '@/components/sections/cta';
+import { SmartImage } from '@/components/ui/smart-image';
+import { bannerImages, serviceImages } from '@/lib/images';
 
 export const metadata: Metadata = {
   title: 'Loans',
@@ -36,7 +38,8 @@ const steps = [
 export default function LoansPage() {
   return (
     <>
-      <PageHeader
+      <PageBanner
+        slot={bannerImages.loans}
         eyebrow="Loans"
         title="Credit you can understand"
         description="Transparent lending with clear terms — no hidden surprises."
@@ -52,13 +55,24 @@ export default function LoansPage() {
           ))}
         </div>
 
-        <div className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-warning">
-          <p className="font-semibold">Placeholder content</p>
-          <p className="mt-2 leading-relaxed">
-            Loan products, interest rates, tenures, fees and eligibility criteria are not yet
-            configured. Nova and this page will only present figures that have been verified and
-            approved by Novus MFB.
-          </p>
+        <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+          {/* Image: apps/web/public/images/services/loans.webp */}
+          <div className="overflow-hidden rounded-2xl border border-border">
+            <SmartImage
+              slot={serviceImages.loans}
+              sizes="(min-width: 1024px) 45vw, 90vw"
+              className="h-full w-full"
+            />
+          </div>
+
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-warning">
+            <p className="font-semibold">Placeholder content</p>
+            <p className="mt-2 leading-relaxed">
+              Loan products, interest rates, tenures, fees and eligibility criteria are not yet
+              configured. Nova and this page will only present figures that have been verified and
+              approved by Novus MFB.
+            </p>
+          </div>
         </div>
       </Section>
 

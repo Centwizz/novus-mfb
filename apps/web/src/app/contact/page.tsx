@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageBanner } from '@/components/ui/page-banner';
 import { Section } from '@/components/ui/section';
 import { ContactForm } from '@/features/contact/contact-form';
+import { bannerImages } from '@/lib/images';
 import { siteConfig } from '@/lib/site-config';
 
 export const metadata: Metadata = {
@@ -20,7 +21,8 @@ const channels = [
 export default function ContactPage() {
   return (
     <>
-      <PageHeader
+      <PageBanner
+        slot={bannerImages.contact}
         eyebrow="Contact us"
         title="We are here to help"
         description="Send us a message and our team will get back to you. For instant answers, try Nova."

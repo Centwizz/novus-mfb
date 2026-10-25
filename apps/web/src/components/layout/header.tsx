@@ -11,15 +11,7 @@ import { cn } from '@/lib/cn';
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   // Close menus on outside click or Escape.
   useEffect(() => {
@@ -50,18 +42,30 @@ export function Header() {
     };
   }, [mobileOpen]);
 
+  // If the visitor rotates a tablet or widens the window past `lg`, the mobile
+  // panel is hidden by CSS but its scroll lock would otherwise stay behind.
+  useEffect(() => {
+    const query = window.matchMedia('(min-width: 1024px)');
+    const onChange = () => {
+      if (query.matches) setMobileOpen(false);
+    };
+    query.addEventListener('change', onChange);
+    return () => query.removeEventListener('change', onChange);
+  }, []);
+
   return (
     <header
       className={cn(
         // Reference: position fixed, z-index 100, ALWAYS shadowed
         // (0 0 22px rgba(0,0,0,.1)) — not only after scrolling.
-        'fixed inset-x-0 top-0 z-[100] w-full shadow-[0_0_22px_rgba(0,0,0,0.1)] transition-colors duration-300',
-        // Reference desktop bg is #fff; mobile and scrolled-mobile use #f4fcfa.
-        scrolled ? 'bg-white max-lg:bg-header-tint' : 'bg-white max-lg:bg-header-tint',
+        'fixed inset-x-0 top-0 z-[100] w-full bg-white shadow-[0_0_22px_rgba(0,0,0,0.1)]',
+        // Reference mobile ground is the tinted surface.
+        'max-lg:bg-header-tint',
       )}
     >
-      {/* Reference desktop height is exactly 80px; mobile is 15.55vw. */}
-      <div className="flex h-[15.55vw] items-center px-[5.2vw] lg:h-nav lg:px-gutter">
+      {/* Reference desktop height is exactly 80px; phones use 15.55vw, capped by
+          `--nav-h` so tablets do not get a 159px-tall header. */}
+      <div className="flex h-[var(--nav-h)] items-center px-[5.2vw] lg:px-gutter">
         <Logo height={32} className="lg:hidden" />
         <Logo height={47} className="hidden lg:inline-flex" />
 
@@ -87,7 +91,10 @@ export function Header() {
             login lives inside its app. Novus is a web platform, so restrained
             account actions are required. */}
         <div className="hidden shrink-0 items-center gap-2 lg:flex">
-          <ButtonLink href="/login" variant="ghost" size="sm">
+          {/* Hidden between 1024 and 1279px: there is not enough width for the
+              logo + 5 nav items + both buttons, which used to make the nav
+              overlap these buttons at exactly 1024px. */}
+          <ButtonLink href="/login" variant="ghost" size="sm" className="hidden xl:inline-flex">
             Log in
           </ButtonLink>
           <ButtonLink href="/register" size="sm">
@@ -108,14 +115,18 @@ export function Header() {
         </button>
       </div>
 
-      {/* Mobile menu — reference slides the panel down from below the header,
-          on a #f4fcfa (here: indigo-tinted) ground. */}
+      {/* Mobile menu — slides down from directly below the header.
+          It is only `visible` when open, so the closed panel can never extend
+          the document or sit underneath the page content. */}
       <div
         id="mobile-menu"
+        // `inert` keeps the closed panel out of the tab order and the
+        // accessibility tree; `invisible` alone still allows keyboard focus.
+        inert={!mobileOpen}
+        aria-hidden={!mobileOpen}
         className={cn(
-          'fixed inset-x-0 -z-[1] overflow-y-auto bg-header-tint transition-all duration-300 ease-linear lg:hidden',
-          'h-[calc(100dvh-15.55vw)] pb-5',
-          mobileOpen ? 'top-[15.55vw] z-10' : 'top-[100dvh]',
+          'fixed inset-x-0 top-[var(--nav-h)] h-[calc(100dvh-var(--nav-h))] overflow-y-auto bg-header-tint pb-5 transition-all duration-300 ease-linear lg:hidden',
+          mobileOpen ? 'visible z-10 translate-y-0 opacity-100' : 'invisible z-0 -translate-y-2 opacity-0',
         )}
       >
         <nav aria-label="Mobile" className="flex flex-col px-5 pb-5 pt-6">
@@ -189,7 +200,7 @@ function DesktopNavItem({
 
   if (!isNavGroup(item)) {
     return (
-      <li className="mx-[max(16px,min(2vw,30px))]">
+      <li className="mx-4 xl:mx-[max(16px,min(2vw,30px))]">
         <Link href={item.href} className={cn(itemClass, 'opacity-90')}>
           {item.label}
         </Link>
@@ -198,7 +209,11 @@ function DesktopNavItem({
   }
 
   return (
-    <li className="relative mx-[max(16px,min(2vw,30px))]" onMouseEnter={onOpen} onMouseLeave={onClose}>
+    <li
+      className="relative mx-4 xl:mx-[max(16px,min(2vw,30px))]"
+      onMouseEnter={onOpen}
+      onMouseLeave={onClose}
+    >
       <button
         type="button"
         aria-expanded={open}

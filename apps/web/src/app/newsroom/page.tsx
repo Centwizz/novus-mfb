@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageBanner } from '@/components/ui/page-banner';
 import { Section } from '@/components/ui/section';
 import { Card } from '@/components/ui/card';
+import { bannerImages } from '@/lib/images';
 
 export const metadata: Metadata = {
   title: 'Newsroom',
@@ -11,7 +12,8 @@ export const metadata: Metadata = {
 export default function NewsroomPage() {
   return (
     <>
-      <PageHeader
+      <PageBanner
+        slot={bannerImages.newsroom}
         eyebrow="Newsroom"
         title="News & announcements"
         description="The latest updates from Novus MFB."

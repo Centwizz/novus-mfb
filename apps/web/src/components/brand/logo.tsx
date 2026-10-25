@@ -52,7 +52,7 @@ export function Logo({
           </span>
           <span
             className={cn(
-              'text-[10px] font-medium uppercase tracking-widest',
+              'text-[12px] font-medium uppercase tracking-wider',
               tone === 'inverse' ? 'text-white/70' : 'text-ink-subtle',
             )}
           >

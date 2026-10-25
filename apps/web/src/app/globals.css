@@ -5,6 +5,23 @@
 @layer base {
   :root {
     --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    /*
+     * Single source of truth for the fixed header height.
+     *
+     * The reference uses 15.55vw on phones, which becomes 119px at 768px and
+     * 159px at 1023px — far too tall for a tablet. It is therefore capped at
+     * 68px, and pinned to exactly 80px from the `lg` breakpoint up.
+     *
+     * The header, <main> offset, hero pull-up, mobile menu and auth screens all
+     * read this variable, so they can never drift out of sync.
+     */
+    --nav-h: clamp(56px, 15.55vw, 68px);
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --nav-h: 80px;
+    }
   }
 
   html {
@@ -35,8 +52,17 @@
 }
 
 @layer components {
+  /*
+   * Page gutter.
+   *
+   * Previously this used Tailwind's `container`, which resolved to a 1280px box
+   * with 32px padding — 32px narrower than the header/page-banner gutters
+   * (`px-gutter` = 80px). That made body copy sit 32px to the right of the
+   * banner headline on every inner page. It now uses the same gutter system as
+   * the header, hero and banners so everything lines up on every page.
+   */
   .container-page {
-    @apply container mx-auto;
+    @apply w-full px-[5.5vw] lg:px-gutter;
   }
 
   .section {

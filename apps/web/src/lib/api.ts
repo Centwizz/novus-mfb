@@ -28,11 +28,28 @@ export async function apiFetch<T>(
     const body = (await res.json().catch(() => null)) as unknown;
 
     if (!res.ok) {
-      const error =
+      const parsed =
         body && typeof body === 'object' && 'error' in body
           ? (body as ApiErrorBody).error
-          : { code: 'REQUEST_FAILED', message: 'Something went wrong. Please try again.' };
-      return { ok: false, error };
+          : null;
+
+      if (parsed) return { ok: false, error: parsed };
+
+      // A 404 means the route is not implemented yet (for example the auth
+      // endpoints, which arrive in Phase 4). Saying so is more useful than a
+      // generic failure that invites retries.
+      const notImplemented = res.status === 404;
+      return {
+        ok: false,
+        error: {
+          code: notImplemented ? 'NOT_IMPLEMENTED' : 'REQUEST_FAILED',
+          message: notImplemented
+            ? path.startsWith('/auth')
+              ? 'Accounts are not open yet. Sign-in and registration arrive in a later release.'
+              : 'This feature is not available yet. It is scheduled for a later release.'
+            : 'Something went wrong. Please try again.',
+        },
+      };
     }
 
     return { ok: true, data: body as T };

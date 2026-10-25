@@ -28,6 +28,18 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   fullWidth?: boolean;
 }
 
+/**
+ * Shared class builder so that non-anchor controls (for example the "Start a
+ * chat" button, which opens the Nova panel instead of navigating) can look
+ * identical to `ButtonLink` without duplicating the design tokens.
+ */
+export function buttonClass(
+  options: { variant?: Variant; size?: Size; fullWidth?: boolean; className?: string } = {},
+): string {
+  const { variant = 'primary', size = 'md', fullWidth, className } = options;
+  return cn(base, variants[variant], sizes[size], fullWidth && 'w-full', className);
+}
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   { variant = 'primary', size = 'md', fullWidth, className, children, ...props },
   ref,
@@ -35,7 +47,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   return (
     <button
       ref={ref}
-      className={cn(base, variants[variant], sizes[size], fullWidth && 'w-full', className)}
+      className={buttonClass({ variant, size, fullWidth, className })}
       {...props}
     >
       {children}
@@ -65,7 +77,7 @@ export function ButtonLink({
   'aria-label': ariaLabel,
 }: ButtonLinkProps) {
   const rest = ariaLabel ? { 'aria-label': ariaLabel } : {};
-  const classes = cn(base, variants[variant], sizes[size], fullWidth && 'w-full', className);
+  const classes = buttonClass({ variant, size, fullWidth, className });
   const isExternal = external ?? /^https?:\/\//.test(href);
 
   if (isExternal) {

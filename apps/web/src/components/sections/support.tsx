@@ -1,6 +1,7 @@
 import { MessageCircle, PhoneCall, Sparkles } from 'lucide-react';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { ButtonLink } from '@/components/ui/button';
+import { ChatOpenButton } from '@/components/chat/chat-open-button';
 import { siteConfig } from '@/lib/site-config';
 
 const channels = [
@@ -8,12 +9,12 @@ const channels = [
     icon: <Sparkles className="h-6 w-6" />,
     title: `${siteConfig.assistant.name}, our virtual assistant`,
     body: 'Ask questions any time and get instant, knowledge-based answers in English, Pidgin, Yoruba, Igbo or Hausa.',
-    action: { label: 'Start a chat', href: '/contact' },
+    action: { label: 'Start a chat', chat: true as const },
   },
   {
     icon: <MessageCircle className="h-6 w-6" />,
-    title: 'Submit a support ticket',
-    body: 'Report an issue or complaint and track its progress with a reference number.',
+    title: 'Report an issue',
+    body: 'Tell us what went wrong and we will help put it right. Online ticket tracking arrives with the support portal.',
     action: { label: 'Report an issue', href: '/report' },
   },
   {
@@ -48,9 +49,13 @@ export function SupportSection() {
             <h3 className="mt-5 text-lg font-semibold">{channel.title}</h3>
             <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-muted">{channel.body}</p>
             <div className="mt-5">
-              <ButtonLink href={channel.action.href} variant="outline" size="sm">
-                {channel.action.label}
-              </ButtonLink>
+              {'chat' in channel.action ? (
+                <ChatOpenButton>{channel.action.label}</ChatOpenButton>
+              ) : (
+                <ButtonLink href={channel.action.href} variant="outline" size="sm">
+                  {channel.action.label}
+                </ButtonLink>
+              )}
             </div>
           </li>
         ))}

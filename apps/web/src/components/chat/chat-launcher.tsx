@@ -57,13 +57,30 @@ export function ChatLauncher() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, typing]);
 
+  // Escape closes the chat, matching the rest of the site's menus.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
+  // Any "Start a chat" button on the site can open the panel.
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener('nova:open', onOpen);
+    return () => window.removeEventListener('nova:open', onOpen);
+  }, []);
+
   const send = useCallback(
     async (raw: string) => {
       const text = raw.trim();
       if (!text || typing) return;
 
       const customerMessage: ChatMessage = {
-        id: crypto.randomUUID(),
+        id: newId(),
         sender: 'CUSTOMER',
         content: text,
         createdAt: new Date().toISOString(),
@@ -97,7 +114,7 @@ export function ChatLauncher() {
         setMessages((prev) => [
           ...prev,
           {
-            id: crypto.randomUUID(),
+            id: newId(),
             sender: 'NOVA',
             content:
               data.reply ??
@@ -127,7 +144,7 @@ export function ChatLauncher() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? 'Close chat with Nova' : 'Chat with Nova'}
         aria-expanded={open}
-        className="fixed bottom-5 right-5 z-50 flex h-14 items-center gap-2 rounded-full bg-brand-700 px-5 text-white shadow-card-hover transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-700 focus-visible:ring-offset-2"
+        className="fixed bottom-5 right-5 z-[120] flex h-14 items-center gap-2 rounded-full bg-brand-700 px-5 text-white shadow-card-hover transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-700 focus-visible:ring-offset-2"
       >
         {open ? <X className="h-5 w-5" /> : <MessageCircle className="h-5 w-5" />}
         <span className="hidden text-sm font-semibold sm:inline">
@@ -135,14 +152,18 @@ export function ChatLauncher() {
         </span>
       </button>
 
-      {/* Chat window */}
+      {/* Chat window.
+          Sits ABOVE the fixed header (z-120 vs z-100) and its height is capped
+          to the space between the header and the launcher, so the Nova title bar
+          can never slide underneath the site navigation on short screens. */}
       {open && (
         <div
           role="dialog"
+          aria-modal="false"
           aria-label={`Chat with ${siteConfig.assistant.name}`}
-          className="fixed bottom-24 right-5 z-50 flex h-[min(600px,calc(100vh-8rem))] w-[min(420px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-card-hover animate-slide-up"
+          className="fixed bottom-24 right-5 z-[120] flex h-[min(600px,calc(100dvh-var(--nav-h)-7rem))] w-[min(420px,calc(100vw-2.5rem))] flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-card-hover animate-slide-up"
         >
-          <header className="flex items-center gap-3 bg-brand-700 px-4 py-3 text-white">
+          <div className="flex items-center gap-3 bg-brand-700 px-4 py-3 text-white">
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15">
               <Sparkles className="h-4 w-4" />
             </span>
@@ -160,9 +181,12 @@ export function ChatLauncher() {
             >
               <X className="h-4 w-4" />
             </button>
-          </header>
+          </div>
 
-          <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto bg-surface-muted p-4">
+          <div
+            ref={scrollRef}
+            className="flex-1 space-y-4 overflow-y-auto overscroll-contain bg-surface-muted p-4"
+          >
             {messages.map((message) => (
               <MessageBubble key={message.id} message={message} />
             ))}
@@ -272,4 +296,18 @@ function TypingDots() {
       ))}
     </span>
   );
+}
+
+/**
+ * Stable message id.
+ *
+ * `crypto.randomUUID()` is only available in secure contexts (HTTPS or
+ * localhost); on a plain-HTTP LAN address it is undefined and would throw, so
+ * fall back to a timestamp + random suffix.
+ */
+function newId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  return `msg-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 }

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { cn } from '@/lib/cn';
-import { ServiceArt } from './service-art';
+import { SmartImage } from '@/components/ui/smart-image';
+import { homeImages, type ImageSlot } from '@/lib/images';
 
 /**
  * "Our Services" — reconstructed from the reference's actual layout.
@@ -30,7 +31,10 @@ interface Service {
   linkLabel: string;
   /** Solid panel background for this row. */
   panel: 'solid' | 'light';
-  art: 'transfers' | 'card' | 'savings';
+  /** Image slot from the central manifest. */
+  image: ImageSlot;
+  /** Puts the image on the left and the text on the right (reference row 2). */
+  reversed?: boolean;
 }
 
 const services: Service[] = [
@@ -42,7 +46,7 @@ const services: Service[] = [
     href: '/personal',
     linkLabel: 'Personal banking',
     panel: 'solid',
-    art: 'transfers',
+    image: homeImages.serviceTransfers,
   },
   {
     title: 'Novus debit cards, your passport to everyday payments',
@@ -51,7 +55,8 @@ const services: Service[] = [
     href: '/personal',
     linkLabel: 'Cards & payments',
     panel: 'light',
-    art: 'card',
+    image: homeImages.serviceCard,
+    reversed: true,
   },
   {
     title: 'Novus Savings',
@@ -60,7 +65,7 @@ const services: Service[] = [
     href: '/savings',
     linkLabel: 'Explore savings',
     panel: 'solid',
-    art: 'savings',
+    image: homeImages.serviceSavings,
   },
 ];
 
@@ -80,7 +85,10 @@ export function ServicesSection() {
 
 function ServiceRow({ service }: { service: Service }) {
   const isSolid = service.panel === 'solid';
-  const reversed = service.art === 'card';
+  // Row 2 (the debit-card panel) is the reversed one in the reference. This is
+  // an explicit flag: comparing image object identity broke silently whenever
+  // the manifest entry was re-created.
+  const reversed = service.reversed === true;
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -123,7 +131,7 @@ function ServiceRow({ service }: { service: Service }) {
           {service.note ? (
             <p
               className={cn(
-                'mt-2.5 w-full text-[2.8vw] italic leading-snug opacity-80 lg:w-[33.7vw] lg:text-[0.9vw]',
+                'mt-2.5 w-full text-[2.8vw] italic leading-snug opacity-80 lg:w-[33.7vw] lg:text-[max(12px,0.9vw)]',
                 isSolid ? 'text-white' : 'text-ink-muted',
               )}
             >
@@ -134,7 +142,7 @@ function ServiceRow({ service }: { service: Service }) {
           <Link
             href={service.href}
             className={cn(
-              'mt-6 inline-flex items-center gap-1.5 text-[3.4vw] font-semibold underline underline-offset-4 transition-opacity hover:opacity-80 lg:text-[1vw]',
+              'mt-6 inline-flex items-center gap-1.5 text-[3.4vw] font-semibold underline underline-offset-4 transition-opacity hover:opacity-80 lg:text-[max(13px,1vw)]',
               isSolid ? 'text-white' : 'text-brand-700',
             )}
           >
@@ -142,10 +150,15 @@ function ServiceRow({ service }: { service: Service }) {
           </Link>
         </div>
 
-        {/* Image column — exact reference aspect ratio and dimensions. */}
+        {/* Image column — exact reference aspect ratio and dimensions.
+            Source file: apps/web/public/images/home/{services,debit-card,savings}.webp */}
         <div className="w-full shrink-0 overflow-hidden rounded-[2vw] lg:my-[4.43vw] lg:ml-[56px] lg:w-[43.8vw] lg:rounded-[1vw]">
           <div className="aspect-[622/455] w-full">
-            <ServiceArt variant={service.art} className="h-full w-full" />
+            <SmartImage
+              slot={service.image}
+              sizes="(min-width: 1024px) 44vw, 90vw"
+              className="h-full w-full"
+            />
           </div>
         </div>
       </div>

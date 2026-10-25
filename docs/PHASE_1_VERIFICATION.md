@@ -45,7 +45,8 @@ Started with `node dist/main.js`. Nest booted all 9 modules and mapped routes:
 - Seed data inserted.
 - Chatbot end-to-end (persistence + reply) — needs the database.
 - Auth flows (Phase 4).
-- E2E Playwright specs — need both servers running plus the database.
+- E2E Playwright specs — the public-site suite now runs without a database (see
+  `docs/PROJECT_PLAN.md`, Phase 2d); specs that read or write through Prisma still need it.
 
 ## 4. Environment constraints discovered
 

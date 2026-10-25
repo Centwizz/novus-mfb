@@ -31,17 +31,17 @@ export function TestimonialsSection() {
               className="flex flex-col rounded-2xl border border-border bg-surface-muted p-6 lg:rounded-[1vw] lg:p-[2vw]"
             >
               <Quote className="h-6 w-6 text-brand-300" aria-hidden="true" />
-              <blockquote className="mt-4 flex-1 text-[3.4vw] italic leading-relaxed text-ink-muted lg:text-[1.04vw] lg:leading-[1.8vw]">
+              <blockquote className="mt-4 flex-1 text-[3.4vw] italic leading-relaxed text-ink-muted lg:text-[max(13px,1.04vw)] lg:leading-[1.8vw]">
                 {item.quote}
               </blockquote>
-              <figcaption className="mt-4 text-[3.2vw] font-semibold text-ink-brand lg:text-[0.95vw]">
+              <figcaption className="mt-4 text-[3.2vw] font-semibold text-ink-brand lg:text-[max(12px,0.95vw)]">
                 {item.role}
               </figcaption>
             </figure>
           ))}
         </div>
 
-        <p className="mt-6 text-center text-[3.2vw] text-ink-subtle lg:text-[0.9vw]">
+        <p className="mt-6 text-center text-[3.2vw] text-ink-subtle lg:text-[max(12px,0.9vw)]">
           Verified customer testimonials will be published here once supplied and approved by
           the bank.
         </p>

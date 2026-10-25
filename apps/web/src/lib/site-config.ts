@@ -40,6 +40,8 @@ export const siteConfig = {
   // Regulatory/insurance claims are intentionally NOT asserted until verified by the owner.
   // TODO(owner): supply verified licence/insurance wording to display trust badges.
   regulatory: {
+    // TODO(owner): confirm this is the registered CAC number before launch.
+    rcNumber: '7605999',
     licenceText: 'Licensed by the Central Bank of Nigeria', // TODO(owner): verify
     insuredText: 'Deposits insured by the NDIC', // TODO(owner): verify
     showBadges: false,

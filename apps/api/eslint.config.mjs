@@ -2,7 +2,9 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**'],
+    // Config files are not part of the TS project, so the type-aware parser
+    // cannot handle them. Linting them adds no value.
+    ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'eslint.config.mjs', 'jest.config.ts'],
   },
   ...tseslint.configs.recommended,
   {

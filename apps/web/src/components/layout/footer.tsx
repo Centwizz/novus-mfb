@@ -40,10 +40,10 @@ export function Footer() {
         <div className="flex flex-col flex-wrap pb-[4vw] pt-[8.88vw] lg:flex-row lg:pt-[3.73vw]">
           {/* 1. Company */}
           <div className="w-1/2 py-[3vw] lg:w-[9vw] lg:py-[3.73vw]">
-            <h2 className="text-[5vw] font-bold text-white lg:text-[0.78vw]">Company</h2>
+            <h2 className="text-[5vw] font-bold text-white lg:text-[max(12px,0.78vw)]">Company</h2>
             <div className="pt-[0.5vw]">
               {footerNav.company.map((link) => (
-                <div key={link.href} className="mt-[1vw] text-[4.44vw] leading-[8.33vw] lg:mt-[0.69vw] lg:text-[0.69vw] lg:leading-[1.3vw]">
+                <div key={link.href} className="mt-[1vw] text-[4.44vw] leading-[8.33vw] lg:mt-[0.69vw] lg:text-[max(12px,0.69vw)] lg:leading-[1.3vw]">
                   <Link href={link.href} className="text-white transition-opacity hover:opacity-80">
                     {link.label}
                   </Link>
@@ -51,7 +51,7 @@ export function Footer() {
               ))}
             </div>
 
-            <div className="mt-[1vw] text-[4.44vw] leading-[8.33vw] lg:relative lg:-bottom-[25px] lg:mt-[0.69vw] lg:text-[0.69vw] lg:leading-[1.3vw]">
+            <div className="mt-[1vw] text-[4.44vw] leading-[8.33vw] lg:relative lg:-bottom-[25px] lg:mt-[0.69vw] lg:text-[max(12px,0.69vw)] lg:leading-[1.3vw]">
               <div className="font-bold text-white">Whistleblowing:</div>
               {/* TODO(owner): supply the whistleblowing contact address. */}
               <div className="mt-1 text-white/80">Not configured yet</div>
@@ -60,10 +60,10 @@ export function Footer() {
 
           {/* 2. Resources */}
           <div className="w-1/2 py-[3vw] lg:w-[10.17vw] lg:py-[3.73vw]">
-            <h2 className="text-[5vw] font-bold text-white lg:text-[0.78vw]">Resources</h2>
+            <h2 className="text-[5vw] font-bold text-white lg:text-[max(12px,0.78vw)]">Resources</h2>
             <div className="pt-[0.5vw]">
               {footerNav.resources.map((link) => (
-                <div key={link.href} className="mt-[1vw] text-[4.44vw] leading-[8.33vw] lg:mt-[0.69vw] lg:text-[0.69vw] lg:leading-[1.3vw]">
+                <div key={link.href} className="mt-[1vw] text-[4.44vw] leading-[8.33vw] lg:mt-[0.69vw] lg:text-[max(12px,0.69vw)] lg:leading-[1.3vw]">
                   <Link href={link.href} className="text-white transition-opacity hover:opacity-80">
                     {link.label}
                   </Link>
@@ -74,10 +74,10 @@ export function Footer() {
 
           {/* 3. Discover (products) */}
           <div className="w-1/2 py-[3vw] lg:w-[9.5vw] lg:py-[3.73vw]">
-            <h2 className="text-[5vw] font-bold text-white lg:text-[0.78vw]">Discover</h2>
+            <h2 className="text-[5vw] font-bold text-white lg:text-[max(12px,0.78vw)]">Discover</h2>
             <div className="pt-[0.5vw]">
               {footerNav.products.map((link) => (
-                <div key={link.href} className="mt-[1vw] text-[4.44vw] leading-[8.33vw] lg:mt-[0.69vw] lg:text-[0.69vw] lg:leading-[1.3vw]">
+                <div key={link.href} className="mt-[1vw] text-[4.44vw] leading-[8.33vw] lg:mt-[0.69vw] lg:text-[max(12px,0.69vw)] lg:leading-[1.3vw]">
                   <Link href={link.href} className="text-white transition-opacity hover:opacity-80">
                     {link.label}
                   </Link>
@@ -88,8 +88,8 @@ export function Footer() {
 
           {/* 4. Head office */}
           <div className="w-1/2 py-[3vw] lg:mr-[4vw] lg:w-[10.17vw] lg:py-[3.73vw]">
-            <h2 className="text-[5vw] font-bold text-white lg:text-[0.78vw]">Novus Office</h2>
-            <div className="mt-[1vw] text-[4.44vw] leading-[8.33vw] text-white lg:mt-[0.69vw] lg:text-[0.69vw] lg:leading-[1.3vw]">
+            <h2 className="text-[5vw] font-bold text-white lg:text-[max(12px,0.78vw)]">Novus Office</h2>
+            <div className="mt-[1vw] text-[4.44vw] leading-[8.33vw] text-white lg:mt-[0.69vw] lg:text-[max(12px,0.69vw)] lg:leading-[1.3vw]">
               {/* TODO(owner): supply the registered head-office address. */}
               <span className="font-bold">HQ:</span> Address not configured yet
             </div>
@@ -97,10 +97,10 @@ export function Footer() {
 
           {/* 5. Branch offices */}
           <div className="w-full py-[3vw] lg:w-[38vw] lg:py-[3.73vw]">
-            <h2 className="text-[5vw] font-bold text-white lg:text-[0.78vw]">
+            <h2 className="text-[5vw] font-bold text-white lg:text-[max(12px,0.78vw)]">
               Novus Office Address
             </h2>
-            <div className="mt-[1vw] text-[4.44vw] leading-[8.33vw] text-white lg:mt-[0.69vw] lg:text-[0.69vw] lg:leading-[1.3vw]">
+            <div className="mt-[1vw] text-[4.44vw] leading-[8.33vw] text-white lg:mt-[0.69vw] lg:text-[max(12px,0.69vw)] lg:leading-[1.3vw]">
               {/* TODO(owner): supply verified branch addresses. */}
               <div>Branch addresses will be published once confirmed.</div>
               <div className="mt-[1vw] lg:mt-[0.69vw]">
@@ -123,21 +123,44 @@ export function Footer() {
 
           <p className="text-center text-[3.59vw] leading-[3.59vw] text-ink-brand lg:text-[14px] lg:leading-[20px]">
             © {year} {siteConfig.legalName}.
+            {siteConfig.regulatory.rcNumber ? (
+              <span className="text-ink-muted"> RC {siteConfig.regulatory.rcNumber}.</span>
+            ) : null}
           </p>
 
           <ul className="flex items-center gap-[1.54vw] pr-[5.47vw] lg:gap-[6px] lg:pr-[105px]">
-            {socialLinks.map(({ key, href, label, Icon }) => (
-              <li key={key}>
-                <a
-                  href={href ?? '#'}
-                  aria-label={label}
-                  {...(href ? { target: '_blank', rel: 'noopener noreferrer' } : { 'aria-disabled': true })}
-                  className="flex h-[4.44vw] w-[4.44vw] items-center justify-center rounded-full bg-brand-100 text-brand-700 transition-opacity hover:opacity-80 lg:h-[33px] lg:w-[33px]"
-                >
-                  <Icon className="h-[55%] w-[55%]" />
-                </a>
-              </li>
-            ))}
+            {socialLinks.map(({ key, href, label, Icon }) => {
+              const iconClass =
+                'flex h-[4.44vw] w-[4.44vw] items-center justify-center rounded-full bg-brand-100 text-brand-700 transition-opacity hover:opacity-80 lg:h-[33px] lg:w-[33px]';
+
+              return (
+                <li key={key}>
+                  {href ? (
+                    <a
+                      href={href}
+                      aria-label={label}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={iconClass}
+                    >
+                      <Icon className="h-[55%] w-[55%]" aria-hidden="true" />
+                    </a>
+                  ) : (
+                    /* No URL configured yet: render a non-interactive icon.
+                       Previously this was `<a href="">`, which reloaded the
+                       page when clicked. */
+                    <span
+                      role="img"
+                      aria-label={`${label} — link not configured yet`}
+                      title={`${label} link not configured yet`}
+                      className={`${iconClass} cursor-default opacity-60`}
+                    >
+                      <Icon className="h-[55%] w-[55%]" aria-hidden="true" />
+                    </span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

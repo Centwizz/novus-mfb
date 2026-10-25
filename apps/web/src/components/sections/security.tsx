@@ -1,4 +1,5 @@
-import { SecurityTileArt } from './security-tile-art';
+import { SmartVideo } from '@/components/ui/smart-video';
+import { homeVideos } from '@/lib/videos';
 
 /**
  * Security section — reconstructed from the reference.
@@ -38,16 +39,19 @@ export function SecuritySection() {
   return (
     <section className="w-full bg-brand-700">
       <div className="flex flex-col px-[5.65vw] py-[6.67vw] lg:flex-row lg:items-center lg:justify-start lg:py-[5vw]">
-        {/* Media tiles */}
+        {/* Media tiles. Source files:
+            apps/web/public/videos/home/security-fraud.mp4
+            apps/web/public/videos/home/security-lock.mp4
+            Each clip falls back to its poster image if the file is missing. */}
         <div className="mb-[2.16vw] shrink-0 lg:mb-0">
           <div className="relative mb-[3vw] w-[88.88vw] overflow-hidden rounded-[2.051vw] lg:mb-[1.4vw] lg:w-[41.1vw]">
             <div className="aspect-[1004/425] w-full">
-              <SecurityTileArt variant="shield" className="h-full w-full" />
+              <SmartVideo slot={homeVideos.securityFraud} />
             </div>
           </div>
           <div className="relative w-[88.88vw] overflow-hidden rounded-[2.051vw] lg:w-[41.1vw]">
             <div className="aspect-[1004/425] w-full">
-              <SecurityTileArt variant="lock" className="h-full w-full" />
+              <SmartVideo slot={homeVideos.securityLock} />
             </div>
           </div>
         </div>
@@ -63,13 +67,13 @@ export function SecuritySection() {
               <h3 className="text-[4.2vw] font-semibold text-white lg:text-[1.4vw] lg:font-bold">
                 {item.title}
               </h3>
-              <p className="mt-2 text-[3.4vw] leading-relaxed text-white/85 lg:w-[34vw] lg:text-[1vw]">
+              <p className="mt-2 text-[3.4vw] leading-relaxed text-white/85 lg:w-[34vw] lg:text-[max(13px,1vw)]">
                 {item.body}
               </p>
             </div>
           ))}
 
-          <p className="mt-6 w-full rounded-xl border border-white/25 bg-white/10 px-5 py-4 text-[3.2vw] leading-relaxed text-white/90 lg:w-[34vw] lg:text-[0.9vw]">
+          <p className="mt-6 w-full rounded-xl border border-white/25 bg-white/10 px-5 py-4 text-[3.2vw] leading-relaxed text-white/90 lg:w-[34vw] lg:text-[max(12px,0.9vw)]">
             Regulatory and insurance details will be published here once verified by the bank.
             No licence, insurance or regulatory claim is made until confirmed.
           </p>

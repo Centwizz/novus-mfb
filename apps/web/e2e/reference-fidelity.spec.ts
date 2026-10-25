@@ -10,43 +10,42 @@ import { test, expect } from '@playwright/test';
  *
  * See docs/UI_REFERENCE_COMPARISON.md for the measured reference values.
  *
- * NOTE: these tests were authored but cannot be executed in this environment because
- * no browser is installed. They run as soon as `npx playwright install` has been run.
+ * These tests run against the Playwright Chromium build; see `npm run test:e2e`
+ * in apps/web.
  */
 
 test.describe('Homepage structure matches the reference', () => {
   test('sections appear in the verified reference order', async ({ page }) => {
     await page.goto('/');
 
-    // Grab the top offsets of the landmarks in document order.
+    // Document order is the structural fact this test protects. Reading pixel
+    // offsets here was flaky on emulated mobile (a layout read could race the
+    // first paint and return 0 for every landmark), and it also failed when a
+    // section was temporarily `display:none` at a breakpoint.
     const order = await page.evaluate(() => {
-      const find = (text: string) => {
-        const nodes = Array.from(document.querySelectorAll('h1, h2, h3'));
-        const hit = nodes.find((n) => (n.textContent ?? '').includes(text));
-        return hit ? hit.getBoundingClientRect().top + window.scrollY : null;
-      };
+      const headings = Array.from(document.querySelectorAll('h1, h2, h3'));
+      const indexOf = (text: string) =>
+        headings.findIndex((node) => (node.textContent ?? '').includes(text));
       return {
-        hero: find('Beyond the Branch'),
-        services: find('Our Services'),
-        download: find('scan and download'),
-        testimonials: find('what our customers think'),
-        security: find('security and privacy'),
-        satisfaction: find('Customer satisfaction'),
+        hero: indexOf('Beyond the Branch'),
+        services: indexOf('Our Services'),
+        download: indexOf('Download the Novus MFB app'),
+        testimonials: indexOf('what our customers think'),
+        security: indexOf('security and privacy'),
+        satisfaction: indexOf('Customer satisfaction'),
       };
     });
 
     const keys = ['hero', 'services', 'download', 'testimonials', 'security', 'satisfaction'] as const;
     for (const key of keys) {
-      expect(order[key], `${key} section should be present`).not.toBeNull();
+      expect(order[key], `${key} section should be present`).toBeGreaterThanOrEqual(0);
     }
 
     // Each landmark must come after the previous one.
     for (let i = 1; i < keys.length; i += 1) {
       const prevKey = keys[i - 1]!;
       const currKey = keys[i]!;
-      const prev = order[prevKey] as number;
-      const curr = order[currKey] as number;
-      expect(curr, `${currKey} should follow ${prevKey}`).toBeGreaterThan(prev);
+      expect(order[currKey], `${currKey} should follow ${prevKey}`).toBeGreaterThan(order[prevKey]);
     }
   });
 
@@ -81,9 +80,9 @@ test.describe('Homepage structure matches the reference', () => {
   test('"Our Services" renders three full-width rows, not a card grid', async ({ page }) => {
     await page.goto('/');
     const services = page.locator('section#services');
-    // Three h3 row titles, each with an accompanying artwork slot.
+    // Three h3 row titles, each with an accompanying image slot.
     await expect(services.getByRole('heading', { level: 3 })).toHaveCount(3);
-    const images = services.locator('svg[role="img"]');
+    const images = services.locator('img');
     await expect(images).toHaveCount(3);
   });
 
@@ -91,7 +90,7 @@ test.describe('Homepage structure matches the reference', () => {
     await page.goto('/');
     const footer = page.getByRole('contentinfo');
     for (const title of ['Company', 'Resources', 'Discover', 'Novus Office', 'Novus Office Address']) {
-      await expect(footer.getByRole('heading', { name: title })).toBeVisible();
+      await expect(footer.getByRole('heading', { name: title, exact: true })).toBeVisible();
     }
   });
 

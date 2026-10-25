@@ -185,12 +185,15 @@ component, so real imagery can be dropped in without any layout change.
 | E2E | `e2e/design-system.spec.ts` | All routes render, one h1, image alt text, CTA targets, no unverified claims |
 | E2E | `e2e/reference-fidelity.spec.ts` | Homepage section order, 80px fixed header, full-bleed hero with white overlaid heading, three full-width service rows, five-column footer, no horizontal scroll at five reference viewports, placeholder honesty |
 
-> `e2e/reference-fidelity.spec.ts` is **authored but not yet executed** — no browser is installed in
-> the current environment. It will run once `npx playwright install` has been performed.
+> Executed on 2026-10-25 against a production build: **78/78 PASS** on Chromium desktop and
+> Pixel 5. Run `npx playwright install chromium` once per machine before the first E2E run.
 
 Commands (from the repository root):
 
 ```powershell
 npm run test   --workspace=apps/web   # unit
-npm run test:e2e --workspace=apps/web # Playwright (needs dev server + API for full coverage)
+npx playwright install chromium       # once, downloads the browser
+npm run test:e2e --workspace=apps/web # starts the dev server automatically
+# or, against an already-running production build:
+# $env:E2E_BASE_URL='http://localhost:3000'; npx playwright test
 ```

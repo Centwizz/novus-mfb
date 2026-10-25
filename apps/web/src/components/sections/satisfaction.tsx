@@ -1,18 +1,24 @@
 import { Phone } from 'lucide-react';
+import { SmartVideo } from '@/components/ui/smart-video';
 import { siteConfig } from '@/lib/site-config';
-import { SatisfactionVideoArt } from './satisfaction-video-art';
+import { homeVideos, type VideoSlot } from '@/lib/videos';
 
 /**
- * "Customer Satisfaction, Our Priority" — present in the reference, missing before.
+ * "Customer Satisfaction, Our Priority".
  *
  * Reference measurements (desktop, from opayweb.com CSS):
  *   - .satisfaction-flex:  flex-direction row, padding 0 5.65vw
  *   - .satisfaction-text:  left column, word-wrap break-word
  *   - .satisfaction-tels:  flex row; icon 0.8vw, margin-right 0.84vw
- *   - video tiles:         autoplaying muted loops, two side by side
+ *   - media tiles:         autoplaying muted loops, two side by side
  *
- * The reference lists two hotlines. Novus has no verified numbers yet, so the layout
- * shows the hotline block with clearly-marked placeholders instead of invented numbers.
+ * The tiles are the reference's videos. Novus ships branded placeholder clips
+ * from `public/videos/home/` until real footage is supplied; see
+ * `docs/VIDEO_ASSET_GUIDE.md`. Each tile keeps its poster image, so the layout
+ * still looks right if a clip is missing.
+ *
+ * The reference lists two hotlines. Novus has no verified numbers yet, so the
+ * block shows clearly-marked placeholders instead of invented numbers.
  */
 export function SatisfactionSection() {
   return (
@@ -24,17 +30,17 @@ export function SatisfactionSection() {
             Customer satisfaction, our priority
           </h2>
 
-          <p className="mt-4 w-full text-[3.4vw] leading-relaxed text-ink-muted lg:w-[34vw] lg:text-[1.04vw] lg:leading-[2.34vw]">
+          <p className="mt-4 w-full text-[3.4vw] leading-relaxed text-ink-muted lg:w-[34vw] lg:text-[max(13px,1.04vw)] lg:leading-[2.34vw]">
             We are here to provide responsive customer service. Send us a message through this
             site, reach out on social media, or call the hotline below. For account-specific
-            help, {siteConfig.assistant.name} can also raise a support ticket for you.
+            help, {siteConfig.assistant.name} can also point you to the right support channel.
           </p>
 
           <div className="mt-6 flex">
-            <div className="mr-[2.78vw] h-[5.56vw] w-[5.56vw] translate-y-[1.3vw] lg:mr-[0.84vw] lg:h-[0.8vw] lg:w-[0.8vw] lg:translate-y-[0.3vw]">
+            <div className="mr-[2.78vw] h-[5.56vw] w-[5.56vw] translate-y-[1.3vw] lg:mr-[0.84vw] lg:h-[max(12px,0.8vw)] lg:w-[max(12px,0.8vw)] lg:translate-y-[0.3vw]">
               <Phone className="h-full w-full text-brand-700" aria-hidden="true" />
             </div>
-            <div className="text-[3.4vw] text-ink-brand lg:text-[1.04vw] lg:leading-[2.34vw]">
+            <div className="text-[3.4vw] text-ink-brand lg:text-[max(13px,1.04vw)] lg:leading-[2.34vw]">
               {/* TODO(owner): supply verified support hotlines. */}
               <p>Support hotline: Not configured yet</p>
               <p>Business and card queries: Not configured yet</p>
@@ -42,26 +48,29 @@ export function SatisfactionSection() {
           </div>
         </div>
 
-        {/* Media tiles */}
+        {/* Media tiles. Source files:
+            apps/web/public/videos/home/customer-service.mp4
+            apps/web/public/videos/home/customer-stories.mp4 */}
         <div className="flex w-full flex-col gap-4 pb-6 sm:flex-row lg:w-auto lg:gap-[1.5vw] lg:pb-0">
-          <MediaTile variant="service" />
-          <MediaTile variant="customers" />
+          <MediaTile slot={homeVideos.customerService} />
+          <MediaTile slot={homeVideos.customerStories} />
         </div>
       </div>
     </section>
   );
 }
 
-function MediaTile({ variant }: { variant: 'service' | 'customers' }) {
+function MediaTile({ slot }: { slot: VideoSlot }) {
   return (
-    <div className="relative w-full shrink-0 overflow-hidden rounded-[2.051vw] lg:w-[22vw] lg:rounded-[0.8vw]">
+    <div className="relative w-full overflow-hidden rounded-[2.051vw] sm:w-[calc(50%-0.5rem)] lg:w-[22vw] lg:rounded-[0.8vw]">
       <div className="aspect-[4/3] w-full">
-        <SatisfactionVideoArt variant={variant} className="h-full w-full" />
+        <SmartVideo slot={slot} />
       </div>
-      {/* Play affordance, mirroring the reference's play icon overlay. */}
+      {/* Play affordance, mirroring the reference's play icon overlay. The clip
+          autoplays muted; this is a visual cue, not a control. */}
       <span
         aria-hidden="true"
-        className="absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 lg:h-9 lg:w-9"
+        className="pointer-events-none absolute left-1/2 top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/85 lg:h-9 lg:w-9"
       >
         <span className="ml-0.5 block h-0 w-0 border-y-[8px] border-l-[13px] border-y-transparent border-l-brand-700" />
       </span>

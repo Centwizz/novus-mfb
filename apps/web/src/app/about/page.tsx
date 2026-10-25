@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import { ShieldCheck, Target, Users } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageBanner } from '@/components/ui/page-banner';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { FeatureCard } from '@/components/ui/card';
+import { SmartImage } from '@/components/ui/smart-image';
+import { PeopleCarousel } from '@/components/ui/people-carousel';
 import { CtaSection } from '@/components/sections/cta';
+import { aboutImages, bannerImages, boardMembers, teamMembers } from '@/lib/images';
 
 export const metadata: Metadata = {
   title: 'About Us',
@@ -32,7 +35,9 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      <PageHeader
+      {/* Banner image: apps/web/public/images/banners/about-hero.webp */}
+      <PageBanner
+        slot={bannerImages.about}
         eyebrow="About us"
         title="Banking that puts people first"
         description="Novus MFB is a digital-first microfinance bank built to make everyday banking simpler, safer and more human."
@@ -53,15 +58,18 @@ export default function AboutPage() {
               regulatory information supplied by the bank.
             </p>
           </div>
-          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-warning">
-            <p className="font-semibold">Placeholder content</p>
-            <p className="mt-2 leading-relaxed">
-              Company history, leadership, registration details and any regulatory statements must
-              be verified and provided by Novus MFB before this page is published.
-            </p>
+
+          {/* Image: apps/web/public/images/about/about-intro.webp */}
+          <div className="overflow-hidden rounded-2xl border border-border">
+            <SmartImage
+              slot={aboutImages.intro}
+              sizes="(min-width: 1024px) 45vw, 90vw"
+              className="h-full w-full"
+            />
           </div>
         </div>
       </Section>
+
       <Section muted>
         <SectionHeading eyebrow="What we stand for" title="Our values" />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
@@ -72,6 +80,43 @@ export default function AboutPage() {
           ))}
         </div>
       </Section>
+
+      {/* Board of Directors.
+          Portraits: apps/web/public/images/about/board-*.webp
+          Names/roles/bios: edit `boardMembers` in src/lib/images.ts */}
+      <PeopleCarousel
+        id="board"
+        variant="board"
+        label="Board of Directors"
+        eyebrow="Leadership"
+        title="Meet Our Board of Directors"
+        description="Our board provides oversight, governance and strategic direction for the bank."
+        people={boardMembers}
+      />
+
+      {/* Management team.
+          Portraits: apps/web/public/images/team/*.webp
+          Names/roles/bios: edit `teamMembers` in src/lib/images.ts */}
+      <div className="w-full">
+        {/* Group photo: apps/web/public/images/about/team-group.webp */}
+        <div className="w-full overflow-hidden border-y border-border">
+          <SmartImage
+            slot={aboutImages.teamGroup}
+            sizes="100vw"
+            className="h-full w-full"
+          />
+        </div>
+      </div>
+
+      <PeopleCarousel
+        id="team"
+        variant="team"
+        label="Our team"
+        eyebrow="Our people"
+        title="Meet Our Team"
+        description="The people who run the day-to-day operations and support our customers."
+        people={teamMembers}
+      />
 
       <CtaSection />
     </>

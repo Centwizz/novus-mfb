@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { BarChart3, Building2, FileSpreadsheet, Users } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageBanner } from '@/components/ui/page-banner';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { FeatureCard } from '@/components/ui/card';
 import { CtaSection } from '@/components/sections/cta';
+import { SmartImage } from '@/components/ui/smart-image';
+import { bannerImages, serviceImages } from '@/lib/images';
 
 export const metadata: Metadata = {
   title: 'Business Banking',
@@ -36,7 +38,8 @@ const features = [
 export default function BusinessPage() {
   return (
     <>
-      <PageHeader
+      <PageBanner
+        slot={bannerImages.business}
         eyebrow="Business banking"
         title="Banking that works as hard as you do"
         description="Practical accounts and tools that help small businesses manage money with confidence."
@@ -52,12 +55,23 @@ export default function BusinessPage() {
           ))}
         </div>
 
-        <div className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-warning">
-          <p className="font-semibold">Placeholder content</p>
-          <p className="mt-2 leading-relaxed">
-            Business tariffs, account requirements and any product terms are not yet configured and
-            will be published once verified by Novus MFB.
-          </p>
+        <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+          {/* Image: apps/web/public/images/services/business-banking.webp */}
+          <div className="overflow-hidden rounded-2xl border border-border">
+            <SmartImage
+              slot={serviceImages.business}
+              sizes="(min-width: 1024px) 45vw, 90vw"
+              className="h-full w-full"
+            />
+          </div>
+
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-warning">
+            <p className="font-semibold">Placeholder content</p>
+            <p className="mt-2 leading-relaxed">
+              Business tariffs, account requirements and any product terms are not yet configured and
+              will be published once verified by Novus MFB.
+            </p>
+          </div>
         </div>
       </Section>
 

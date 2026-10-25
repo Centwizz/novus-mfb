@@ -47,9 +47,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <Header />
-        {/* The header is fixed (matching the reference), so page content must be
-            pushed down by the header height: 15.55vw on mobile, 80px on desktop. */}
-        <main id="main" className="flex-1 pt-[15.55vw] lg:pt-nav">
+        {/* The header is fixed, so content is pushed down by exactly its height.
+            `--nav-h` is the single source of truth (globals.css) and is shared
+            with the header, hero, mobile menu and auth screens. */}
+        <main id="main" className="flex-1 scroll-mt-[var(--nav-h)] pt-[var(--nav-h)]">
           {children}
         </main>
         <Footer />

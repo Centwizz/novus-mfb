@@ -15,7 +15,7 @@ const faqs = [
   {
     question: 'Is my information safe?',
     answer:
-      'Yes. We use secure, HTTP-only sessions, encrypt data in transit, validate every request and never ask for your PIN, OTP or full card details in chat.',
+      'We never ask for your PIN, OTP or full card details in chat, and you should never share them with anyone who contacts you. The full account-security controls will be described here once customer sign-in is live.',
   },
   {
     question: 'Can Nova perform transactions for me?',

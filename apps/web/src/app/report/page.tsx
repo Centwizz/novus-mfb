@@ -23,22 +23,25 @@ export default function ReportPage() {
             <h2 className="text-lg font-semibold">Ways to report an issue</h2>
             <ol className="list-decimal space-y-3 pl-5 text-sm leading-relaxed text-ink-muted">
               <li>
-                <strong className="text-ink">Sign in and open a ticket.</strong> If you have a Novus
-                MFB account, log in and create a support ticket so you can track its progress.{' '}
-                <Link href="/login" className="font-medium text-brand-700 hover:underline">
-                  Log in
-                </Link>
-              </li>
-              <li>
-                <strong className="text-ink">Ask Nova.</strong> Use the chat button to describe the
-                problem. Nova can create a ticket and escalate to a human agent when needed.
-              </li>
-              <li>
                 <strong className="text-ink">Contact our team.</strong> Use the{' '}
                 <Link href="/contact" className="font-medium text-brand-700 hover:underline">
                   contact form
                 </Link>{' '}
-                if you prefer to reach us directly.
+                and we will get back to you. Online ticket tracking is part of the support
+                portal, which is delivered in a later phase.
+              </li>
+              <li>
+                <strong className="text-ink">Ask Nova.</strong> Use the chat button to describe
+                the problem. Nova can point you to the right channel and help you collect the
+                details a support agent will need.
+              </li>
+              <li>
+                <strong className="text-ink">Call the hotline.</strong> Once the bank&apos;s
+                verified support numbers are published they will appear on the{' '}
+                <Link href="/contact" className="font-medium text-brand-700 hover:underline">
+                  contact page
+                </Link>
+                .
               </li>
             </ol>
           </Card>

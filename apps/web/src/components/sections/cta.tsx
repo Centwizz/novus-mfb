@@ -9,7 +9,7 @@ export function CtaSection() {
             aria-hidden="true"
             className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-white/10 blur-2xl"
           />
-          <h2 className="mx-auto max-w-2xl text-3xl font-bold sm:text-4xl">
+          <h2 className="mx-auto max-w-2xl text-3xl font-bold text-white sm:text-4xl">
             Ready to bank with Novus MFB?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-white/80">

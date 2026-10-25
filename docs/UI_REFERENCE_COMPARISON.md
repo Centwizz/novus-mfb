@@ -1,16 +1,18 @@
 # UI Reference Comparison — OPay vs. Novus MFB
 
-**Date:** 2026-10-22
-**Status:** Audit complete. Corrections in progress.
+**Date:** 2026-10-22 (verification updated 2026-10-25)
+**Status:** Audit complete. Corrections complete — see Phase 2b–2d in `docs/PROJECT_PLAN.md`.
 **Method:** Direct inspection of the live reference HTML (`https://www.opayweb.com/`) and its
 real stylesheets, compared against the actual Novus implementation on disk.
 
 > **Honesty note on evidence.** I inspected the reference's **live HTML and CSS** and downloaded
-> its banner images to read their true pixel dimensions and sample their colours. I could **not**
-> run a browser, so I have **not** produced pixel-diff screenshots. All numerical claims below come
-> from the reference's own CSS values (converted to px at a 1440px viewport) and from measured
-> image files — not from memory or guesswork. Where I could not verify something, it is marked
-> **[UNVERIFIED]**.
+> its banner images to read their true pixel dimensions and sample their colours. At the time of
+> the audit I could **not** run a browser, so I produced **no** pixel-diff screenshots. All
+> numerical claims below come from the reference's own CSS values (converted to px at a 1440px
+> viewport) and from measured image files — not from memory or guesswork. Playwright Chromium was
+> installed on 2026-10-25 and the structural E2E suite now passes (see §7), but that is still
+> **not** a rendered comparison against opayweb.com. Where I could not verify something, it is
+> marked **[UNVERIFIED]**.
 
 ---
 
@@ -304,13 +306,14 @@ These are known, deliberate, or unverifiable-without-assets differences:
 | Rendered section order | **matches the verified reference order** |
 | Reference CSS values read directly from `opayweb.com` stylesheets | **DONE** — all numbers above are measured, not estimated |
 | Reference banner image dimensions measured from the downloaded file | **DONE** — `indexBanner.jpg` 2304×918, `headerBannerMobile.jpg` 720×1158, `foot-bc.png` 2303×556 |
-| Playwright E2E specs authored (`e2e/reference-fidelity.spec.ts`) | **AUTHORED, NOT RUN** — no browser installed |
+| Playwright E2E suite (`e2e/reference-fidelity.spec.ts`, `design-system.spec.ts`, `public-site.spec.ts`) | **PASS — 78/78** on Chromium desktop + Pixel 5 (2026-10-25, production build) |
 
 ### What could NOT be verified
 
-- **No browser is available in this environment.** I could not run Playwright, capture screenshots,
-  or produce a pixel-diff overlay. Every quantitative claim above is derived from the reference's own
-  CSS and image files, not from a rendered comparison. **This is not a screenshot comparison.**
+- **A screenshot/pixel-diff overlay against opayweb.com was not produced.** The reference pages were
+  not captured in this environment's browser session, so every quantitative claim above still comes
+  from the reference's own CSS and image files, not from a rendered comparison. The E2E suite
+  asserts structure, geometry, contrast and honesty — **this is still not a screenshot comparison.**
 - The reference's runtime-populated sections (testimonials carousel) and its video files could not
   be inspected.
 - The reference's non-homepage pages were not inspected for this task.

@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Public site', () => {
   test('home page renders the hero and primary CTA', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Banking built');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(/beyond the branch/i);
     await expect(page.getByRole('link', { name: 'Open an account' }).first()).toBeVisible();
   });
 

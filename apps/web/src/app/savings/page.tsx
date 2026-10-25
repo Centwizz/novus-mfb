@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import { CalendarClock, Lock, Target, TrendingUp } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageBanner } from '@/components/ui/page-banner';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { FeatureCard } from '@/components/ui/card';
 import { CtaSection } from '@/components/sections/cta';
+import { SmartImage } from '@/components/ui/smart-image';
+import { bannerImages, serviceImages } from '@/lib/images';
 
 export const metadata: Metadata = {
   title: 'Savings',
@@ -36,7 +38,8 @@ const plans = [
 export default function SavingsPage() {
   return (
     <>
-      <PageHeader
+      <PageBanner
+        slot={bannerImages.savings}
         eyebrow="Savings"
         title="Save with purpose, on your terms"
         description="Choose the plan that fits your goals and build your savings steadily over time."
@@ -52,12 +55,23 @@ export default function SavingsPage() {
           ))}
         </div>
 
-        <div className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-warning">
-          <p className="font-semibold">Placeholder content</p>
-          <p className="mt-2 leading-relaxed">
-            Interest rates, minimum balances, tenure options and any conditions are not yet
-            configured and will only be published once verified by Novus MFB.
-          </p>
+        <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+          {/* Image: apps/web/public/images/services/savings.webp */}
+          <div className="overflow-hidden rounded-2xl border border-border">
+            <SmartImage
+              slot={serviceImages.savings}
+              sizes="(min-width: 1024px) 45vw, 90vw"
+              className="h-full w-full"
+            />
+          </div>
+
+          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-warning">
+            <p className="font-semibold">Placeholder content</p>
+            <p className="mt-2 leading-relaxed">
+              Interest rates, minimum balances, tenure options and any conditions are not yet
+              configured and will only be published once verified by Novus MFB.
+            </p>
+          </div>
         </div>
       </Section>
 

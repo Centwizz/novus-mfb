@@ -12,7 +12,7 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
 
 ## 3. Project Phases
 
-### PHASE 0: REPOSITORY AUDIT, REFERENCE RESEARCH & TECHNICAL PLAN (CURRENT)
+### PHASE 0: REPOSITORY AUDIT, REFERENCE RESEARCH & TECHNICAL PLAN (COMPLETE)
 - [x] Inspect reference website structure
 - [x] Create reference audit
 - [x] Create architecture plan
@@ -48,14 +48,18 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
       newsroom, careers, report, privacy-policy, terms-and-conditions
 - [x] Navigation — header dropdowns + mobile drawer, footer groups, integrity test (14 routes)
 - [x] Responsive design — mobile-first layouts, mobile overflow E2E test, `prefers-reduced-motion`
-- [x] Visual verification — `e2e/design-system.spec.ts` (routes render, one h1, image alt text,
-      CTA targets, no unverified claims). Owner visual review still recommended.
+- [x] Visual verification — executed 2026-10-25 with Playwright Chromium: 78/78 E2E PASS on
+      desktop Chrome and Pixel 5 (routes render, one h1, image alt text, CTA targets, carousel
+      ends, no horizontal overflow, honest placeholders, no unverified claims). A separate
+      scripted audit measured six viewports (1440×900, 1366×768, 1024×768, 768×1024, 390×844,
+      375×812) across 19 routes with zero problems. Owner visual review still recommended.
 
-> **Deferred:** full Playwright E2E execution needs both dev servers running; the database-backed
-> specs additionally need PostgreSQL (see `docs/POSTGRES_SETUP_CHECKLIST.md`).
+> **Deferred:** Playwright Chromium is now installed and the public-site E2E suite runs against a
+> production build. Database-backed specs still need PostgreSQL (see
+> `docs/POSTGRES_SETUP_CHECKLIST.md`).
 
 ### PHASE 3: DATABASE DESIGN & BACKEND ARCHITECTURE
-- [x] Prisma schema design — 16 models in `apps/api/prisma/schema.prisma`
+- [x] Prisma schema design — 15 models in `apps/api/prisma/schema.prisma`
 - [x] NestJS modules — health, chatbot, contact, auth (scaffold), prisma, config
 - [x] API conventions — `/api/v1` versioning, exception filter, logging + request IDs
 - [ ] Migrations and seeds — migration SQL and seed written; **applying them is blocked on
@@ -78,15 +82,19 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
 - [ ] Internal notes
 
 ### PHASE 6: AI CUSTOMER-SERVICE CHATBOT (Nova)
-- [ ] Chat UI
-- [ ] Natural conversation
-- [ ] Typing indicators
-- [ ] Nigerian languages (EN, Pidgin, Yoruba, Igbo, Hausa)
-- [ ] LLM integration
-- [ ] Knowledge base
-- [ ] Human handoff
-- [ ] Security restrictions
-- [ ] Tests
+- [x] Chat UI — launcher, panel, suggestion chips, typing indicator, Escape/outside-click close,
+      opens above the fixed header (`z-index` and height are computed from `--nav-h`)
+- [x] Natural conversation — weighted knowledge retrieval + greeting/thanks detection
+- [x] Typing indicators
+- [x] Nigerian languages (EN, Pidgin, Yoruba, Igbo, Hausa) — weighted marker detection
+- [ ] LLM integration — `LlmAdapter` exists; demo mode until an API key is supplied
+- [x] Knowledge base — ~30 verified-safe entries in `knowledge-base.ts` with scoring + tests
+- [ ] Human handoff — escalation intent is detected and acknowledged honestly; no agent
+      dashboard/queue until Phase 5
+- [x] Security restrictions — no PIN/OTP/card collection, no balance guessing, no transaction
+      execution, honest "not available" answers
+- [ ] Tests — unit tests PASS (language 4/4, knowledge base 4/4); DB-backed conversation tests
+      blocked on PostgreSQL
 
 ### PHASE 7: OPTIONAL BANKING PORTAL
 - [ ] Assess needs, adapters if approved, clear labeling
@@ -132,7 +140,50 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
   a new download-app band, a new testimonials section, a solid-brand-band security section
   with media tiles, a new customer-satisfaction section, and a five-column footer with a
   separate bottom bar. Verified: typecheck PASS, lint PASS (0/0), `next build` PASS
-  (25/25 pages), web unit tests 14/14 PASS. **Not verified: any visual/pixel comparison —
-  no browser is available in this environment.**
+  (25/25 pages), web unit tests 14/14 PASS, Playwright E2E 78/78 PASS (desktop Chrome +
+  Pixel 5) and a six-viewport scripted geometry audit with zero problems (see Phase 2d).
+- Phase 2c (image asset management, banners, Board of Directors & Team): **complete,
+  awaiting owner visual review.**
+  All public imagery now comes from one central directory, `apps/web/public/images/`, declared
+  in a single manifest (`apps/web/src/lib/images.ts`). Replacing a picture is a file swap with
+  the same filename — no code change. 33 branded placeholders were generated at their exact
+  slot dimensions by `scripts/generate-placeholder-images.mjs`. Every public page banner uses
+  `PageBanner` (image + brand scrim, `object-fit: cover`); the home hero has separate desktop
+  (1920×800) and mobile (390×844) assets with CSS fallback. The About page gained
+  "Meet Our Board of Directors" (carousel) and "Meet Our Team", both rendered by the same
+  `PeopleCarousel`/`PersonCard` components so they cannot drift apart, backed by an accessible
+  touch/keyboard carousel (3/2/1 cards, ends handled, dots, no horizontal overflow).
+  All people entries are explicitly labelled placeholders — no invented identities, roles
+  beyond generic role labels, or biographies. Docs: `apps/web/public/images/README.md`
+  (per-file inventory) and `docs/IMAGE_ASSET_GUIDE.md` (architecture).
+  Verified: `tsc --noEmit` PASS, web lint PASS (0/0), `next build` PASS (25/25), Playwright
+  E2E 78/78 PASS including carousel ends, 3/2/1 visibility at 1440/1024/390, image 200s and
+  no horizontal overflow.
+- Phase 2d (replaceable videos, chat layering, header/hero/typography fixes): **complete,
+  awaiting owner visual review.**
+  Four central placeholder videos live in `apps/web/public/videos/home/` and are declared in
+  `apps/web/src/lib/videos.ts`; swapping a file with the same name needs no code change.
+  `<SmartVideo>` falls back to the image-manifest poster when a clip is missing, is muted and
+  `aria-hidden`, and pauses under `prefers-reduced-motion`. Docs:
+  `apps/web/public/videos/README.md` and `docs/VIDEO_ASSET_GUIDE.md`.
+  The Nova panel now always opens above the fixed header (`z-[120]`, height clamped to the
+  viewport below `--nav-h`), closes on Escape and opens from any "Start a chat" button.
+  Header height is a single `--nav-h` token shared by the header, main offset, hero, mobile
+  drawer, auth screens and chat. The hero banner starts at y=0 behind the header and fills the
+  viewport; the mobile drawer is `inert` when closed and locks background scroll. The 1024px
+  nav/CTA collision is gone (16px clearance). Visible desktop text is now ≥12px (store badges,
+  footer, hero subtitle floors raised) and CTA/auth headings are explicitly white on brand
+  backgrounds.
+  The demo chatbot answers from ~30 verified-safe knowledge entries using weighted retrieval
+  in five languages, and keeps an in-memory transcript when PostgreSQL is unreachable while
+  stating honestly that it cannot see balances or move money.
+  Verified: web + API `tsc --noEmit` PASS; web + API lint PASS (0/0); web unit 14/14; API unit
+  8/8; API build PASS; web build PASS (25/25); Playwright 78/78; scripted six-viewport audit
+  (19 routes × 6 viewports) 0 problems — no horizontal overflow, hero top 0 with the header
+  overlaid, 3/2/1 carousel visibility, one-step Next/keyboard/swipe, chat panel never under the
+  nav, all four MP4s decode, no visible desktop text below 12px. Manually exercised
+  `/api/v1/chatbot/message` for greeting, balance, transfer, card loss, unauthorised
+  transaction and human escalation. **Not verified: PostgreSQL persistence (deferred);
+  screenshots were captured but not visually compared against the reference.**
 - Phase 3: schema, modules and conventions in place; migration/seed application blocked on
   PostgreSQL (deferred by owner)

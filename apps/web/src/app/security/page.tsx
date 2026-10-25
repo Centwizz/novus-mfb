@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { KeyRound, Lock, ShieldCheck } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageBanner } from '@/components/ui/page-banner';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { FeatureCard } from '@/components/ui/card';
+import { bannerImages } from '@/lib/images';
 
 export const metadata: Metadata = {
   title: 'Security',
@@ -38,7 +39,8 @@ const safetyTips = [
 export default function SecurityPage() {
   return (
     <>
-      <PageHeader
+      <PageBanner
+        slot={bannerImages.security}
         eyebrow="Security"
         title="How we protect you"
         description="Security is built into everything we do. Here is how we protect your account — and how you can help."

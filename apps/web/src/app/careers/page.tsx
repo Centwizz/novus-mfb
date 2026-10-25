@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageBanner } from '@/components/ui/page-banner';
 import { Section } from '@/components/ui/section';
 import { Card } from '@/components/ui/card';
 import { CtaSection } from '@/components/sections/cta';
+import { bannerImages } from '@/lib/images';
 import { siteConfig } from '@/lib/site-config';
 
 export const metadata: Metadata = {
@@ -13,7 +14,8 @@ export const metadata: Metadata = {
 export default function CareersPage() {
   return (
     <>
-      <PageHeader
+      <PageBanner
+        slot={bannerImages.careers}
         eyebrow="Careers"
         title="Build the future of banking"
         description="We are always looking for people who care about doing right by customers."
