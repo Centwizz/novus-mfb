@@ -17,6 +17,14 @@ export const siteConfig = {
     'Novus MFB is a digital-first microfinance bank offering simple, secure and accessible financial services. Open an account, save, borrow and manage your money with confidence.',
   url: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000',
   apiUrl: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1',
+  /**
+   * Date the public content last meaningfully changed (ISO 8601, date only).
+   *
+   * Used as the sitemap's `lastModified`. It must be bumped by hand when page
+   * content changes: deriving it from build time made every deployment claim
+   * every URL had just been edited, which is not something we can substantiate.
+   */
+  lastContentUpdate: '2026-10-25',
   // TODO(owner): replace with verified contact details before launch.
   contact: {
     // NOTE: placeholder — not a real number.

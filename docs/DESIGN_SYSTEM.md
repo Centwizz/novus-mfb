@@ -133,8 +133,10 @@ All live under `apps/web/src/components`.
 | Component | Purpose |
 | --- | --- |
 | `Header` | Fixed 80px nav, dropdown groups, slide-down mobile menu, account CTAs |
-| `Footer` | Five reference-derived columns + separate bottom bar with social chips |
+| `Footer` | Five reference-derived columns + separate bottom bar with social chips and a "Cookie settings" control |
 | `AuthShell` | Split brand/auth panel for login and registration |
+| `CookieConsent` | Non-modal storage notice; fixed above the footer, below the Nova launcher |
+| `CookieSettingsButton` | Re-opens the notice by clearing the stored acknowledgement |
 
 ### Homepage sections (`sections/`)
 
@@ -158,6 +160,34 @@ component, so real imagery can be dropped in without any layout change.
 | `Logo` | Official mark + wordmark, light/dark variants |
 | `ChatLauncher` | Floating Nova assistant entry point |
 
+## 7a. Browser icons and social card
+
+Generated from the single owner-supplied logo by `scripts/generate-brand-assets.mjs`:
+
+```powershell
+npm run assets:brand
+```
+
+| Output | Size | Used by |
+| --- | --- | --- |
+| `src/app/favicon.ico` | 16 + 32 | Browser tabs, bookmarks |
+| `src/app/icon.png` | 512 | Modern browsers, install prompts |
+| `src/app/apple-icon.png` | 180 | iOS home screen |
+| `public/brand/og-image.png` | 1200×630 | Open Graph and X/Twitter cards |
+
+Rules baked into the generator:
+
+- The source logo is **204×204 with an opaque white background** (no alpha channel). Icons
+  therefore keep a white ground. Producing a transparent mark would mean fabricating artwork
+  that was never supplied.
+- The mark is trimmed of its own white border and re-centred, so padding is even at every size.
+- The social card contains only the name and tagline. No licence, deposit-insurance or
+  customer-count claims are drawn, because none are verified.
+- The outputs live in **`src/app`**, never a top-level `apps/web/app`. A root `app/` directory
+  shadows `src/app` in Next.js and silently removes every page from the build.
+- This script is separate from `scripts/generate-placeholder-images.mjs`, which must not be
+  re-run once real photography replaces the placeholders.
+
 ## 8. Accessibility commitments
 
 - Target: **WCAG 2.2 AA**.
@@ -167,6 +197,10 @@ component, so real imagery can be dropped in without any layout change.
 - All images require an `alt` attribute (enforced by an E2E test).
 - The FAQ accordion exposes `aria-expanded` / `aria-controls` and is fully keyboard operable.
 - Colour is never the sole carrier of meaning — icons and text labels accompany it.
+- The cookie notice is a non-modal `role="region"`; it never traps focus, never locks scrolling,
+  and its action is inset from the floating chat button on phones. Because this build sets no
+  optional cookies, it offers one honest acknowledgement rather than an Accept/Reject choice
+  that would imply tracking that does not exist.
 
 ## 9. Guardrails
 
@@ -181,12 +215,16 @@ component, so real imagery can be dropped in without any layout change.
 | Layer | File | What it checks |
 | --- | --- | --- |
 | Unit | `tests/navigation.test.ts` | Every header/footer link maps to a real route |
+| Unit | `tests/consent.test.ts` | Consent parsing fails closed; version and timestamp validation |
 | E2E | `e2e/public-site.spec.ts` | Hero, nav resolution, Nova launcher, mobile overflow |
 | E2E | `e2e/design-system.spec.ts` | All routes render, one h1, image alt text, CTA targets, no unverified claims |
 | E2E | `e2e/reference-fidelity.spec.ts` | Homepage section order, 80px fixed header, full-bleed hero with white overlaid heading, three full-width service rows, five-column footer, no horizontal scroll at five reference viewports, placeholder honesty |
+| E2E | `e2e/cookie-consent.spec.ts` | First-visit notice, dismissal persistence, footer re-open, no overlap with the chat launcher, no horizontal overflow |
+| E2E | `e2e/brand-assets.spec.ts` | Icons, social card, sitemap and robots are real 200 responses; OG/Twitter metadata present |
 
 > Executed on 2026-10-25 against a production build: **78/78 PASS** on Chromium desktop and
-> Pixel 5. Run `npx playwright install chromium` once per machine before the first E2E run.
+> Pixel 5. The consent and brand-asset specs were added afterwards and run in the same suite.
+> Run `npx playwright install chromium` once per machine before the first E2E run.
 
 Commands (from the repository root):
 

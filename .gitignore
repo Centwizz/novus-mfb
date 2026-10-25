@@ -14,6 +14,9 @@ out/
 .env
 .env.local
 .env.*.local
+.env.development
+.env.production
+.env.test
 !.env.example
 
 # Logs
@@ -34,6 +37,9 @@ playwright-report/
 test-results/
 .nyc_output/
 
+# Playwright generated state (cookie-consent fixture)
+apps/web/e2e/.auth/
+
 # Editor / OS
 .vscode/*
 !.vscode/extensions.json
@@ -46,3 +52,6 @@ Thumbs.db
 .turbo
 .temp/
 .tmp-fonts/
+
+# Vercel CLI project link
+.vercel/

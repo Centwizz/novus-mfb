@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import { Logo } from '@/components/brand/logo';
+import { CookieSettingsButton } from '@/components/layout/cookie-settings-button';
 import { footerNav } from '@/lib/navigation';
 import { siteConfig } from '@/lib/site-config';
 
@@ -121,12 +122,15 @@ export function Footer() {
         <div className="flex flex-wrap items-center justify-between gap-[2.67vw] px-[5.73vw] py-[2.5vw] lg:px-0 lg:py-[20px] lg:pl-[110px]">
           <Logo height={40} withWordmark={false} className="lg:w-20" />
 
-          <p className="text-center text-[3.59vw] leading-[3.59vw] text-ink-brand lg:text-[14px] lg:leading-[20px]">
-            © {year} {siteConfig.legalName}.
-            {siteConfig.regulatory.rcNumber ? (
-              <span className="text-ink-muted"> RC {siteConfig.regulatory.rcNumber}.</span>
-            ) : null}
-          </p>
+          <div className="flex flex-col items-center gap-1 lg:flex-row lg:gap-3">
+            <p className="text-center text-[3.59vw] leading-[3.59vw] text-ink-brand lg:text-[14px] lg:leading-[20px]">
+              © {year} {siteConfig.legalName}.
+              {siteConfig.regulatory.rcNumber ? (
+                <span className="text-ink-muted"> RC {siteConfig.regulatory.rcNumber}.</span>
+              ) : null}
+            </p>
+            <CookieSettingsButton />
+          </div>
 
           <ul className="flex items-center gap-[1.54vw] pr-[5.47vw] lg:gap-[6px] lg:pr-[105px]">
             {socialLinks.map(({ key, href, label, Icon }) => {

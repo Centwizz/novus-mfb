@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ChatLauncher } from '@/components/chat/chat-launcher';
+import { CookieConsent } from '@/components/layout/cookie-consent';
 import { siteConfig } from '@/lib/site-config';
 import './globals.css';
 
@@ -26,6 +27,22 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
     url: siteConfig.url,
+    images: [
+      {
+        url: '/brand/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} — ${siteConfig.tagline}`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    description: siteConfig.description,
+    images: ['/brand/og-image.png'],
+    // No `site`/`creator` handle: none has been supplied, and inventing one
+    // would attribute the account to a social profile that may not exist.
   },
   robots: { index: true, follow: true },
 };
@@ -54,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <Footer />
+        <CookieConsent />
         <ChatLauncher />
       </body>
     </html>

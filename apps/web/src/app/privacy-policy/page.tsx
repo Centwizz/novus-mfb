@@ -33,6 +33,17 @@ export default function PrivacyPolicyPage() {
           ],
         },
         {
+          // TODO(owner): legal review of the final cookie and storage wording.
+          // Written to describe only what this build actually does: no cookies,
+          // no analytics, one local-storage acknowledgement.
+          heading: 'Cookies and local storage',
+          body: [
+            'This website does not currently set any cookies. The cookie notice records only that you acknowledged it; that acknowledgement is stored in your browser\u2019s local storage and is never sent to us.',
+            'When account features become available, a strictly necessary session cookie will be used to keep you signed in. It will not be used for advertising.',
+            'If optional cookies, such as analytics, are introduced in future, we will ask for your consent before setting them and this policy will be updated.',
+          ],
+        },
+        {
           heading: 'Your rights',
           body: [
             'You may have rights to access, correct or delete your personal information. The specific rights available will be set out in the finalised policy.',
