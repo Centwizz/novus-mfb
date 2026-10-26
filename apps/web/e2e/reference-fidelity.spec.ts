@@ -94,6 +94,18 @@ test.describe('Homepage structure matches the reference', () => {
     }
   });
 
+  test('the download-app QR placeholder is desktop-only', async ({ page }) => {
+    const qr = page.getByText('QR code available at launch');
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+    await expect(qr).toBeHidden();
+
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/');
+    await expect(qr).toBeVisible();
+  });
+
   test('no horizontal scrolling at any reference viewport', async ({ page }) => {
     const viewports = [
       { width: 1440, height: 900 },

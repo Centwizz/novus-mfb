@@ -64,10 +64,11 @@ export function CookieConsent() {
 
         {/*
           The Nova launcher is fixed to the bottom-right and sits above this
-          layer. Reserve room on the right at every breakpoint so it can never
-          cover the action (96px > the launcher's 76px reach).
+          layer. On ≥sm it is a pill ~171px wide (icon + label), so the action
+          reserves 192px; on phones it collapses to a 60px icon and 96px is
+          enough. Measured in e2e/cookie-consent.spec.ts so this cannot regress.
         */}
-        <div className="flex shrink-0 pr-24">
+        <div className="flex shrink-0 pr-24 sm:pr-48">
           <Button size="sm" onClick={acknowledge} className="w-full sm:w-auto">
             Understood
           </Button>

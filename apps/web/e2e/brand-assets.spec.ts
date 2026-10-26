@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { siteConfig } from '../src/lib/site-config';
 
 /**
  * Browser icons, the social card, and the crawl metadata must all be real
@@ -56,8 +57,13 @@ test('the sitemap uses the maintained content date, not build time', async ({ re
   // Transient and private routes must stay out of the sitemap.
   expect(body).not.toContain('/verify-email');
   expect(body).not.toContain('/dashboard');
-  // The date is pinned by siteConfig.lastContentUpdate.
-  expect(body).toContain('2026-10-25');
+
+  // Every entry carries `siteConfig.lastContentUpdate`, the hand-maintained
+  // date, rather than whatever time the build happened to run.
+  const expected = new Date(siteConfig.lastContentUpdate).toISOString();
+  const lastmods = [...body.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1] ?? '');
+  expect(lastmods.length).toBeGreaterThan(0);
+  for (const value of lastmods) expect(value).toBe(expected);
 });
 
 test('robots.txt keeps private flows out of the index', async ({ request }) => {

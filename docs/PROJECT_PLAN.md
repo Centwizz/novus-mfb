@@ -185,5 +185,30 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
   `/api/v1/chatbot/message` for greeting, balance, transfer, card loss, unauthorised
   transaction and human escalation. **Not verified: PostgreSQL persistence (deferred);
   screenshots were captured but not visually compared against the reference.**
+- Phase 2e (browser icons, social card, cookie notice, crawl metadata): **complete.**
+  `scripts/generate-brand-assets.mjs` (run with `npm run assets:brand`) derives
+  `src/app/favicon.ico` (16 + 32), `src/app/icon.png` (512), `src/app/apple-icon.png` (180) and
+  `public/brand/og-image.png` (1200×630) from the supplied logo. The logo is opaque white, so
+  the icons keep a white ground; no transparent mark was fabricated. Open Graph and X/Twitter
+  card metadata now reference the card, without inventing a social handle.
+  A non-modal cookie notice explains that **no cookies or analytics are set** and stores only
+  the acknowledgement in local storage; the footer's "Cookie settings" reopens it. The privacy
+  policy gained a matching "Cookies and local storage" section. The sitemap now uses a
+  hand-maintained content date (`siteConfig.lastContentUpdate`) with per-route priorities, and
+  robots excludes the private flows.
+  Verified: web `tsc --noEmit` PASS; lint 0/0; web unit 24/24 (10 new consent tests); web build
+  PASS (25 pages + icons + sitemap + robots); Playwright **112/112** PASS on Chromium desktop
+  and Pixel 5 against a production build, including first-visit consent, dismissal persistence,
+  footer re-open, measured non-overlap with the Nova launcher, and 200 responses for every
+  generated icon/card. **Incident fixed:** writing the icons to a top-level `apps/web/app`
+  directory made Next prefer it over `src/app` and silently drop all 25 pages from the build;
+  the generator now writes to `src/app` and deletes any stray root `app/`.
+- Phase 2f (responsive polish): **complete.** The Download App QR placeholder is desktop-only
+  (`hidden … lg:flex`): a phone user is already on the device that would scan it, so the slot is
+  removed below 1024px and the phone artwork fills the band instead. Verified by measurement
+  (mobile `display: none`, 0×0; desktop 173×179) and by a new E2E test that checks hidden at
+  390px and visible at 1440px. The `h1`-per-page test was also hardened to `toHaveCount(1)`,
+  since a bare `count()` observed a transient hydration re-render and spuriously reported
+  `/contact` had no h1. Full suite: **112/112** PASS on both projects.
 - Phase 3: schema, modules and conventions in place; migration/seed application blocked on
   PostgreSQL (deferred by owner)

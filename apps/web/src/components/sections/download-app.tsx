@@ -38,7 +38,10 @@ export function DownloadAppSection() {
 
           {/* Text + QR */}
           <div className="mt-8 flex w-full flex-col items-start lg:ml-[3.91vw] lg:mt-0 lg:w-[31vw]">
-            <div className="mb-[1.39vw] flex h-[32vw] w-[32vw] justify-center lg:ml-[6px] lg:h-[12.4vw] lg:w-[12vw]">
+            {/* QR code: desktop only. On a phone the visitor is already on the
+                device that would scan it, so showing it wastes the whole first
+                screen of the band. */}
+            <div className="mb-[1.39vw] hidden h-[12.4vw] w-[12vw] justify-center lg:ml-[6px] lg:flex">
               <QrPlaceholder />
             </div>
 

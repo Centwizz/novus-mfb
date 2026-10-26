@@ -147,7 +147,7 @@ component, so real imagery can be dropped in without any layout change.
 | --- | --- |
 | `Hero` + `HeroBannerArt` | Full-bleed banner (1920/800) with overlaid, bottom-pinned text and store badges |
 | `ServicesSection` + `ServiceArt` | Three alternating full-width panels with 622/455 imagery |
-| `DownloadAppSection` + `DownloadAppArt` | Neutral band, phone art (49.56/27.56) and QR slot |
+| `DownloadAppSection` | Neutral band, replaceable phone image (49.56/27.56) and a QR placeholder that is hidden below `lg` |
 | `TestimonialsSection` | Customer quote cards (placeholders until verified quotes are supplied) |
 | `SecuritySection` + `SecurityTileArt` | Solid brand band with two 1004/425 tiles and three text blocks |
 | `SatisfactionSection` + `SatisfactionVideoArt` | Text, hotline block and two media tiles |
@@ -218,13 +218,15 @@ Rules baked into the generator:
 | Unit | `tests/consent.test.ts` | Consent parsing fails closed; version and timestamp validation |
 | E2E | `e2e/public-site.spec.ts` | Hero, nav resolution, Nova launcher, mobile overflow |
 | E2E | `e2e/design-system.spec.ts` | All routes render, one h1, image alt text, CTA targets, no unverified claims |
-| E2E | `e2e/reference-fidelity.spec.ts` | Homepage section order, 80px fixed header, full-bleed hero with white overlaid heading, three full-width service rows, five-column footer, no horizontal scroll at five reference viewports, placeholder honesty |
+| E2E | `e2e/reference-fidelity.spec.ts` | Homepage section order, 80px fixed header, full-bleed hero with white overlaid heading, three full-width service rows, five-column footer, QR hidden below `lg` and visible on desktop, no horizontal scroll at five reference viewports, placeholder honesty |
 | E2E | `e2e/cookie-consent.spec.ts` | First-visit notice, dismissal persistence, footer re-open, no overlap with the chat launcher, no horizontal overflow |
 | E2E | `e2e/brand-assets.spec.ts` | Icons, social card, sitemap and robots are real 200 responses; OG/Twitter metadata present |
 
-> Executed on 2026-10-25 against a production build: **78/78 PASS** on Chromium desktop and
-> Pixel 5. The consent and brand-asset specs were added afterwards and run in the same suite.
-> Run `npx playwright install chromium` once per machine before the first E2E run.
+> Executed on 2026-10-26 against a production build (`E2E_BASE_URL=http://localhost:3000`):
+> **112/112 PASS** on Chromium desktop and Pixel 5 — the original 78 plus the consent,
+> brand-asset and responsive-QR specs. Run `npx playwright install chromium` once per machine before the first
+> E2E run. Against `next dev`, cold route compilation can exceed the 30s navigation timeout on
+> slow machines; use a production build for the authoritative run.
 
 Commands (from the repository root):
 

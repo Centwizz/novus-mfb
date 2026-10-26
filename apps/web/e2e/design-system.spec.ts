@@ -51,8 +51,13 @@ test.describe('Shared layout', () => {
   test('there is exactly one h1 per page', async ({ page }) => {
     for (const path of PUBLIC_ROUTES) {
       await page.goto(path);
-      const h1s = page.getByRole('heading', { level: 1 });
-      expect(await h1s.count(), `${path} should have exactly one h1`).toBe(1);
+      // `toHaveCount` retries; a bare `count()` can observe the instant during
+      // hydration when React has cleared the subtree it is about to re-render,
+      // which produced a spurious "0 h1" failure on /contact under load.
+      await expect(
+        page.getByRole('heading', { level: 1 }),
+        `${path} should have exactly one h1`,
+      ).toHaveCount(1);
     }
   });
 
