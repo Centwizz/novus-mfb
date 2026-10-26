@@ -35,7 +35,7 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      {/* Banner image: apps/web/public/images/banners/about-hero.webp */}
+      {/* Banner image: apps/web/public/images/banners/about-hero.jpg */}
       <PageBanner
         slot={bannerImages.about}
         eyebrow="About us"
@@ -59,7 +59,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* Image: apps/web/public/images/about/about-intro.webp */}
+          {/* Image: apps/web/public/images/about/about-intro.jpg */}
           <div className="overflow-hidden rounded-2xl border border-border">
             <SmartImage
               slot={aboutImages.intro}
@@ -82,7 +82,7 @@ export default function AboutPage() {
       </Section>
 
       {/* Board of Directors.
-          Portraits: apps/web/public/images/about/board-*.webp
+          Portraits: apps/web/public/images/about/board-*.jpg
           Names/roles/bios: edit `boardMembers` in src/lib/images.ts */}
       <PeopleCarousel
         id="board"
@@ -95,10 +95,10 @@ export default function AboutPage() {
       />
 
       {/* Management team.
-          Portraits: apps/web/public/images/team/*.webp
+          Portraits: apps/web/public/images/team/*.jpg
           Names/roles/bios: edit `teamMembers` in src/lib/images.ts */}
       <div className="w-full">
-        {/* Group photo: apps/web/public/images/about/team-group.webp */}
+        {/* Group photo: apps/web/public/images/about/team-group.jpg */}
         <div className="w-full overflow-hidden border-y border-border">
           <SmartImage
             slot={aboutImages.teamGroup}

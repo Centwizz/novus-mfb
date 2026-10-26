@@ -56,7 +56,7 @@ export default function LoansPage() {
         </div>
 
         <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
-          {/* Image: apps/web/public/images/services/loans.webp */}
+          {/* Image: apps/web/public/images/services/loans.jpg */}
           <div className="overflow-hidden rounded-2xl border border-border">
             <SmartImage
               slot={serviceImages.loans}

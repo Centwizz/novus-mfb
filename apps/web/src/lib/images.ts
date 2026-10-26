@@ -57,7 +57,7 @@ export const homeImages = {
   }),
   /** "Our Services" row 1 imagery. Slot ratio 622/455. */
   serviceTransfers: slot({
-    src: '/images/home/services.webp',
+    src: '/images/home/services.jpg',
     alt: 'Illustration representing transfers and bill payments',
     width: 1244,
     height: 910,
@@ -67,7 +67,7 @@ export const homeImages = {
   }),
   /** "Our Services" row 2 imagery. Slot ratio 622/455. */
   serviceCard: slot({
-    src: '/images/home/debit-card.webp',
+    src: '/images/home/debit-card.jpg',
     alt: 'Illustration representing the Novus debit card',
     width: 1244,
     height: 910,
@@ -77,7 +77,7 @@ export const homeImages = {
   }),
   /** "Our Services" row 3 imagery. Slot ratio 622/455. */
   serviceSavings: slot({
-    src: '/images/home/savings.webp',
+    src: '/images/home/savings.jpg',
     alt: 'Illustration representing savings growth',
     width: 1244,
     height: 910,
@@ -87,7 +87,7 @@ export const homeImages = {
   }),
   /** Download-app band artwork. Slot ratio 49.56/27.56 (~713x397 rendered). */
   downloadApp: slot({
-    src: '/images/home/mobile-banking.webp',
+    src: '/images/home/mobile-banking.jpg',
     alt: 'Illustration of the Novus MFB mobile app',
     width: 1426,
     height: 794,
@@ -97,7 +97,7 @@ export const homeImages = {
   }),
   /** Security band tile 1. Slot ratio 1004/425. */
   securityShield: slot({
-    src: '/images/home/security-fraud.webp',
+    src: '/images/home/security-fraud.jpg',
     alt: 'Illustration representing fraud protection',
     width: 1400,
     height: 592,
@@ -107,7 +107,7 @@ export const homeImages = {
   }),
   /** Security band tile 2. Slot ratio 1004/425. */
   securityLock: slot({
-    src: '/images/home/security-lock.webp',
+    src: '/images/home/security-lock.jpg',
     alt: 'Illustration representing instant account locking',
     width: 1400,
     height: 592,
@@ -117,7 +117,7 @@ export const homeImages = {
   }),
   /** Customer-satisfaction media tile 1. Slot ratio 4/3. */
   satisfactionService: slot({
-    src: '/images/home/customer-service.webp',
+    src: '/images/home/customer-service.jpg',
     alt: 'Illustration representing customer service',
     width: 800,
     height: 600,
@@ -127,7 +127,7 @@ export const homeImages = {
   }),
   /** Customer-satisfaction media tile 2. Slot ratio 4/3. */
   satisfactionCustomers: slot({
-    src: '/images/home/customer-stories.webp',
+    src: '/images/home/customer-stories.jpg',
     alt: 'Illustration representing customer stories',
     width: 800,
     height: 600,
@@ -143,7 +143,7 @@ export const homeImages = {
 
 export const bannerImages = {
   about: slot({
-    src: '/images/banners/about-hero.webp',
+    src: '/images/banners/about-hero.jpg',
     alt: '',
     width: 1920,
     height: 480,
@@ -152,7 +152,7 @@ export const bannerImages = {
     label: 'ABOUT US BANNER',
   }),
   personal: slot({
-    src: '/images/banners/personal-banking.webp',
+    src: '/images/banners/personal-banking.jpg',
     alt: '',
     width: 1920,
     height: 480,
@@ -161,7 +161,7 @@ export const bannerImages = {
     label: 'PERSONAL BANKING BANNER',
   }),
   savings: slot({
-    src: '/images/banners/services-banner.webp',
+    src: '/images/banners/services-banner.jpg',
     alt: '',
     width: 1920,
     height: 480,
@@ -170,7 +170,7 @@ export const bannerImages = {
     label: 'SAVINGS BANNER',
   }),
   loans: slot({
-    src: '/images/banners/loans-banner.webp',
+    src: '/images/banners/loans-banner.jpg',
     alt: '',
     width: 1920,
     height: 480,
@@ -179,7 +179,7 @@ export const bannerImages = {
     label: 'LOANS BANNER',
   }),
   business: slot({
-    src: '/images/banners/business-banking.webp',
+    src: '/images/banners/business-banking.jpg',
     alt: '',
     width: 1920,
     height: 480,
@@ -188,7 +188,7 @@ export const bannerImages = {
     label: 'BUSINESS BANKING BANNER',
   }),
   contact: slot({
-    src: '/images/banners/contact-banner.webp',
+    src: '/images/banners/contact-banner.jpg',
     alt: '',
     width: 1920,
     height: 480,
@@ -197,7 +197,7 @@ export const bannerImages = {
     label: 'CONTACT BANNER',
   }),
   security: slot({
-    src: '/images/banners/security-banner.webp',
+    src: '/images/banners/security-banner.jpg',
     alt: '',
     width: 1920,
     height: 480,
@@ -206,7 +206,7 @@ export const bannerImages = {
     label: 'SECURITY BANNER',
   }),
   careers: slot({
-    src: '/images/banners/careers-banner.webp',
+    src: '/images/banners/careers-banner.jpg',
     alt: '',
     width: 1920,
     height: 480,
@@ -215,7 +215,7 @@ export const bannerImages = {
     label: 'CAREERS BANNER',
   }),
   newsroom: slot({
-    src: '/images/banners/newsroom-banner.webp',
+    src: '/images/banners/newsroom-banner.jpg',
     alt: '',
     width: 1920,
     height: 480,
@@ -231,7 +231,7 @@ export const bannerImages = {
 
 export const aboutImages = {
   intro: slot({
-    src: '/images/about/about-intro.webp',
+    src: '/images/about/about-intro.jpg',
     alt: 'Novus MFB team at work',
     width: 1200,
     height: 900,
@@ -240,7 +240,7 @@ export const aboutImages = {
     label: 'ABOUT — INTRO PHOTO',
   }),
   teamGroup: slot({
-    src: '/images/about/team-group.webp',
+    src: '/images/about/team-group.jpg',
     alt: 'The Novus MFB team',
     width: 1600,
     height: 900,
@@ -285,25 +285,25 @@ export interface PersonSlot {
  */
 export const boardMembers: PersonSlot[] = [
   {
-    src: '/images/about/board-chairman.webp',
+    src: '/images/about/board-chairman.jpg',
     name: 'Board Chairman',
     role: 'Chairman, Board of Directors',
     label: 'BOARD CHAIRMAN',
   },
   {
-    src: '/images/about/board-member-02.webp',
+    src: '/images/about/board-member-02.jpg',
     name: 'Non-Executive Director',
     role: 'Board Member',
     label: 'BOARD MEMBER 02',
   },
   {
-    src: '/images/about/board-member-03.webp',
+    src: '/images/about/board-member-03.jpg',
     name: 'Independent Director',
     role: 'Board Member',
     label: 'BOARD MEMBER 03',
   },
   {
-    src: '/images/about/board-member-04.webp',
+    src: '/images/about/board-member-04.jpg',
     name: 'Executive Director',
     role: 'Board Member',
     label: 'BOARD MEMBER 04',
@@ -313,25 +313,25 @@ export const boardMembers: PersonSlot[] = [
 /** Management / staff team. ALL placeholder entries — not real employees. */
 export const teamMembers: PersonSlot[] = [
   {
-    src: '/images/team/managing-director.webp',
+    src: '/images/team/managing-director.jpg',
     name: 'Managing Director',
     role: 'Managing Director / CEO',
     label: 'MANAGING DIRECTOR',
   },
   {
-    src: '/images/team/operations-manager.webp',
+    src: '/images/team/operations-manager.jpg',
     name: 'Head of Operations',
     role: 'Operations Manager',
     label: 'OPERATIONS MANAGER',
   },
   {
-    src: '/images/team/customer-service-manager.webp',
+    src: '/images/team/customer-service-manager.jpg',
     name: 'Customer Service Manager',
     role: 'Customer Service',
     label: 'CUSTOMER SERVICE MANAGER',
   },
   {
-    src: '/images/team/it-manager.webp',
+    src: '/images/team/it-manager.jpg',
     name: 'Head of Technology',
     role: 'IT / Technology Manager',
     label: 'IT MANAGER',
@@ -344,7 +344,7 @@ export const teamMembers: PersonSlot[] = [
 
 export const serviceImages = {
   personal: slot({
-    src: '/images/services/personal-banking.webp',
+    src: '/images/services/personal-banking.jpg',
     alt: 'Everyday personal banking',
     width: 1244,
     height: 910,
@@ -353,7 +353,7 @@ export const serviceImages = {
     label: 'PERSONAL BANKING IMAGE',
   }),
   savings: slot({
-    src: '/images/services/savings.webp',
+    src: '/images/services/savings.jpg',
     alt: 'Savings and goals',
     width: 1244,
     height: 910,
@@ -362,7 +362,7 @@ export const serviceImages = {
     label: 'SAVINGS IMAGE',
   }),
   loans: slot({
-    src: '/images/services/loans.webp',
+    src: '/images/services/loans.jpg',
     alt: 'Loans and credit',
     width: 1244,
     height: 910,
@@ -371,7 +371,7 @@ export const serviceImages = {
     label: 'LOANS IMAGE',
   }),
   business: slot({
-    src: '/images/services/business-banking.webp',
+    src: '/images/services/business-banking.jpg',
     alt: 'Business banking',
     width: 1244,
     height: 910,

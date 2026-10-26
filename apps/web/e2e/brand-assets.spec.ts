@@ -75,3 +75,13 @@ test('robots.txt keeps private flows out of the index', async ({ request }) => {
   }
   expect(body).toContain('Sitemap:');
 });
+
+test('placeholder images are JPEG and hero photographs are WebP', async ({ request }) => {
+  const placeholder = await request.get('/images/about/about-intro.jpg');
+  expect(placeholder.status(), 'placeholder image status').toBe(200);
+  expect(placeholder.headers()['content-type'] ?? '').toMatch(/image\/jpeg/);
+
+  const hero = await request.get('/images/banners/home-hero-mobile.webp');
+  expect(hero.status(), 'hero image status').toBe(200);
+  expect(hero.headers()['content-type'] ?? '').toMatch(/image\/webp/);
+});

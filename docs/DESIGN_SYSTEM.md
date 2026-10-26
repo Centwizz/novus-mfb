@@ -185,8 +185,9 @@ Rules baked into the generator:
   customer-count claims are drawn, because none are verified.
 - The outputs live in **`src/app`**, never a top-level `apps/web/app`. A root `app/` directory
   shadows `src/app` in Next.js and silently removes every page from the build.
-- This script is separate from `scripts/generate-placeholder-images.mjs`, which must not be
-  re-run once real photography replaces the placeholders.
+- This script is separate from `scripts/generate-placeholder-images.mjs`. The placeholder
+  generator writes JPG files and deliberately skips the two real home hero photographs, so it
+  cannot overwrite them.
 
 ## 8. Accessibility commitments
 

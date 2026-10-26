@@ -56,7 +56,7 @@ export default function SavingsPage() {
         </div>
 
         <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center">
-          {/* Image: apps/web/public/images/services/savings.webp */}
+          {/* Image: apps/web/public/images/services/savings.jpg */}
           <div className="overflow-hidden rounded-2xl border border-border">
             <SmartImage
               slot={serviceImages.savings}

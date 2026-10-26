@@ -20,9 +20,10 @@ The site needs to show banners, section artwork and staff portraits, but:
 ## 2. Architecture at a glance
 
 ```text
-apps/web/public/images/<folder>/<name>.webp      ← the actual files (public URLs)
+apps/web/public/images/<folder>/<name>.<ext>    ← the actual files (public URLs)
         ▲
-        │ referenced by public path only ("/images/home/services.webp")
+        │ referenced by public path only ("/images/home/services.jpg")
+        │ placeholders are .jpg; the two home hero photos are .webp
         │
 apps/web/src/lib/images.ts                        ← MANIFEST: path + dimensions + ratio + alt
         ▲
@@ -44,12 +45,12 @@ Three files, three responsibilities:
 | `src/components/ui/smart-image.tsx` | Applies `object-fit: cover`, the ratio and responsive `sizes`. |
 
 **Key property:** the filename is the contract. Replacing
-`public/images/about/board-chairman.webp` with a new file of the same name changes the website
+`public/images/about/board-chairman.jpg` with a new file of the same name changes the website
 with **zero code edits**.
 
 ## 3. Why a manifest instead of hard-coded paths
 
-Hard-coding `src="/images/home/services.webp"` in a component works but rots: dimensions drift,
+Hard-coding `src="/images/home/services.jpg"` in a component works but rots: dimensions drift,
 alt text gets forgotten, and nobody knows the recommended size.
 
 The manifest centralises:
@@ -79,8 +80,9 @@ The manifest centralises:
 
 ### Format and weight
 
-- Preferred format: **WebP**. `next.config.mjs` also lists AVIF, and `next/image` negotiates the
-  best format the browser supports.
+- The 31 placeholders are **JPG**; the two real home hero photographs are **WebP**.
+  `next.config.mjs` also lists AVIF, and `next/image` negotiates the best format the browser
+  supports, so visitors still receive WebP/AVIF where available.
 - Per-slot size budgets are documented in `public/images/README.md` (roughly 120–350 KB).
 - No extra image-processing dependency was added; optimisation is handled by `next/image`
   and the placeholder generator uses `sharp`, which already ships with Next.js.
@@ -88,13 +90,14 @@ The manifest centralises:
 ## 5. Naming conventions
 
 ```text
-<area>/<purpose>.webp
+<area>/<purpose>.jpg     ← placeholders
+<area>/<purpose>.webp    ← the two home hero photographs
 ```
 
 - **Lowercase, hyphen-separated.** `board-member-02`, not `BoardMember2`.
 - **Describe the slot, not the picture.** `home-hero`, not `sunset-photo`.
 - **Number repeated slots predictably.** `board-member-02`, `-03`, `-04`.
-- **Role-based names for people.** `managing-director.webp` — so replacing the person does not
+- **Role-based names for people.** `managing-director.jpg` — so replacing the person does not
   require renaming the file.
 
 ## 6. Banner behaviour
@@ -148,7 +151,7 @@ Data lives in `src/lib/images.ts`: `boardMembers` and `teamMembers`.
 
    ```ts
    {
-     src: '/images/team/head-of-credit.webp',
+     src: '/images/team/head-of-credit.jpg',
      name: 'Full Name',
      role: 'Head of Credit',
      bio: 'Optional, only if supplied and approved.',
@@ -176,10 +179,12 @@ To remove someone, delete their entry.
 node scripts/generate-placeholder-images.mjs
 ```
 
-Writes all 33 placeholder files at their exact slot dimensions and reports each file size.
+Writes the 31 JPG placeholder files at their exact slot dimensions and reports each file size.
+The two home hero photographs (`banners/home-hero.webp`, `banners/home-hero-mobile.webp`) are
+deliberately excluded, so a routine regeneration cannot destroy owner-supplied photography.
 
-> ⚠️ Destructive: overwrites every file in `public/images/`. Do not run after supplying real
-> photographs.
+> ⚠️ Destructive to placeholders: overwrites the 31 placeholder files. Do not run after supplying
+> real photography for any other slot unless you have a backup.
 
 ## 11. Verification performed
 
@@ -189,5 +194,5 @@ Writes all 33 placeholder files at their exact slot dimensions and reports each 
 | `npm run lint --workspace=apps/web` | PASS (0/0) |
 | `npm run build --workspace=apps/web` | PASS |
 | `npm run test --workspace=apps/web` | PASS |
-| Placeholder files exist at declared dimensions | PASS (33 files verified via `sharp` metadata) |
+| Placeholder files exist at declared dimensions | PASS (31 JPG placeholders + 2 WebP hero photos verified via `sharp` metadata) |
 | All image paths are public `/images/...` URLs | PASS |

@@ -147,7 +147,9 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
   All public imagery now comes from one central directory, `apps/web/public/images/`, declared
   in a single manifest (`apps/web/src/lib/images.ts`). Replacing a picture is a file swap with
   the same filename — no code change. 33 branded placeholders were generated at their exact
-  slot dimensions by `scripts/generate-placeholder-images.mjs`. Every public page banner uses
+  slot dimensions by `scripts/generate-placeholder-images.mjs` (the two home heroes have since
+  been replaced with real photographs, and the remaining 31 placeholders are now JPG — Phase 2g).
+  Every public page banner uses
   `PageBanner` (image + brand scrim, `object-fit: cover`); the home hero has separate desktop
   (1920×800) and mobile (390×844) assets with CSS fallback. The About page gained
   "Meet Our Board of Directors" (carousel) and "Meet Our Team", both rendered by the same
@@ -210,5 +212,15 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
   390px and visible at 1440px. The `h1`-per-page test was also hardened to `toHaveCount(1)`,
   since a bare `count()` observed a transient hydration re-render and spuriously reported
   `/contact` had no h1. Full suite: **112/112** PASS on both projects.
+- Phase 2g (placeholder format + real mobile hero): **complete.** The mobile home hero is now a
+  real photograph (780×1688, supplied by the owner) alongside the existing desktop hero. The 31
+  remaining placeholder graphics are now **JPG** (generated from the same SVGs at quality 92,
+  4:4:4); the old WebP placeholder files were removed and the manifest, component comments,
+  generator and owner guide were updated. The generator now emits JPG and deliberately excludes
+  the two hero photographs, so regeneration cannot overwrite them. New regression coverage: a unit
+  test asserts the 31 JPG / 2 WebP split and checks file signatures; an E2E test asserts the served
+  `image/jpeg` / `image/webp` content types. Verified: web `tsc --noEmit` PASS; lint 0/0; web unit
+  **29/29**; production build PASS; Playwright **114/114** PASS on Chromium desktop and Pixel 5
+  against the production build.
 - Phase 3: schema, modules and conventions in place; migration/seed application blocked on
   PostgreSQL (deferred by owner)

@@ -151,7 +151,7 @@ function ServiceRow({ service }: { service: Service }) {
         </div>
 
         {/* Image column — exact reference aspect ratio and dimensions.
-            Source file: apps/web/public/images/home/{services,debit-card,savings}.webp */}
+            Source file: apps/web/public/images/home/{services,debit-card,savings}.jpg */}
         <div className="w-full shrink-0 overflow-hidden rounded-[2vw] lg:my-[4.43vw] lg:ml-[56px] lg:w-[43.8vw] lg:rounded-[1vw]">
           <div className="aspect-[622/455] w-full">
             <SmartImage

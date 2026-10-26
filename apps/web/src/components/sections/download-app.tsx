@@ -25,7 +25,7 @@ export function DownloadAppSection() {
       <div className="w-full px-[5.65vw] py-[4.04vw]">
         <div className="flex flex-col items-center lg:flex-row lg:items-center lg:justify-start">
           {/* Phone / app artwork. Source file:
-              apps/web/public/images/home/mobile-banking.webp */}
+              apps/web/public/images/home/mobile-banking.jpg */}
           <div className="relative h-auto w-full shrink-0 overflow-hidden rounded-lg lg:aspect-[49.56/27.56] lg:h-auto lg:w-[49.56vw]">
             <div className="aspect-[49.56/27.56] w-full">
               <SmartImage
