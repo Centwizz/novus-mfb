@@ -1,19 +1,31 @@
 import Link from 'next/link';
 import { forwardRef } from 'react';
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
-type Variant = 'primary' | 'secondary' | 'ghost' | 'outline';
+type Variant = 'primary' | 'secondary' | 'ghost' | 'outline' | 'inverse' | 'inverseOutline';
 type Size = 'sm' | 'md' | 'lg';
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-700 focus-visible:ring-offset-2';
+  'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900 shadow-sm',
-  secondary: 'bg-accent text-white hover:bg-accent-600 active:bg-accent-700 shadow-sm',
-  outline: 'border border-border bg-white text-ink hover:border-brand-700 hover:text-brand-700',
-  ghost: 'bg-transparent text-ink hover:bg-surface-subtle',
+  primary:
+    'bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900 shadow-sm focus-visible:ring-brand-700',
+  secondary:
+    'bg-accent text-white hover:bg-accent-600 active:bg-accent-700 shadow-sm focus-visible:ring-brand-700',
+  outline:
+    'border border-border bg-white text-ink hover:border-brand-700 hover:text-brand-700 focus-visible:ring-brand-700',
+  ghost:
+    'bg-transparent text-ink hover:bg-surface-subtle focus-visible:ring-brand-700',
+  // For use on deep brand surfaces (for example the CTA band). These are
+  // separate variants rather than className overrides because `cn` does not
+  // merge conflicting Tailwind utilities: two `bg-*` or `text-*` classes would
+  // both ship, and the winner would depend on stylesheet order.
+  inverse:
+    'bg-white text-brand-700 hover:bg-brand-50 active:bg-brand-100 shadow-sm focus-visible:ring-white focus-visible:ring-offset-brand-900',
+  inverseOutline:
+    'border border-white/60 bg-transparent text-white hover:border-white hover:bg-white/10 active:bg-white/15 focus-visible:ring-white focus-visible:ring-offset-brand-900',
 };
 
 const sizes: Record<Size, string> = {
@@ -63,6 +75,7 @@ export interface ButtonLinkProps {
   className?: string;
   children: ReactNode;
   external?: boolean;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
   'aria-label'?: string;
 }
 
@@ -74,6 +87,7 @@ export function ButtonLink({
   className,
   children,
   external,
+  onClick,
   'aria-label': ariaLabel,
 }: ButtonLinkProps) {
   const rest = ariaLabel ? { 'aria-label': ariaLabel } : {};
@@ -82,14 +96,21 @@ export function ButtonLink({
 
   if (isExternal) {
     return (
-      <a href={href} className={classes} target="_blank" rel="noopener noreferrer" {...rest}>
+      <a
+        href={href}
+        className={classes}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onClick}
+        {...rest}
+      >
         {children}
       </a>
     );
   }
 
   return (
-    <Link href={href} className={classes} {...rest}>
+    <Link href={href} className={classes} onClick={onClick} {...rest}>
       {children}
     </Link>
   );

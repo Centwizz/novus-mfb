@@ -120,13 +120,21 @@ All live under `apps/web/src/components`.
 
 | Component | Purpose |
 | --- | --- |
-| `Button` / `ButtonLink` | Primary, outline and ghost variants; `sm`/`md`/`lg` sizes |
+| `Button` / `ButtonLink` | Primary, secondary, outline, inverse and ghost variants; `sm`/`md`/`lg` sizes |
 | `Card` / `FeatureCard` | Rounded, elevated containers |
 | `Field` / `Input` / `Textarea` | Labelled form controls with error and a11y wiring |
 | `Section` / `SectionHeading` | Consistent vertical rhythm and heading blocks |
 | `PageHeader` | Inner-page title band |
 | `LegalPage` | Long-form legal document layout |
 | `Accordion` | Keyboard-accessible FAQ disclosure (one open at a time) |
+
+**Button variants and dark surfaces.** `inverse` (white fill, brand-700 text) and
+`inverseOutline` (transparent, white border/text) are the supported choices on the
+deep brand-700 bands, such as `CtaSection`. Do not re-colour a standard variant
+with `className`: `cn` joins classes rather than merging them, so competing
+`bg-*`/`text-*` utilities would both ship and the winner would depend on
+stylesheet order. The inverse variants also switch the focus ring to white with
+a brand-900 offset so keyboard focus stays visible against the dark surface.
 
 ### Layout (`layout/`)
 

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Locator } from '@playwright/test';
 
 /**
  * Phase 2 — design system & public site coverage.
@@ -7,6 +7,64 @@ import { test, expect } from '@playwright/test';
  * shared layout (header, footer) is present everywhere, that CTAs climb to the
  * right destination, and that key accessibility expectations hold.
  */
+
+/**
+ * Effective text contrast, compositing translucent backgrounds up the tree.
+ * Used to catch the previous white-on-white CTA hover state.
+ */
+async function contrastRatio(locator: Locator): Promise<number> {
+  return locator.evaluate((element) => {
+    type Rgba = { r: number; g: number; b: number; a: number };
+
+    const parse = (value: string): Rgba => {
+      const [r = 0, g = 0, b = 0, a = 1] = (value.match(/[\d.]+/g) ?? []).map(Number);
+      return { r, g, b, a };
+    };
+
+    const composite = (top: Rgba, bottom: Rgba): Rgba => {
+      const alpha = top.a + bottom.a * (1 - top.a);
+      if (alpha === 0) return { r: 0, g: 0, b: 0, a: 0 };
+      return {
+        r: Math.round((top.r * top.a + bottom.r * bottom.a * (1 - top.a)) / alpha),
+        g: Math.round((top.g * top.a + bottom.g * bottom.a * (1 - top.a)) / alpha),
+        b: Math.round((top.b * top.a + bottom.b * bottom.a * (1 - top.a)) / alpha),
+        a: alpha,
+      };
+    };
+
+    const layers: Rgba[] = [];
+    let node: Element | null = element;
+    while (node) {
+      const background = parse(getComputedStyle(node).backgroundColor);
+      if (background.a > 0) layers.push(background);
+      if (background.a >= 1) break;
+      node = node.parentElement;
+    }
+
+    let background: Rgba = { r: 255, g: 255, b: 255, a: 1 };
+    for (let index = layers.length - 1; index >= 0; index -= 1) {
+      const layer = layers[index];
+      if (layer) background = composite(layer, background);
+    }
+
+    let foreground = parse(getComputedStyle(element).color);
+    if (foreground.a < 1) foreground = composite(foreground, background);
+
+    const linear = (value: number) => {
+      const channel = value / 255;
+      return channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+    };
+    const luminance = (colour: Rgba) =>
+      0.2126 * linear(colour.r) + 0.7152 * linear(colour.g) + 0.0722 * linear(colour.b);
+
+    const foregroundLuminance = luminance(foreground);
+    const backgroundLuminance = luminance(background);
+    return (
+      (Math.max(foregroundLuminance, backgroundLuminance) + 0.05) /
+      (Math.min(foregroundLuminance, backgroundLuminance) + 0.05)
+    );
+  });
+}
 
 const PUBLIC_ROUTES = [
   '/',
@@ -77,6 +135,58 @@ test.describe('CTAs and links', () => {
     await page.goto('/');
     await page.getByRole('link', { name: /open an account/i }).first().click();
     await expect(page).toHaveURL(/\/register/);
+  });
+
+  test('CTA band buttons stay legible in default and hover states', async ({ page, isMobile }) => {
+    await page.goto('/');
+    const cta = page.locator('section').filter({
+      has: page.getByRole('heading', { name: 'Ready to bank with Novus MFB?' }),
+    });
+    await cta.scrollIntoViewIfNeeded();
+
+    const open = cta.getByRole('link', { name: 'Open an account', exact: true });
+    const contact = cta.getByRole('link', { name: 'Contact us', exact: true });
+
+    // Inverse is a filled white button; inverseOutline is deliberately hollow.
+    await expect(open).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+    await expect(contact).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+
+    for (const link of [open, contact]) {
+      await page.mouse.move(0, 0);
+      await expect.poll(() => contrastRatio(link)).toBeGreaterThanOrEqual(4.5);
+
+      // Hover is not meaningful on touch-first devices; the mobile project still
+      // checks the resting state above.
+      if (!isMobile) {
+        await link.hover();
+        await expect.poll(() => contrastRatio(link)).toBeGreaterThanOrEqual(4.5);
+      }
+    }
+  });
+
+  test('mobile account CTAs close the menu and release the scroll lock', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+
+    for (const { name, path } of [
+      { name: 'Log in', path: '/login' },
+      { name: 'Open an account', path: '/register' },
+    ]) {
+      await page.goto('/');
+      const toggle = page.locator('button[aria-controls="mobile-menu"]');
+      const menu = page.locator('#mobile-menu');
+
+      await toggle.click();
+      await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+      await expect(menu).toHaveAttribute('aria-hidden', 'false');
+      await expect.poll(() => page.evaluate(() => document.body.style.overflow)).toBe('hidden');
+
+      await menu.getByRole('link', { name, exact: true }).click();
+
+      await expect(page).toHaveURL(new RegExp(`${path}$`));
+      await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+      await expect(menu).toHaveAttribute('aria-hidden', 'true');
+      await expect.poll(() => page.evaluate(() => document.body.style.overflow)).toBe('');
+    }
   });
 
   test('footer links resolve without error', async ({ page }) => {

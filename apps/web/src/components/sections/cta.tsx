@@ -16,19 +16,10 @@ export function CtaSection() {
             Open your account today and get support from Nova and our team whenever you need it.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <ButtonLink
-              href="/register"
-              size="lg"
-              className="bg-white text-brand-700 hover:bg-white/90"
-            >
+            <ButtonLink href="/register" variant="inverse" size="lg">
               Open an account
             </ButtonLink>
-            <ButtonLink
-              href="/contact"
-              variant="outline"
-              size="lg"
-              className="border-white/40 bg-transparent text-white hover:border-white hover:text-white"
-            >
+            <ButtonLink href="/contact" variant="inverseOutline" size="lg">
               Contact us
             </ButtonLink>
           </div>

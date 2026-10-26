@@ -169,10 +169,15 @@ export function Header() {
           </ul>
 
           <div className="mt-6 flex flex-col gap-3">
-            <ButtonLink href="/login" variant="outline" fullWidth>
+            <ButtonLink
+              href="/login"
+              variant="outline"
+              fullWidth
+              onClick={() => setMobileOpen(false)}
+            >
               Log in
             </ButtonLink>
-            <ButtonLink href="/register" fullWidth>
+            <ButtonLink href="/register" fullWidth onClick={() => setMobileOpen(false)}>
               Open an account
             </ButtonLink>
           </div>
