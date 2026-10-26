@@ -7,20 +7,24 @@
  *   npm run assets:brand
  *
  * Why this exists:
- *   - The logo is 204x204 with an OPAQUE white background. Browsers and social
- *     platforms need their own sizes, and a favicon request for /favicon.ico
- *     returned 404 before this script existed.
- *   - Icons keep the artwork exactly as supplied. The white background is
- *     intentional: there is no alpha channel in the source, and inventing a
- *     transparent mark would be fabricating brand artwork.
+ *   - The supplied logo is 204x204 with an OPAQUE white background. Browsers
+ *     and social platforms need their own sizes, and a favicon request for
+ *     /favicon.ico returned 404 before this script existed.
+ *   - Browser icons keep a white ground. Apple composites transparency to
+ *     black, and favicons are displayed on unknown browser chrome.
+ *   - The page logo uses transparent derivatives generated from the same
+ *     pixels. The owner explicitly approved removing the white page ground;
+ *     the mark geometry is not redrawn or recoloured.
  *   - The social card uses only the name and tagline. No licence, insurance or
  *     deposit claims are drawn, because those are still unverified.
  *
  * Outputs (all overwritten on every run):
- *   apps/web/src/app/favicon.ico            16 + 32 px
- *   apps/web/src/app/icon.png               512 px
- *   apps/web/src/app/apple-icon.png         180 px
- *   apps/web/public/brand/og-image.png      1200x630
+ *   apps/web/src/app/favicon.ico                         16 + 32 px
+ *   apps/web/src/app/icon.png                            512 px
+ *   apps/web/src/app/apple-icon.png                      180 px
+ *   apps/web/public/brand/og-image.png                   1200x630
+ *   apps/web/public/brand/novus-mfb-logo-transparent.png transparent colour mark
+ *   apps/web/public/brand/novus-mfb-logo-inverse.png     transparent white mark
  *
  * IMPORTANT: these go in `src/app`, not a top-level `app` directory. Next.js
  * prefers a root `app/` over `src/app/` when both exist, and creating an empty
@@ -35,6 +39,8 @@ import sharp from 'sharp';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const webRoot = join(root, 'apps', 'web');
 const sourceLogo = join(webRoot, 'public', 'brand', 'novus-mfb-logo.png');
+const transparentLogo = join(webRoot, 'public', 'brand', 'novus-mfb-logo-transparent.png');
+const inverseLogo = join(webRoot, 'public', 'brand', 'novus-mfb-logo-inverse.png');
 
 const BRAND = '#010065';
 const BRAND_MID = '#1a1bcc';
@@ -51,6 +57,73 @@ async function trimmedMark() {
     .trim({ background: WHITE, threshold: 12 })
     .png()
     .toBuffer();
+}
+
+/**
+ * Derive a transparent page mark from the opaque source.
+ *
+ * Every source pixel is a mark colour composited over white. For these colours
+ * (navy, red, black) at least one channel is zero, so the white matte can be
+ * removed exactly:
+ *
+ *   alpha = 1 - min(r, g, b) / 255
+ *   colour = (pixel - white * (1 - alpha)) / alpha
+ *
+ * The exact navy token is special-cased because its darkest channel is 1, not
+ * 0; the formula would otherwise shave a value off the approved brand colour.
+ *
+ * The result keeps the source's 204x204 canvas and mark position, so the header
+ * and footer lockups do not resize. The inverse variant copies the same alpha
+ * channel and paints every visible pixel white for dark brand surfaces.
+ */
+async function transparentLogoVariants() {
+  const input = await readFile(sourceLogo);
+  const { data, info } = await sharp(input).ensureAlpha().raw().toBuffer({
+    resolveWithObject: true,
+  });
+
+  const transparent = Buffer.alloc(data.length);
+  const inverse = Buffer.alloc(data.length);
+
+  for (let offset = 0; offset < data.length; offset += 4) {
+    const r = data[offset] ?? 0;
+    const g = data[offset + 1] ?? 0;
+    const b = data[offset + 2] ?? 0;
+    const isExactBrandNavy = r === 1 && g === 0 && b === 101;
+
+    let alpha = isExactBrandNavy ? 1 : 1 - Math.min(r, g, b) / 255;
+    if (alpha <= 0.5 / 255) alpha = 0;
+
+    if (alpha === 0) {
+      transparent.fill(0, offset, offset + 4);
+      inverse.fill(0, offset, offset + 4);
+      continue;
+    }
+
+    const recover = (value) =>
+      Math.max(0, Math.min(255, Math.round((value - 255 * (1 - alpha)) / alpha)));
+
+    transparent[offset] = recover(r);
+    transparent[offset + 1] = recover(g);
+    transparent[offset + 2] = recover(b);
+    transparent[offset + 3] = Math.round(alpha * 255);
+
+    inverse[offset] = 255;
+    inverse[offset + 1] = 255;
+    inverse[offset + 2] = 255;
+    inverse[offset + 3] = transparent[offset + 3] ?? 0;
+  }
+
+  const raw = { width: info.width, height: info.height, channels: 4 };
+  const transparentPng = await sharp(transparent, { raw })
+    .png({ compressionLevel: 9 })
+    .toBuffer();
+  const inversePng = await sharp(inverse, { raw })
+    .png({ compressionLevel: 9 })
+    .toBuffer();
+
+  await writeFile(transparentLogo, transparentPng);
+  await writeFile(inverseLogo, inversePng);
 }
 
 /**
@@ -198,6 +271,8 @@ async function main() {
   const icon512 = await icon(512, 0.78);
   const og = await socialCard();
 
+  await transparentLogoVariants();
+
   await writeFile(join(appDir, 'favicon.ico'), ico([
     { size: 16, data: png16 },
     { size: 32, data: png32 },
@@ -211,6 +286,8 @@ async function main() {
   console.log('  apps/web/src/app/icon.png               (512)');
   console.log('  apps/web/src/app/apple-icon.png         (180)');
   console.log('  apps/web/public/brand/og-image.png      (1200x630)');
+  console.log('  apps/web/public/brand/novus-mfb-logo-transparent.png');
+  console.log('  apps/web/public/brand/novus-mfb-logo-inverse.png');
 }
 
 await main();

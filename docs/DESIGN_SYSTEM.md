@@ -182,13 +182,23 @@ npm run assets:brand
 | `src/app/icon.png` | 512 | Modern browsers, install prompts |
 | `src/app/apple-icon.png` | 180 | iOS home screen |
 | `public/brand/og-image.png` | 1200×630 | Open Graph and X/Twitter cards |
+| `public/brand/novus-mfb-logo-transparent.png` | 204×204 | Header, footer, auth form panel, 404 |
+| `public/brand/novus-mfb-logo-inverse.png` | 204×204 | Logo on the dark auth brand panel |
 
 Rules baked into the generator:
 
-- The source logo is **204×204 with an opaque white background** (no alpha channel). Icons
-  therefore keep a white ground. Producing a transparent mark would mean fabricating artwork
-  that was never supplied.
-- The mark is trimmed of its own white border and re-centred, so padding is even at every size.
+- The original source logo remains **204×204 with an opaque white background**. It is
+  kept unchanged as the single source for every derivative.
+- Browser icons keep a white ground. Apple composites transparency to black, and browser
+  chrome is unpredictable. The page logo uses a transparent derivative instead.
+- Transparent page variants are produced with a white-to-alpha matte from the original
+  pixels. The owner explicitly approved removing the page logo’s white ground; the mark
+  geometry and colours are not redrawn. The inverse variant copies the same alpha channel
+  and paints every visible pixel white for use on the dark auth panel.
+- The 204×204 canvas and mark position are preserved, so header/footer sizing does not
+  shift when the white ground is removed.
+- The mark is trimmed of its own white border for browser icons, so padding is even at
+  every icon size.
 - The social card contains only the name and tagline. No licence, deposit-insurance or
   customer-count claims are drawn, because none are verified.
 - The outputs live in **`src/app`**, never a top-level `apps/web/app`. A root `app/` directory

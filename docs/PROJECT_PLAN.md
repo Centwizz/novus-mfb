@@ -190,9 +190,11 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
 - Phase 2e (browser icons, social card, cookie notice, crawl metadata): **complete.**
   `scripts/generate-brand-assets.mjs` (run with `npm run assets:brand`) derives
   `src/app/favicon.ico` (16 + 32), `src/app/icon.png` (512), `src/app/apple-icon.png` (180) and
-  `public/brand/og-image.png` (1200×630) from the supplied logo. The logo is opaque white, so
-  the icons keep a white ground; no transparent mark was fabricated. Open Graph and X/Twitter
-  card metadata now reference the card, without inventing a social handle.
+  `public/brand/og-image.png` (1200×630) from the supplied logo. Browser icons keep a white
+  ground because Apple composites transparency to black and browser chrome is unpredictable.
+  The page logo now uses owner-approved transparent and white-inverse derivatives generated
+  from the same source with a white-to-alpha matte; the mark geometry was not redrawn. Open
+  Graph and X/Twitter card metadata now reference the card, without inventing a social handle.
   A non-modal cookie notice explains that **no cookies or analytics are set** and stores only
   the acknowledgement in local storage; the footer's "Cookie settings" reopens it. The privacy
   policy gained a matching "Cookies and local storage" section. The sitemap now uses a

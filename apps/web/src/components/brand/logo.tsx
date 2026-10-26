@@ -9,7 +9,7 @@ interface LogoProps {
   height?: number;
   withWordmark?: boolean;
   href?: string | null;
-  /** Colour treatment for the wordmark when placed over a dark surface. */
+  /** Colour treatment for the mark and wordmark when placed over a dark surface. */
   tone?: 'default' | 'inverse';
 }
 
@@ -21,6 +21,10 @@ interface LogoProps {
  * which the brand rules forbid. Instead the square mark is rendered at its natural
  * 1:1 ratio (47px tall on desktop) with the wordmark set in type beside it, so the
  * lockup occupies the same visual slot as the reference without deforming the mark.
+ *
+ * Page marks come from transparent derivatives generated from the original opaque
+ * file (see `scripts/generate-brand-assets.mjs`). The original remains the source
+ * for browser icons; the inverse variant is the same mark in white for dark panels.
  */
 export function Logo({
   className,
@@ -29,10 +33,15 @@ export function Logo({
   href = '/',
   tone = 'default',
 }: LogoProps) {
+  const iconSrc =
+    tone === 'inverse'
+      ? '/brand/novus-mfb-logo-inverse.png'
+      : '/brand/novus-mfb-logo-transparent.png';
+
   const content = (
     <span className={cn('inline-flex items-center gap-2.5', className)}>
       <Image
-        src="/brand/novus-mfb-logo.png"
+        src={iconSrc}
         alt=""
         width={height}
         height={height}

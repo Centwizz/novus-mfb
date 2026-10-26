@@ -21,7 +21,7 @@ export function AuthShell({
           aria-hidden="true"
           className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-white/10 blur-3xl"
         />
-        <Logo className="[&_span]:text-white" />
+        <Logo tone="inverse" />
         <div className="relative">
           <h2 className="text-3xl font-bold leading-tight text-white">
             Banking built around you.

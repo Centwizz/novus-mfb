@@ -2,8 +2,8 @@ import { expect, test } from '@playwright/test';
 import { siteConfig } from '../src/lib/site-config';
 
 /**
- * Browser icons, the social card, and the crawl metadata must all be real
- * responses — not references to files that were never generated.
+ * Browser icons, page logo variants, the social card, and the crawl metadata
+ * must all be real responses — not references to files that were never generated.
  */
 const assets = [
   { url: '/favicon.ico', type: /image\/(x-icon|vnd\.microsoft\.icon)/ },
@@ -46,6 +46,114 @@ test('an icon link is declared in the document head', async ({ page }) => {
   await page.goto('/');
   const iconLinks = page.locator('head link[rel="icon"], head link[rel="apple-touch-icon"]');
   expect(await iconLinks.count()).toBeGreaterThan(0);
+});
+
+test('page logo variants are transparent and keep a visible mark', async ({ page }) => {
+  await page.goto('/');
+
+  const result = await page.evaluate(async () => {
+    const analyse = async (src: string) => {
+      const image = new Image();
+      image.src = src;
+      await image.decode();
+
+      const canvas = document.createElement('canvas');
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      const context = canvas.getContext('2d');
+      if (!context) throw new Error('Could not create a 2D canvas context');
+
+      context.drawImage(image, 0, 0);
+      const { data } = context.getImageData(0, 0, canvas.width, canvas.height);
+      const alphaAt = (x: number, y: number) => data[(y * canvas.width + x) * 4 + 3] ?? 255;
+
+      let visible = 0;
+      let opaqueWhite = 0;
+      let whiteVisible = 0;
+      let firstVisible: { r: number; g: number; b: number; a: number } | null = null;
+
+      for (let offset = 0; offset < data.length; offset += 4) {
+        const a = data[offset + 3] ?? 0;
+        if (a === 0) continue;
+        const r = data[offset] ?? 0;
+        const g = data[offset + 1] ?? 0;
+        const b = data[offset + 2] ?? 0;
+        visible += 1;
+        if (r === 255 && g === 255 && b === 255) {
+          whiteVisible += 1;
+          if (a === 255) opaqueWhite += 1;
+        }
+        if (!firstVisible) firstVisible = { r, g, b, a };
+      }
+
+      return {
+        width: canvas.width,
+        height: canvas.height,
+        corners: [
+          alphaAt(0, 0),
+          alphaAt(canvas.width - 1, 0),
+          alphaAt(0, canvas.height - 1),
+          alphaAt(canvas.width - 1, canvas.height - 1),
+        ],
+        center: alphaAt(Math.floor(canvas.width / 2), Math.floor(canvas.height / 2)),
+        visible,
+        opaqueWhite,
+        whiteVisible,
+        firstVisible,
+      };
+    };
+
+    return {
+      transparent: await analyse('/brand/novus-mfb-logo-transparent.png'),
+      inverse: await analyse('/brand/novus-mfb-logo-inverse.png'),
+    };
+  });
+
+  // The outer square and the enclosed negative-space triangle are transparent.
+  expect(result.transparent.corners).toEqual([0, 0, 0, 0]);
+  expect(result.transparent.center).toBe(0);
+  expect(result.transparent.visible).toBeGreaterThan(0);
+  expect(result.transparent.opaqueWhite).toBe(0);
+  expect(result.transparent.firstVisible).not.toBeNull();
+
+  // The dark-surface variant keeps the same alpha shape but paints it white.
+  expect(result.inverse.corners).toEqual([0, 0, 0, 0]);
+  expect(result.inverse.center).toBe(0);
+  expect(result.inverse.visible).toBe(result.transparent.visible);
+  expect(result.inverse.whiteVisible).toBe(result.inverse.visible);
+});
+
+test('header and footer use the transparent mark; the dark auth panel uses the inverse', async ({
+  page,
+}) => {
+  const decode = (src: string | null) => decodeURIComponent(src ?? '');
+
+  for (const path of ['/', '/about']) {
+    await page.goto(path);
+    const headerLogo = page.locator('header img').first();
+    const footerLogo = page.locator('footer img').first();
+
+    expect(decode(await headerLogo.getAttribute('src'))).toContain(
+      'novus-mfb-logo-transparent.png',
+    );
+    expect(decode(await footerLogo.getAttribute('src'))).toContain(
+      'novus-mfb-logo-transparent.png',
+    );
+  }
+
+  await page.goto('/login');
+  const mainLogos = page.locator('main img');
+  const sources = await mainLogos.evaluateAll((images) =>
+    images.map((image) => image.getAttribute('src') ?? ''),
+  );
+  expect(sources.some((src) => decode(src).includes('novus-mfb-logo-inverse.png'))).toBe(true);
+
+  const allPageSources = await page
+    .locator('header img, footer img, main img')
+    .evaluateAll((images) =>
+      images.map((image) => decodeURIComponent(image.getAttribute('src') ?? '')),
+    );
+  expect(allPageSources.some((src) => src.includes('/brand/novus-mfb-logo.png'))).toBe(false);
 });
 
 test('the sitemap uses the maintained content date, not build time', async ({ request }) => {
