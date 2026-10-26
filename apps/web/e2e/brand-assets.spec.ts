@@ -123,7 +123,7 @@ test('page logo variants are transparent and keep a visible mark', async ({ page
   expect(result.inverse.whiteVisible).toBe(result.inverse.visible);
 });
 
-test('header and footer use the transparent mark; the dark auth panel uses the inverse', async ({
+test('header and footer use the transparent mark and full lockup; the dark auth panel uses the inverse', async ({
   page,
 }) => {
   const decode = (src: string | null) => decodeURIComponent(src ?? '');
@@ -139,6 +139,11 @@ test('header and footer use the transparent mark; the dark auth panel uses the i
     expect(decode(await footerLogo.getAttribute('src'))).toContain(
       'novus-mfb-logo-transparent.png',
     );
+
+    const footerLockup = page.locator('footer a[aria-label="Novus MFB home"]').first();
+    await expect(footerLockup).toBeVisible();
+    await expect(footerLockup).toContainText('Novus MFB');
+    await expect(footerLockup).toContainText('Microfinance Bank');
   }
 
   await page.goto('/login');

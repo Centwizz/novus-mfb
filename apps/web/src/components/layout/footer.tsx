@@ -120,7 +120,7 @@ export function Footer() {
       {/* Separate bottom bar (reference: .footer-tip-container) */}
       <div className="w-full bg-white">
         <div className="flex flex-wrap items-center justify-between gap-[2.67vw] px-[5.73vw] py-[2.5vw] lg:px-0 lg:py-[20px] lg:pl-[110px]">
-          <Logo height={40} withWordmark={false} className="lg:w-20" />
+          <Logo height={40} />
 
           <div className="flex flex-col items-center gap-1 lg:flex-row lg:gap-3">
             <p className="text-center text-[3.59vw] leading-[3.59vw] text-ink-brand lg:text-[14px] lg:leading-[20px]">
