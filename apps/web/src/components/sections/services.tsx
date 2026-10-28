@@ -44,7 +44,7 @@ const services: Service[] = [
       'Move money between Novus accounts and other Nigerian banks, and pay your bills from one place. Applicable limits and any fees are always shown before you confirm.',
     note: '*Transfer limits, fees and other restrictions may apply. Current terms will be published before launch.',
     href: '/personal',
-    linkLabel: 'Personal banking',
+    linkLabel: 'Services',
     panel: 'solid',
     image: homeImages.serviceTransfers,
   },
@@ -53,7 +53,7 @@ const services: Service[] = [
     description:
       'Use your Novus card at ATMs, POS terminals and online payment platforms in Nigeria. Card products, fees and availability are being finalised and will be published once confirmed.',
     href: '/personal',
-    linkLabel: 'Products & Services',
+    linkLabel: 'Products & services',
     panel: 'light',
     image: homeImages.serviceCard,
     reversed: true,
