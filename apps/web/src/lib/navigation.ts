@@ -48,7 +48,7 @@ export const primaryNav: NavItem[] = [
     label: 'Products',
     items: [
       {
-        label: 'Personal Banking',
+        label: 'Services',
         href: '/personal',
         description: 'Everyday accounts, transfers and cards.',
       },
@@ -84,7 +84,7 @@ export const footerNav = {
     { label: 'Careers', href: '/careers' },
   ] satisfies NavLink[],
   products: [
-    { label: 'Personal Banking', href: '/personal' },
+    { label: 'Services', href: '/personal' },
     { label: 'Savings', href: '/savings' },
     { label: 'Loans', href: '/loans' },
     { label: 'Business Banking', href: '/business' },
