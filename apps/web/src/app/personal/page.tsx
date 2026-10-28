@@ -34,6 +34,16 @@ const features = [
     title: 'Bill payments',
     body: 'Pay airtime, data and other bills quickly from a single, simple interface.',
   },
+  {
+    icon: <Wallet className="h-6 w-6" />,
+    title: 'Savings',
+    body: 'Grow your money with flexible savings plans tailored to your goals.',
+  },
+  {
+    icon: <CreditCard className="h-6 w-6" />,
+    title: 'e-banking',
+    body: 'Bank anytime, anywhere with our convenient and secure e-banking services.',
+  },
 ];
 
 export default function PersonalPage() {
