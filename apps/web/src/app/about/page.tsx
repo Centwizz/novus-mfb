@@ -53,14 +53,8 @@ export default function AboutPage() {
           <div>
             <h2 className="text-2xl font-bold sm:text-3xl">Our mission</h2>
             <p className="mt-4 leading-relaxed text-ink-muted">
-              We are building a microfinance bank around the everyday realities of our customers —
-              clear pricing, dependable service and technology that just works. Our goal is to make
-              banking accessible to individuals and small businesses who have too often been
-              overlooked.
-            </p>
-            <p className="mt-4 leading-relaxed text-ink-muted">
-              This section will be completed with verified company history, leadership and
-              regulatory information supplied by the bank.
+              To empower underserved communities by providing accessible, innovative and sustainable
+              financial solutions that promote entrepreneurship and economic independence.
             </p>
           </div>
 
