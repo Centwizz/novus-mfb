@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { HeartHandshake, ShieldCheck, Target, Users } from 'lucide-react';
+import { CheckCircle, HeartHandshake, ShieldCheck, Target, Users } from 'lucide-react';
 import { PageBanner } from '@/components/ui/page-banner';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { FeatureCard } from '@/components/ui/card';
@@ -133,13 +133,21 @@ export default function AboutPage() {
           accomplished by offering low-cost, high-impact financial products that are tailored to
           the unique needs of the community.
         </p>
-        <div className="mt-8 rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
-          <ul className="list-disc space-y-3 pl-6 leading-relaxed text-ink-muted">
-            <li>TODO(owner): supply approved objective 1.</li>
-            <li>TODO(owner): supply approved objective 2.</li>
-            <li>TODO(owner): supply approved objective 3.</li>
-            <li>TODO(owner): supply approved objective 4.</li>
-          </ul>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { title: 'Tailored Financial Products' },
+            { title: 'Job Creation Initiatives' },
+            { title: 'Commerce Support' },
+            { title: 'Rural Development Projects' },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-4 shadow-card"
+            >
+              <CheckCircle className="h-5 w-5 text-brand-700" />
+              <span className="font-medium text-ink">{item.title}</span>
+            </div>
+          ))}
         </div>
       </Section>
 
