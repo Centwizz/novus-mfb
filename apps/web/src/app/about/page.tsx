@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { ShieldCheck, Target, Users } from 'lucide-react';
+import { HeartHandshake, ShieldCheck, Target, Users } from 'lucide-react';
 import { PageBanner } from '@/components/ui/page-banner';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { FeatureCard } from '@/components/ui/card';
@@ -29,6 +29,11 @@ const values = [
     icon: <Users className="h-6 w-6" />,
     title: 'Financial inclusion',
     body: 'We believe everyone deserves access to reliable, affordable financial services.',
+  },
+  {
+    icon: <HeartHandshake className="h-6 w-6" />,
+    title: 'Integrity',
+    body: 'TODO(owner): supply approved description of this value.',
   },
 ];
 
@@ -72,12 +77,45 @@ export default function AboutPage() {
 
       <Section muted>
         <SectionHeading eyebrow="What we stand for" title="Our values" />
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {values.map((value) => (
             <FeatureCard key={value.title} icon={value.icon} title={value.title}>
               {value.body}
             </FeatureCard>
           ))}
+        </div>
+      </Section>
+
+      <Section>
+        <SectionHeading eyebrow="Our purpose" title="Our Vision" />
+        <div className="mt-8 rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
+          <p className="leading-relaxed text-ink-muted">
+            TODO(owner): supply approved vision statement.
+          </p>
+        </div>
+      </Section>
+
+      <Section muted>
+        <SectionHeading eyebrow="What we aim to achieve" title="Our Objectives" />
+        <div className="mt-8 rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
+          <ul className="list-disc space-y-3 pl-6 leading-relaxed text-ink-muted">
+            <li>TODO(owner): supply approved objective 1.</li>
+            <li>TODO(owner): supply approved objective 2.</li>
+            <li>TODO(owner): supply approved objective 3.</li>
+            <li>TODO(owner): supply approved objective 4.</li>
+          </ul>
+        </div>
+      </Section>
+
+      <Section>
+        <SectionHeading eyebrow="How we will deliver" title="Our Strategic Goals" />
+        <div className="mt-8 rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
+          <ul className="list-disc space-y-3 pl-6 leading-relaxed text-ink-muted">
+            <li>TODO(owner): supply approved strategic goal 1.</li>
+            <li>TODO(owner): supply approved strategic goal 2.</li>
+            <li>TODO(owner): supply approved strategic goal 3.</li>
+            <li>TODO(owner): supply approved strategic goal 4.</li>
+          </ul>
         </div>
       </Section>
 
