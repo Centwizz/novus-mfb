@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 };
 
 const channels = [
-  { icon: <Mail className="h-5 w-5" />, label: 'Email', value: siteConfig.contact.email },
-  { icon: <Phone className="h-5 w-5" />, label: 'Phone', value: siteConfig.contact.phone },
+  { icon: <Mail className="h-5 w-5" />, label: 'Email', value: 'info@novusmfb.com' },
+  { icon: <Phone className="h-5 w-5" />, label: 'Phone', value: '07066887632 / 08122220105' },
   { icon: <MessageCircle className="h-5 w-5" />, label: 'Support hours', value: siteConfig.contact.supportHours },
-  { icon: <MapPin className="h-5 w-5" />, label: 'Head office', value: 'Not configured' },
+  { icon: <MapPin className="h-5 w-5" />, label: 'Head office', value: 'Plot BNA 10558, New Bridge Road, Makurdi, Benue State' },
 ];
 
 export default function ContactPage() {

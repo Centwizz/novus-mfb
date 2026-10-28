@@ -28,7 +28,7 @@ export const DEFAULT_KNOWLEDGE_BASE: KnowledgeEntry[] = [
     category: 'Company',
     keywords: ['novus', 'mfb', 'bank', 'who are you', 'about', 'microfinance', 'company'],
     content:
-      'Novus MFB is a digital-first microfinance bank built to make everyday banking simpler, safer and more human. You can open an account, save, borrow and manage your money from this website, with Nova and a human support team on hand when you need them.',
+      'Novus MFB is a digital-first microfinance bank built to make everyday banking simpler, safer and more human. You can open an account, save, borrow and manage your money from this website, with Nova and a human support team on hand when you need them. Licensed by the Central Bank of Nigeria (CBN).',
   },
   {
     slug: 'open-account',
@@ -61,10 +61,10 @@ export const DEFAULT_KNOWLEDGE_BASE: KnowledgeEntry[] = [
       'nin',
       'passport',
       'proof of address',
+      'open account',
     ],
     content:
-      'Account opening typically requires a valid means of identification, a phone number and an email address. The exact requirement list is being finalised and I do not want to give you incorrect information. Would you like me to have a support agent confirm the current list for you?',
-    placeholder: true,
+      'To open an account with Novus MFB, the general account-opening requirements are:\n\n1. NIN Slip\n2. 1 Passport Photograph\n3. Utility Bill or any means of address verification\n\nThese are the general requirements stated on our flyer. Additional requirements may apply for specific account packages (Personal, Students, Beta-Pikin, Salary, Cooperatives, eBam, Corporate). If you tell me which account package you want, I can clarify.',
   },
   {
     slug: 'application-status',
@@ -172,10 +172,9 @@ export const DEFAULT_KNOWLEDGE_BASE: KnowledgeEntry[] = [
     slug: 'loan-enquiry',
     title: 'Loan enquiries',
     category: 'Products',
-    keywords: ['loan', 'borrow', 'credit', 'lending', 'eligibility', 'repayment', 'collateral'],
+    keywords: ['loan', 'borrow', 'credit', 'lending', 'eligibility', 'repayment', 'collateral', 'apply for loan'],
     content:
-      'I can explain how our loan process works: you apply, we assess your application against documented criteria, and we explain the full terms before you accept. I cannot approve loans or quote rates here. Would you like me to have an agent contact you about current loan products?',
-    placeholder: true,
+      'Novus MFB offers various loan packages including Agriculture, nMSMEs, Side Hustle, MyPikin Fees, Asset Financing, Micro-Housing, Urgent 2k, Fuel4Me, Self-Help Group Lending, Private Sector Business, and Federal Business.\n\nGeneral loan-request requirements (as stated on our flyer):\n\n1. Duly completed Loan Agreement Form (LAF)\n2. First Appointment Letter\n3. Confirmation or Last Promotion Letter\n4. Staff ID Card\n5. 1 Passport Photograph\n6. 3 Months Bank Statement\n\nThese are general requirements; specific documents may vary by loan package. Which loan package are you interested in?',
   },
   {
     slug: 'business-banking',
@@ -201,8 +200,7 @@ export const DEFAULT_KNOWLEDGE_BASE: KnowledgeEntry[] = [
     category: 'Contact',
     keywords: ['branch', 'branches', 'office', 'address', 'location', 'headquarters', 'hq', 'where are you'],
     content:
-      'Our verified branch and head-office addresses have not been published yet, so I will not invent one. Once confirmed they will appear in the footer and on the contact page. If you need to visit an office for a specific request, I can pass your question to the team so they can confirm the nearest option.',
-    placeholder: true,
+      'Novus Microfinance Bank Head Office: Plot BNA 10558, New Bridge Road, Makurdi, Benue State. For more details, please visit our Contact page.',
   },
   {
     slug: 'contact-support',
@@ -217,10 +215,10 @@ export const DEFAULT_KNOWLEDGE_BASE: KnowledgeEntry[] = [
       'whatsapp',
       'support hours',
       'speak to support',
+      'speak to someone',
     ],
     content:
-      'You can reach us through the contact form on this website. Our support hours are Monday to Friday, 8:00am to 6:00pm (WAT). The verified phone hotlines are not published yet, so I will not give you a number that might be wrong — use the contact form and the team will reply.',
-    placeholder: true,
+      'You can reach Novus MFB through:\n\n- Telephone: 07066887632\n- Telephone: 08122220105\n- Email: info@novusmfb.com\n- Customer-service centre: Makurdi\n- Contact form: /contact\n- Report an issue: /report\n\nSupport hours: Monday to Friday, 8:00am to 6:00pm (WAT).',
   },
   {
     slug: 'report-complaint',
@@ -305,8 +303,7 @@ export const DEFAULT_KNOWLEDGE_BASE: KnowledgeEntry[] = [
     category: 'Company',
     keywords: ['whistleblowing', 'whistleblower', 'report misconduct', 'corruption', 'anonymous report'],
     content:
-      'If you need to report misconduct, please use the contact form and mark your message "Whistleblowing". A dedicated confidential channel is being set up and its details will be published once confirmed. I can escalate this discreetly to the team in the meantime.',
-    placeholder: true,
+      'If you need to report misconduct, please use the contact form and mark your message "Whistleblowing" or use the Report an Issue page (/report).',
   },
   {
     slug: 'careers',

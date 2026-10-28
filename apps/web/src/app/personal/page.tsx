@@ -80,6 +80,41 @@ export default function PersonalPage() {
         </div>
       </Section>
 
+      <Section muted>
+        <SectionHeading align="left" eyebrow="Account packages" title="Open the account that fits you" />
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            'Personal Account',
+            'Students Account',
+            'Beta-Pikin',
+            'Salary Account',
+            'Cooperatives',
+            'eBam',
+            'Corporate Account',
+          ].map((item) => (
+            <div key={item} className="rounded-2xl border border-border bg-surface p-4 shadow-card">
+              <span className="font-medium text-ink">{item}</span>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section>
+        <SectionHeading align="left" eyebrow="Requirements" title="Account opening requirements" />
+        <div className="mt-6 rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
+          <p className="mb-4 font-medium text-ink">General requirements (as stated on our flyer):</p>
+          <ul className="list-disc space-y-2 pl-6 leading-relaxed text-ink-muted">
+            <li>NIN Slip</li>
+            <li>1 Passport Photograph</li>
+            <li>Utility Bill or any means of address verification</li>
+          </ul>
+          <p className="mt-4 text-sm text-ink-muted">
+            These are general requirements. Additional requirements may apply for specific account packages.
+          </p>
+        </div>
+      </Section>
+      </Section>
+
       <CtaSection />
     </>
   );

@@ -76,6 +76,48 @@ export default function LoansPage() {
         </div>
       </Section>
 
+      <Section muted>
+        <SectionHeading align="left" eyebrow="Loan packages" title="Our loan offerings" />
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            'Agriculture',
+            'nMSMEs',
+            'Side Hustle',
+            'MyPikin Fees',
+            'Asset Financing',
+            'Micro-Housing',
+            'Urgent 2k',
+            'Fuel4Me',
+            'Self-Help Group Lending',
+            'Private Sector Business',
+            'Federal Business',
+          ].map((item) => (
+            <div key={item} className="rounded-2xl border border-border bg-surface p-4 shadow-card">
+              <span className="font-medium text-ink">{item}</span>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section>
+        <SectionHeading align="left" eyebrow="Requirements" title="Loan request requirements" />
+        <div className="mt-6 rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
+          <p className="mb-4 font-medium text-ink">General loan-request requirements (as stated on our flyer):</p>
+          <ul className="list-disc space-y-2 pl-6 leading-relaxed text-ink-muted">
+            <li>Duly completed Loan Agreement Form (LAF)</li>
+            <li>First Appointment Letter</li>
+            <li>Confirmation or Last Promotion Letter</li>
+            <li>Staff ID Card</li>
+            <li>1 Passport Photograph</li>
+            <li>3 Months Bank Statement</li>
+          </ul>
+          <p className="mt-4 text-sm text-ink-muted">
+            These are general requirements. Specific documents may vary by loan package.
+          </p>
+        </div>
+      </Section>
+      </Section>
+
       <CtaSection />
     </>
   );

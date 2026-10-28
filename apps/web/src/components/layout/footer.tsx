@@ -91,8 +91,7 @@ export function Footer() {
           <div className="w-1/2 py-[3vw] lg:mr-[4vw] lg:w-[10.17vw] lg:py-[3.73vw]">
             <h2 className="text-[5vw] font-bold text-white lg:text-[max(12px,0.78vw)]">Novus Office</h2>
             <div className="mt-[1vw] text-[4.44vw] leading-[8.33vw] text-white lg:mt-[0.69vw] lg:text-[max(12px,0.69vw)] lg:leading-[1.3vw]">
-              {/* TODO(owner): supply the registered head-office address. */}
-              <span className="font-bold">HQ:</span> Address not configured yet
+              <span className="font-bold">HQ:</span> Plot BNA 10558, New Bridge Road, Makurdi, Benue State
             </div>
           </div>
 
@@ -102,8 +101,7 @@ export function Footer() {
               Novus Office Address
             </h2>
             <div className="mt-[1vw] text-[4.44vw] leading-[8.33vw] text-white lg:mt-[0.69vw] lg:text-[max(12px,0.69vw)] lg:leading-[1.3vw]">
-              {/* TODO(owner): supply verified branch addresses. */}
-              <div>Branch addresses will be published once confirmed.</div>
+              <div>Plot BNA 10558, New Bridge Road, Makurdi, Benue State</div>
               <div className="mt-[1vw] lg:mt-[0.69vw]">
                 <Link
                   href="/contact"
