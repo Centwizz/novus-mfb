@@ -81,7 +81,7 @@ export default function AboutPage() {
           <div className="order-1 lg:order-2">
             <h2 className="text-2xl font-bold sm:text-3xl">Our Vision</h2>
             <p className="mt-4 leading-relaxed text-ink-muted">
-              TODO(owner): supply approved vision statement.
+              Unlocking financial freedom and opportunities for all.
             </p>
           </div>
         </div>
