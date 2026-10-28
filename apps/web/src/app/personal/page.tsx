@@ -80,25 +80,6 @@ export default function PersonalPage() {
         </div>
       </Section>
 
-      <Section muted>
-        <SectionHeading align="left" eyebrow="Account packages" title="Open the account that fits you" />
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            'Personal Account',
-            'Students Account',
-            'Beta-Pikin',
-            'Salary Account',
-            'Cooperatives',
-            'eBam',
-            'Corporate Account',
-          ].map((item) => (
-            <div key={item} className="rounded-2xl border border-border bg-surface p-4 shadow-card">
-              <span className="font-medium text-ink">{item}</span>
-            </div>
-          ))}
-        </div>
-      </Section>
-
       <Section>
         <SectionHeading align="left" eyebrow="Requirements" title="Account opening requirements" />
         <div className="mt-6 rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
