@@ -126,14 +126,14 @@ export default function AboutPage() {
 
       <Section muted>
         <SectionHeading eyebrow="What we aim to achieve" title="Our Objectives" />
+        <p className="mt-6 max-w-4xl leading-relaxed text-ink-muted">
+          Our goal is to promote economic development in the community by offering financial
+          services to its members and by supporting individuals, nMSMEs, and agricultural
+          endeavours as well as job creation, trade, and rural development. This will be
+          accomplished by offering low-cost, high-impact financial products that are tailored to
+          the unique needs of the community.
+        </p>
         <div className="mt-8 rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
-          <p className="mb-6 leading-relaxed text-ink-muted">
-            Our goal is to promote economic development in the community by offering financial
-            services to its members and by supporting individuals, nMSMEs, and agricultural
-            endeavours as well as job creation, trade, and rural development. This will be
-            accomplished by offering low-cost, high-impact financial products that are tailored to
-            the unique needs of the community.
-          </p>
           <ul className="list-disc space-y-3 pl-6 leading-relaxed text-ink-muted">
             <li>TODO(owner): supply approved objective 1.</li>
             <li>TODO(owner): supply approved objective 2.</li>
