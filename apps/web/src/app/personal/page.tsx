@@ -113,7 +113,6 @@ export default function PersonalPage() {
           </p>
         </div>
       </Section>
-      </Section>
 
       <CtaSection />
     </>
