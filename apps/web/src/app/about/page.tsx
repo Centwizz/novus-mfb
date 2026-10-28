@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { CheckCircle, HeartHandshake, ShieldCheck, Target, Users } from 'lucide-react';
+import { CheckCircle, Handshake, HeartHandshake, Leaf, ShieldCheck, Target, TrendingUp, Users } from 'lucide-react';
 import { PageBanner } from '@/components/ui/page-banner';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { FeatureCard } from '@/components/ui/card';
@@ -153,13 +153,24 @@ export default function AboutPage() {
 
       <Section>
         <SectionHeading eyebrow="How we will deliver" title="Our Strategic Goals" />
-        <div className="mt-8 rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
-          <ul className="list-disc space-y-3 pl-6 leading-relaxed text-ink-muted">
-            <li>TODO(owner): supply approved strategic goal 1.</li>
-            <li>TODO(owner): supply approved strategic goal 2.</li>
-            <li>TODO(owner): supply approved strategic goal 3.</li>
-            <li>TODO(owner): supply approved strategic goal 4.</li>
-          </ul>
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <FeatureCard icon={<Users className="h-6 w-6" />} title="Expand Financial Inclusion">
+            Reach more unbanked and underserved populations, especially in rural areas.
+          </FeatureCard>
+          <FeatureCard icon={<Target className="h-6 w-6" />} title="Enhance Customer Experience">
+            Leverage technology to improve service delivery and customer satisfaction.
+          </FeatureCard>
+          <FeatureCard icon={<Handshake className="h-6 w-6" />} title="Strengthen Partnerships">
+            Collaborate with strategic partners to enhance our service offerings and reach.
+          </FeatureCard>
+          <FeatureCard icon={<Leaf className="h-6 w-6" />} title="Promote Economic Development">
+            Support the growth of small businesses and agricultural enterprises through tailored
+            financial products.
+          </FeatureCard>
+          <FeatureCard icon={<ShieldCheck className="h-6 w-6" />} title="Ensure Regulatory Compliance">
+            Adhere to all regulatory requirements and maintain the highest standards of corporate
+            governance.
+          </FeatureCard>
         </div>
       </Section>
 
