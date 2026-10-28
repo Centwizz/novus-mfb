@@ -75,6 +75,24 @@ export default function AboutPage() {
         </div>
       </Section>
 
+      <Section>
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div className="order-2 overflow-hidden rounded-2xl border border-border lg:order-1">
+            <SmartImage
+              slot={aboutImages.intro}
+              sizes="(min-width: 1024px) 45vw, 90vw"
+              className="h-full w-full"
+            />
+          </div>
+          <div className="order-1 lg:order-2">
+            <h2 className="text-2xl font-bold sm:text-3xl">Our Vision</h2>
+            <p className="mt-4 leading-relaxed text-ink-muted">
+              TODO(owner): supply approved vision statement.
+            </p>
+          </div>
+        </div>
+      </Section>
+
       <Section muted>
         <SectionHeading eyebrow="What we stand for" title="Our values" />
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -83,15 +101,6 @@ export default function AboutPage() {
               {value.body}
             </FeatureCard>
           ))}
-        </div>
-      </Section>
-
-      <Section>
-        <SectionHeading eyebrow="Our purpose" title="Our Vision" />
-        <div className="mt-8 rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
-          <p className="leading-relaxed text-ink-muted">
-            TODO(owner): supply approved vision statement.
-          </p>
         </div>
       </Section>
 
