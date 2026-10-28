@@ -8,9 +8,9 @@ import { SmartImage } from '@/components/ui/smart-image';
 import { bannerImages, serviceImages } from '@/lib/images';
 
 export const metadata: Metadata = {
-  title: 'Personal Banking',
+  title: 'Services',
   description:
-    'Everyday banking with Novus MFB — accounts, transfers, cards and payments in one place.',
+    'Banking services with Novus MFB — accounts, transfers, cards and payments in one place.',
 };
 
 const features = [
@@ -51,7 +51,7 @@ export default function PersonalPage() {
     <>
       <PageBanner
         slot={bannerImages.personal}
-        eyebrow="Personal banking"
+        eyebrow="Services"
         title="Banking made simple for everyday life"
         description="Manage your money, pay bills and move funds securely — all from one account."
       />
