@@ -16,28 +16,28 @@ export const metadata: Metadata = {
 const features = [
   {
     icon: <Wallet className="h-6 w-6" />,
-    title: 'Everyday account',
-    body: 'A straightforward account for receiving money, paying bills and managing day-to-day spending.',
+    title: 'Savings',
+    body: 'Grow your money with flexible savings plans tailored to your goals.',
   },
   {
     icon: <Send className="h-6 w-6" />,
-    title: 'Transfers',
-    body: 'Send money to Novus and other Nigerian bank accounts with clear information about limits and fees.',
+    title: 'Loans',
+    body: 'Fair, transparent credit when you need it.',
   },
   {
     icon: <CreditCard className="h-6 w-6" />,
-    title: 'Debit card',
-    body: 'Pay online and in person, and manage your card directly from your secure dashboard.',
+    title: 'Investment',
+    body: 'Grow your wealth with tailored investment opportunities.',
   },
   {
     icon: <RefreshCw className="h-6 w-6" />,
-    title: 'Bill payments',
-    body: 'Pay airtime, data and other bills quickly from a single, simple interface.',
+    title: 'Micro Housing',
+    body: 'Affordable housing solutions to help you own a home.',
   },
   {
     icon: <Wallet className="h-6 w-6" />,
-    title: 'Savings',
-    body: 'Grow your money with flexible savings plans tailored to your goals.',
+    title: 'Financial Advisory',
+    body: 'Expert guidance to help you make informed financial decisions.',
   },
   {
     icon: <CreditCard className="h-6 w-6" />,
