@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { CheckCircle, Handshake, HeartHandshake, Leaf, ShieldCheck, Target, TrendingUp, Users } from 'lucide-react';
+import { CheckCircle, Handshake, Leaf, Lightbulb, ShieldCheck, Target, Users } from 'lucide-react';
 import { PageBanner } from '@/components/ui/page-banner';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { FeatureCard } from '@/components/ui/card';
@@ -16,24 +16,24 @@ export const metadata: Metadata = {
 
 const values = [
   {
-    icon: <Target className="h-6 w-6" />,
-    title: 'Customer first',
-    body: 'Every product and process is designed around what actually helps our customers.',
-  },
-  {
-    icon: <ShieldCheck className="h-6 w-6" />,
-    title: 'Trust and security',
-    body: 'We protect customer data with modern security engineering and transparent practices.',
+    icon: <Lightbulb className="h-6 w-6" />,
+    title: 'Accountability',
+    body: 'We take responsibility for our actions and their outcomes. Each member of our team is accountable for the success of the organization.',
   },
   {
     icon: <Users className="h-6 w-6" />,
-    title: 'Financial inclusion',
-    body: 'We believe everyone deserves access to reliable, affordable financial services.',
+    title: 'Teamwork',
+    body: 'Collaboration and mutual respect define our work environment. Together, we achieve more.',
   },
   {
-    icon: <HeartHandshake className="h-6 w-6" />,
-    title: 'Integrity',
-    body: 'TODO(owner): supply approved description of this value.',
+    icon: <Lightbulb className="h-6 w-6" />,
+    title: 'Innovation',
+    body: 'We embrace a culture of continuous improvement and creative thinking.',
+  },
+  {
+    icon: <ShieldCheck className="h-6 w-6" />,
+    title: 'Trust',
+    body: 'We uphold the highest ethical standards and maintain trust through consistency, reliability, and integrity in all our interactions with customers, employees, and stakeholders.',
   },
 ];
 
