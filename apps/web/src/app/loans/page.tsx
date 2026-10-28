@@ -116,7 +116,6 @@ export default function LoansPage() {
           </p>
         </div>
       </Section>
-      </Section>
 
       <CtaSection />
     </>
