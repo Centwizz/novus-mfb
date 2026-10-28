@@ -53,7 +53,7 @@ const services: Service[] = [
     description:
       'Use your Novus card at ATMs, POS terminals and online payment platforms in Nigeria. Card products, fees and availability are being finalised and will be published once confirmed.',
     href: '/personal',
-    linkLabel: 'Cards & payments',
+    linkLabel: 'Products & Services',
     panel: 'light',
     image: homeImages.serviceCard,
     reversed: true,
