@@ -50,6 +50,32 @@ export default function AboutPage() {
 
       <Section>
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <div className="order-2 overflow-hidden rounded-2xl border border-border lg:order-1">
+            <SmartImage
+              slot={aboutImages.intro}
+              sizes="(min-width: 1024px) 45vw, 90vw"
+              className="h-full w-full"
+            />
+          </div>
+          <div className="order-1 lg:order-2">
+            <h2 className="text-2xl font-bold sm:text-3xl">Our Story</h2>
+            <p className="mt-4 leading-relaxed text-ink-muted">
+              Licensed by the Central Bank of Nigeria (CBN) on March 8 2024 to operate as Novus
+              Microfinance Bank. "Novus" is a Latin word meaning "New" reflecting our commitment to
+              innovative and exceptional financial services. The bank was established to cater to
+              the banking needs of the Benue populace by providing support for individuals,
+              businesses, and agricultural activities, job creation, commerce, and rural
+              development. This would be done by providing low cost – high impact financial
+              products conceived to suit the peculiarities of Benue State residents. The ‘New’ in
+              ‘Novus’ is a reflection of our commitment to innovative and exceptional financial
+              services.
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      <Section>
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>
             <h2 className="text-2xl font-bold sm:text-3xl">Our mission</h2>
             <p className="mt-4 leading-relaxed text-ink-muted">
