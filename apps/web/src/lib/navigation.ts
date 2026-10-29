@@ -62,11 +62,6 @@ export const primaryNav: NavItem[] = [
         href: '/loans',
         description: 'Fair, transparent credit when you need it.',
       },
-      {
-        label: 'Business Banking',
-        href: '/business',
-        description: 'Accounts and tools for small businesses.',
-      },
     ],
   },
   { label: 'Security', href: '/security' },
@@ -87,7 +82,6 @@ export const footerNav = {
     { label: 'Services', href: '/personal' },
     { label: 'Savings', href: '/savings' },
     { label: 'Loans', href: '/loans' },
-    { label: 'Business Banking', href: '/business' },
   ] satisfies NavLink[],
   resources: [
     { label: 'Help Centre', href: '/faq' },

@@ -157,7 +157,6 @@ const SCENES = [
   ['banners/personal-banking.jpg', 1920, 480, 'PERSONAL BANKING BANNER', 'brand'],
   ['banners/services-banner.jpg', 1920, 480, 'SAVINGS BANNER', 'brand'],
   ['banners/loans-banner.jpg', 1920, 480, 'LOANS BANNER', 'brand'],
-  ['banners/business-banking.jpg', 1920, 480, 'BUSINESS BANKING BANNER', 'brand'],
   ['banners/contact-banner.jpg', 1920, 480, 'CONTACT BANNER', 'brand'],
   ['banners/security-banner.jpg', 1920, 480, 'SECURITY BANNER', 'brand'],
   ['banners/careers-banner.jpg', 1920, 480, 'CAREERS BANNER', 'brand'],
@@ -181,7 +180,6 @@ const SCENES = [
   ['services/personal-banking.jpg', 1244, 910, 'PERSONAL BANKING IMAGE', 'light'],
   ['services/savings.jpg', 1244, 910, 'SAVINGS IMAGE', 'light'],
   ['services/loans.jpg', 1244, 910, 'LOANS IMAGE', 'light'],
-  ['services/business-banking.jpg', 1244, 910, 'BUSINESS BANKING IMAGE', 'light'],
 ];
 
 const PORTRAITS = [

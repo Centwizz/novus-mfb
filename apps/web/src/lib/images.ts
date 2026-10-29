@@ -178,15 +178,6 @@ export const bannerImages = {
     fit: 'cover',
     label: 'LOANS BANNER',
   }),
-  business: slot({
-    src: '/images/banners/business-banking.jpg',
-    alt: '',
-    width: 1920,
-    height: 480,
-    aspect: '1920 / 480',
-    fit: 'cover',
-    label: 'BUSINESS BANKING BANNER',
-  }),
   contact: slot({
     src: '/images/banners/contact-banner.jpg',
     alt: '',
@@ -369,14 +360,5 @@ export const serviceImages = {
     aspect: '622 / 455',
     fit: 'cover',
     label: 'LOANS IMAGE',
-  }),
-  business: slot({
-    src: '/images/services/business-banking.jpg',
-    alt: 'Business banking',
-    width: 1244,
-    height: 910,
-    aspect: '622 / 455',
-    fit: 'cover',
-    label: 'BUSINESS BANKING IMAGE',
   }),
 } as const;

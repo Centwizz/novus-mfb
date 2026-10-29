@@ -35,7 +35,6 @@ apps/web/public/images/
 │   ├── personal-banking.jpg
 │   ├── services-banner.jpg      (used by the Savings page)
 │   ├── loans-banner.jpg
-│   ├── business-banking.jpg
 │   ├── contact-banner.jpg
 │   ├── security-banner.jpg
 │   ├── careers-banner.jpg
@@ -64,8 +63,7 @@ apps/web/public/images/
 ├── services/                     product page imagery
 │   ├── personal-banking.jpg
 │   ├── savings.jpg
-│   ├── loans.jpg
-│   └── business-banking.jpg
+│   └── loans.jpg
 └── icons/                        small icons (empty — reserved)
 ```
 
@@ -89,7 +87,6 @@ automatically.
 | `banners/personal-banking.jpg` | Personal Banking — banner | **1920 × 480** | 4:1 | Landscape | 250 KB |
 | `banners/services-banner.jpg` | Savings — banner | **1920 × 480** | 4:1 | Landscape | 250 KB |
 | `banners/loans-banner.jpg` | Loans — banner | **1920 × 480** | 4:1 | Landscape | 250 KB |
-| `banners/business-banking.jpg` | Business Banking — banner | **1920 × 480** | 4:1 | Landscape | 250 KB |
 | `banners/contact-banner.jpg` | Contact — banner | **1920 × 480** | 4:1 | Landscape | 250 KB |
 | `banners/security-banner.jpg` | Security — banner | **1920 × 480** | 4:1 | Landscape | 250 KB |
 | `banners/careers-banner.jpg` | Careers — banner | **1920 × 480** | 4:1 | Landscape | 250 KB |
@@ -151,7 +148,6 @@ automatically.
 | `services/personal-banking.jpg` | Personal Banking | **1244 × 910** | 622:455 | Landscape | 200 KB |
 | `services/savings.jpg` | Savings | **1244 × 910** | 622:455 | Landscape | 200 KB |
 | `services/loans.jpg` | Loans | **1244 × 910** | 622:455 | Landscape | 200 KB |
-| `services/business-banking.jpg` | Business Banking | **1244 × 910** | 622:455 | Landscape | 200 KB |
 
 ---
 

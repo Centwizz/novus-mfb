@@ -21,6 +21,14 @@ const SUGGESTED = [
   'I need to speak to someone',
 ];
 
+const ESCALATION_CHANNELS = [
+  { label: 'Call: 07066887632', href: 'tel:07066887632' },
+  { label: 'Call: 08122220105', href: 'tel:08122220105' },
+  { label: 'Email: info@novusmfb.com', href: 'mailto:info@novusmfb.com' },
+  { label: 'Report an issue', href: '/report' },
+  { label: 'Contact us', href: '/contact' },
+];
+
 /**
  * Floating Nova chat launcher.
  *
@@ -207,17 +215,34 @@ export function ChatLauncher() {
             )}
 
             {messages.length <= 1 && !typing && (
-              <div className="flex flex-wrap gap-2 pt-2">
-                {SUGGESTED.map((question) => (
-                  <button
-                    key={question}
-                    type="button"
-                    onClick={() => void send(question)}
-                    className="rounded-full border border-border bg-white px-3 py-1.5 text-xs text-ink-muted transition-colors hover:border-brand-700 hover:text-brand-700"
-                  >
-                    {question}
-                  </button>
-                ))}
+              <div className="space-y-3 pt-2">
+                <div className="flex flex-wrap gap-2">
+                  {SUGGESTED.map((question) => (
+                    <button
+                      key={question}
+                      type="button"
+                      onClick={() => void send(question)}
+                      className="rounded-full border border-border bg-white px-3 py-1.5 text-xs text-ink-muted transition-colors hover:border-brand-700 hover:text-brand-700"
+                    >
+                      {question}
+                    </button>
+                  ))}
+                </div>
+                <div className="rounded-lg border border-border bg-white p-2">
+                  <p className="mb-1 text-xs font-semibold text-ink">Verified support channels</p>
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    {ESCALATION_CHANNELS.map((channel) => (
+                      <a
+                        key={channel.label}
+                        href={channel.href}
+                        className="text-brand-700 hover:underline"
+                      >
+                        {channel.label}
+                      </a>
+                    ))}
+                  </div>
+                  <p className="mt-1 text-[11px] text-ink-muted">Customer-service centre: Makurdi</p>
+                </div>
               </div>
             )}
           </div>

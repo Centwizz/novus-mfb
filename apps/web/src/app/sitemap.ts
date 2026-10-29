@@ -23,7 +23,6 @@ const routes: Array<{
   { path: '/personal', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/savings', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/loans', changeFrequency: 'monthly', priority: 0.9 },
-  { path: '/business', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/about', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/security', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/contact', changeFrequency: 'monthly', priority: 0.7 },

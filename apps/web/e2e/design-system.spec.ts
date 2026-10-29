@@ -72,7 +72,6 @@ const PUBLIC_ROUTES = [
   '/personal',
   '/savings',
   '/loans',
-  '/business',
   '/security',
   '/contact',
   '/faq',

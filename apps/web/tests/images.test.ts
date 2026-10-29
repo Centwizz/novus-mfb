@@ -53,8 +53,8 @@ function walk(dir: string): string[] {
 }
 
 describe('image placeholder formats', () => {
-  it('declares exactly 31 JPG placeholders', () => {
-    expect(placeholderSrcs).toHaveLength(31);
+  it('declares exactly 29 JPG placeholders', () => {
+    expect(placeholderSrcs).toHaveLength(29);
     for (const src of placeholderSrcs) {
       expect(src, `${src} should be a JPG placeholder`).toMatch(/\.jpg$/);
     }

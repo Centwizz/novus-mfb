@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { CalendarClock, Lock, Target, TrendingUp } from 'lucide-react';
+import { Baby, Building2, GraduationCap, Smartphone, User, Users, Wallet } from 'lucide-react';
 import { PageBanner } from '@/components/ui/page-banner';
 import { Section, SectionHeading } from '@/components/ui/section';
 import { FeatureCard } from '@/components/ui/card';
@@ -14,24 +14,39 @@ export const metadata: Metadata = {
 
 const plans = [
   {
-    icon: <Target className="h-6 w-6" />,
-    title: 'Goal savings',
-    body: 'Set a target, save consistently and track your progress towards what matters to you.',
+    icon: <User className="h-6 w-6" />,
+    title: 'Personal',
+    body: 'An everyday account for individuals to receive money, make transfers and manage daily spending.',
   },
   {
-    icon: <CalendarClock className="h-6 w-6" />,
-    title: 'Fixed savings',
-    body: 'Lock funds for a set period to build discipline and work towards a fixed return.',
+    icon: <GraduationCap className="h-6 w-6" />,
+    title: 'Students',
+    body: 'An account for students to manage allowances, tuition and day-to-day expenses.',
   },
   {
-    icon: <TrendingUp className="h-6 w-6" />,
-    title: 'Flexible savings',
-    body: 'Keep your money accessible while still putting something aside regularly.',
+    icon: <Baby className="h-6 w-6" />,
+    title: 'Beta-Pikin',
+    body: 'An account for children, opened and managed by a parent or guardian to encourage early saving.',
   },
   {
-    icon: <Lock className="h-6 w-6" />,
-    title: 'Secure by design',
-    body: 'Your savings are protected by the same security engineering as the rest of your account.',
+    icon: <Wallet className="h-6 w-6" />,
+    title: 'Salary',
+    body: 'For employees who want their salary paid into a Novus account with straightforward access to their money.',
+  },
+  {
+    icon: <Users className="h-6 w-6" />,
+    title: 'Cooperatives',
+    body: 'An account for cooperative societies and groups to hold and manage funds contributed by members.',
+  },
+  {
+    icon: <Smartphone className="h-6 w-6" />,
+    title: 'eBam',
+    body: 'A digital-first account for customers who want to open and manage their banking online.',
+  },
+  {
+    icon: <Building2 className="h-6 w-6" />,
+    title: 'Corporate',
+    body: 'An account for registered businesses to handle day-to-day payments, collections and operations.',
   },
 ];
 
@@ -46,7 +61,7 @@ export default function SavingsPage() {
       />
 
       <Section>
-        <SectionHeading align="left" eyebrow="Savings plans" title="Find your fit" />
+        <SectionHeading align="left" eyebrow="Account Packages" title="Find your fit" />
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           {plans.map((plan) => (
             <FeatureCard key={plan.title} icon={plan.icon} title={plan.title}>
