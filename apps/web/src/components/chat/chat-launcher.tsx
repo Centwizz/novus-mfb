@@ -42,10 +42,15 @@ export function ChatLauncher() {
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
   const [conversationId, setConversationId] = useState<string | undefined>();
+  const conversationIdRef = useRef<string | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
   const [demoMode, setDemoMode] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    conversationIdRef.current = conversationId;
+  }, [conversationId]);
 
   useEffect(() => {
     if (open && messages.length === 0) {
@@ -87,6 +92,8 @@ export function ChatLauncher() {
       const text = raw.trim();
       if (!text || typing) return;
 
+      const currentConversationId = conversationIdRef.current;
+
       const customerMessage: ChatMessage = {
         id: newId(),
         sender: 'CUSTOMER',
@@ -98,18 +105,52 @@ export function ChatLauncher() {
       setError(null);
       setTyping(true);
 
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 30_000);
+      const tryFetch = async (url: string, timeoutMs: number) => {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ conversationId: currentConversationId, message: text }),
+            signal: controller.signal,
+            cache: 'no-store',
+          });
+          if (!res.ok) throw new Error(`Request failed (${res.status})`);
+          return res;
+        } finally {
+          clearTimeout(timeout);
+        }
+      };
 
       try {
-        const res = await fetch(`${siteConfig.apiUrl}/chatbot/message`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ conversationId, message: text }),
-          signal: controller.signal,
-        });
+        let res: Response | null = null;
+        const endpoints = [
+          '/api/v1/chatbot/message',
+          `${siteConfig.apiUrl}/chatbot/message`,
+          'http://localhost:4000/api/v1/chatbot/message',
+        ];
 
-        if (!res.ok) throw new Error(`Request failed (${res.status})`);
+        for (const endpoint of endpoints) {
+          try {
+            res = await tryFetch(endpoint, 15000);
+            if (res.ok) break;
+          } catch (e) {
+            res = null;
+            continue;
+          }
+        }
+
+        if (!res || !res.ok) {
+          // Retry once with fresh attempt
+          try {
+            res = await tryFetch('/api/v1/chatbot/message', 20000);
+          } catch (e) {
+            throw e;
+          }
+        }
+
+        if (!res || !res.ok) throw new Error('All endpoints failed');
 
         const data = (await res.json()) as {
           conversationId?: string;
@@ -117,7 +158,10 @@ export function ChatLauncher() {
           demoMode?: boolean;
         };
 
-        if (data.conversationId) setConversationId(data.conversationId);
+        if (data.conversationId) {
+          setConversationId(data.conversationId);
+          conversationIdRef.current = data.conversationId;
+        }
         setDemoMode(Boolean(data.demoMode));
         setMessages((prev) => [
           ...prev,
@@ -131,17 +175,17 @@ export function ChatLauncher() {
           },
         ]);
       } catch (err) {
+        console.error('Chat error:', err);
         const message =
           err instanceof DOMException && err.name === 'AbortError'
             ? 'Nova took too long to respond. Please try again.'
-            : "I couldn't reach the assistant. Please check your connection and try again.";
+            : "I'm having trouble connecting right now. Please try again or refresh the page if the issue persists.";
         setError(message);
       } finally {
-        clearTimeout(timeout);
         setTyping(false);
       }
     },
-    [conversationId, typing],
+    [typing],
   );
 
   return (

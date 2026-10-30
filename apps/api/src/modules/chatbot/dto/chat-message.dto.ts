@@ -4,7 +4,8 @@ import { IsIn, IsOptional, IsString, IsUUID, MaxLength, MinLength } from 'class-
 export class ChatMessageDto {
   @ApiPropertyOptional({ description: 'Existing conversation ID to continue' })
   @IsOptional()
-  @IsUUID()
+  @IsString()
+  @MaxLength(100)
   conversationId?: string;
 
   @ApiProperty({ description: 'The customer message', maxLength: 2000 })

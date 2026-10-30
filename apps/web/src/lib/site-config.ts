@@ -16,7 +16,7 @@ export const siteConfig = {
   description:
     'Novus MFB is a digital-first microfinance bank offering simple, secure and accessible financial services. Open an account, save, borrow and manage your money with confidence.',
   url: process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000',
-  apiUrl: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1',
+  apiUrl: typeof window !== 'undefined' ? '/api/v1' : (process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api/v1'),
   /**
    * Date the public content last meaningfully changed (ISO 8601, date only).
    *

@@ -130,11 +130,12 @@ export class ChatbotService {
             ...history,
             { role: 'user', content: input.message },
           ],
-          temperature: 0.3,
-          maxTokens: 600,
-          timeoutMs: 20_000,
+          temperature: 0.4,
+          maxTokens: 800,
+          timeoutMs: 30_000,
         });
-        reply = completion.content;
+        reply = completion.content || this.demoReply(input.message, language, wantsHuman);
+        if (!completion.content) demoMode = true;
       } catch (error) {
         this.logger.warn(`Falling back to demo reply: ${(error as Error).message}`);
         demoMode = true;
