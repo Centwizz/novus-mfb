@@ -20,4 +20,10 @@ describe('detectLanguage', () => {
   it('detects Hausa markers', () => {
     expect(detectLanguage('Sannu, na gode')).toBe('ha');
   });
+
+  it('does not treat English substrings as markers', () => {
+    // "connect" contains "nne" (Igbo) and "scheduled" contains "dalu"-like runs.
+    expect(detectLanguage('Please connect me to a human agent')).toBe('en');
+    expect(detectLanguage('My transfer is scheduled for today')).toBe('en');
+  });
 });

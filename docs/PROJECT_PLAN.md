@@ -87,14 +87,15 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
 - [x] Natural conversation — weighted knowledge retrieval + greeting/thanks detection
 - [x] Typing indicators
 - [x] Nigerian languages (EN, Pidgin, Yoruba, Igbo, Hausa) — weighted marker detection
-- [ ] LLM integration — `LlmAdapter` exists; demo mode until an API key is supplied
+- [x] LLM integration — `LlmAdapter` wired to an OpenAI-compatible gateway; live OpenRouter
+      round-trip verified (Phase 2h). Demo mode remains the default when no key is set
 - [x] Knowledge base — ~30 verified-safe entries in `knowledge-base.ts` with scoring + tests
-- [ ] Human handoff — escalation intent is detected and acknowledged honestly; no agent
-      dashboard/queue until Phase 5
+- [ ] Human handoff — escalation intent is detected, acknowledged honestly and a real ticket
+      reference is appended to the reply; no agent dashboard/queue until Phase 5
 - [x] Security restrictions — no PIN/OTP/card collection, no balance guessing, no transaction
       execution, honest "not available" answers
-- [ ] Tests — unit tests PASS (language 4/4, knowledge base 4/4); DB-backed conversation tests
-      blocked on PostgreSQL
+- [ ] Tests — unit tests PASS (17/17 across 4 suites); DB-backed conversation tests blocked
+      on PostgreSQL
 
 ### PHASE 7: OPTIONAL BANKING PORTAL
 - [ ] Assess needs, adapters if approved, clear labeling
@@ -224,5 +225,31 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
   `image/jpeg` / `image/webp` content types. Verified: web `tsc --noEmit` PASS; lint 0/0; web unit
   **29/29**; production build PASS; Playwright **114/114** PASS on Chromium desktop and Pixel 5
   against the production build.
+- Phase 2h (Nova cleanup): **complete.** Server code is now the single source of truth:
+  the unused duplicate client implementation (`apps/web/src/lib/nova/*`, ~1,300 lines) was
+  removed, and the chat widget posts to one same-origin endpoint (`/api/v1/chatbot/message`,
+  rewritten by Next.js) with a 35 s timeout instead of cycling through three hard-coded URLs
+  (worst case ~65 s, including `http://localhost:4000` in browser code).
+  Database outages now pause persistence for 30 s and retry automatically rather than
+  latching until restart; outage conversations keep their `mem-…` ids in memory, and a stale
+  `mem-…` id from a previous process is replaced with a fresh conversation. Escalation is
+  now consistent: the system prompt states the conversation has already been flagged, the
+  demo knowledge entry no longer asks for confirmation, and a real ticket reference is
+  appended to the visible reply. Language detection now matches whole words/phrases, fixing
+  false positives (English "connect" was being read as Igbo "nne"). The fallback transcript
+  cache is capped at 500 conversations (20 messages each), and `conversationId` now accepts
+  only a UUID or an issued `mem-…` id, so arbitrary strings cannot create cache keys.
+  Housekeeping: removed a scratch script containing a live provider key (never committed —
+  rotate the key anyway), removed a self-referential root dependency, removed the broken
+  `apps/api` `test:e2e` script, and fixed pre-existing lint errors (unclosed quote entities
+  on the About page, unused `IsUUID` import).
+  Verified: typecheck PASS (4 workspaces); lint 0/0; API unit **17/17** (4 suites, including
+  recovery/escalation/language and conversation-id format tests); web unit **28/28**;
+  production build PASS (29 prerendered pages); Playwright **120/120** PASS on Chromium
+  desktop and Pixel 5 against the production build. Live OpenRouter round-trip verified
+  through both `localhost:4000` and the Next proxy on `localhost:3000` (`demoMode: false`,
+  `aiProvider: up`) for greeting, transfer question and escalation; an arbitrary
+  `conversationId` is rejected with 400. **Not verified: PostgreSQL persistence (no database
+  on this machine).**
 - Phase 3: schema, modules and conventions in place; migration/seed application blocked on
   PostgreSQL (deferred by owner)

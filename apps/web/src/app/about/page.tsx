@@ -61,7 +61,7 @@ export default function AboutPage() {
             <h2 className="text-2xl font-bold sm:text-3xl">Our Story</h2>
             <p className="mt-4 leading-relaxed text-ink-muted">
               Licensed by the Central Bank of Nigeria (CBN) on March 8 2024 to operate as Novus
-              Microfinance Bank. "Novus" is a Latin word meaning "New" reflecting our commitment to
+              Microfinance Bank. &ldquo;Novus&rdquo; is a Latin word meaning &ldquo;New&rdquo; reflecting our commitment to
               innovative and exceptional financial services. The bank was established to cater to
               the banking needs of the Benue populace by providing support for individuals,
               businesses, and agricultural activities, job creation, commerce, and rural

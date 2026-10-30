@@ -62,6 +62,19 @@ const MARKERS: Record<Exclude<SupportedLanguage, 'en'>, string[]> = {
   ],
 };
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Matches a marker only as a whole word/phrase. Substring matching produced
+ * false positives such as English "co(nne)ct" being read as Igbo "nne".
+ * Unicode-aware boundaries are used so accented markers (e.g. "ọ dị") work.
+ */
+function containsMarker(text: string, marker: string): boolean {
+  return new RegExp(`(?<!\\p{L})${escapeRegExp(marker)}(?!\\p{L})`, 'iu').test(text);
+}
+
 /**
  * Scores each language by the total length of the markers it matches, then picks
  * the strongest match. Scoring (rather than first-match-wins) avoids one generic
@@ -69,7 +82,7 @@ const MARKERS: Record<Exclude<SupportedLanguage, 'en'>, string[]> = {
  * (e.g. Pidgin "na" vs Hausa "sannu").
  */
 export function detectLanguage(text: string): SupportedLanguage {
-  const normalized = ` ${text.toLowerCase()} `;
+  const normalized = text.toLowerCase();
   let best: SupportedLanguage = 'en';
   let bestScore = 0;
 
@@ -79,7 +92,7 @@ export function detectLanguage(text: string): SupportedLanguage {
   ][]) {
     let score = 0;
     for (const marker of markers) {
-      if (normalized.includes(marker)) score += marker.length;
+      if (containsMarker(normalized, marker)) score += marker.length;
     }
     if (score > bestScore) {
       bestScore = score;

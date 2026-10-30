@@ -29,6 +29,17 @@ Native modules (e.g. `argon2`) compile on first install. Ensure Node 20 LTS and 
 Expected when `AI_PROVIDER_API_KEY` is empty. This is deliberate: the app never pretends a live
 model is connected. Set a key to enable live responses.
 
+For OpenRouter, set all three values in `apps/api/.env` and restart the API:
+
+```dotenv
+AI_PROVIDER_BASE_URL=https://openrouter.ai/api/v1
+AI_PROVIDER_MODEL=deepseek/deepseek-chat-v3-0324
+AI_PROVIDER_API_KEY=<your key>
+```
+
+If the model name is wrong or the key is rejected, the API logs the provider error and Nova
+falls back to demo mode instead of failing the request.
+
 **CORS error in the browser console**
 Add your web origin to `ALLOWED_ORIGINS` in `apps/api/.env` (comma-separated).
 

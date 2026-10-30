@@ -234,7 +234,7 @@ export const DEFAULT_KNOWLEDGE_BASE: KnowledgeEntry[] = [
     category: 'Support',
     keywords: ['human', 'agent', 'person', 'someone', 'representative', 'escalate', 'real person'],
     content:
-      'Of course — I can flag this conversation for a human support agent. If an agent is available they will pick it up during support hours; otherwise the team will follow up using the contact details you provide. Would you like me to escalate now?',
+      "Of course — I've flagged this conversation for a human support agent. If an agent is available they will pick it up during support hours; otherwise the team will follow up using the contact details you provide.",
   },
   {
     slug: 'fraud-phishing',

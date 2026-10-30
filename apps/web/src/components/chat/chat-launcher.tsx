@@ -105,52 +105,22 @@ export function ChatLauncher() {
       setError(null);
       setTyping(true);
 
-      const tryFetch = async (url: string, timeoutMs: number) => {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), timeoutMs);
-        try {
-          const res = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ conversationId: currentConversationId, message: text }),
-            signal: controller.signal,
-            cache: 'no-store',
-          });
-          if (!res.ok) throw new Error(`Request failed (${res.status})`);
-          return res;
-        } finally {
-          clearTimeout(timeout);
-        }
-      };
+      // One endpoint, resolved relative to the current origin in the browser
+      // (`/api/v1`). Next rewrites it to the API, so there is no hard-coded
+      // localhost fallback to leak into production.
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 35_000);
 
       try {
-        let res: Response | null = null;
-        const endpoints = [
-          '/api/v1/chatbot/message',
-          `${siteConfig.apiUrl}/chatbot/message`,
-          'http://localhost:4000/api/v1/chatbot/message',
-        ];
+        const res = await fetch(`${siteConfig.apiUrl}/chatbot/message`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ conversationId: currentConversationId, message: text }),
+          signal: controller.signal,
+          cache: 'no-store',
+        });
 
-        for (const endpoint of endpoints) {
-          try {
-            res = await tryFetch(endpoint, 15000);
-            if (res.ok) break;
-          } catch (e) {
-            res = null;
-            continue;
-          }
-        }
-
-        if (!res || !res.ok) {
-          // Retry once with fresh attempt
-          try {
-            res = await tryFetch('/api/v1/chatbot/message', 20000);
-          } catch (e) {
-            throw e;
-          }
-        }
-
-        if (!res || !res.ok) throw new Error('All endpoints failed');
+        if (!res.ok) throw new Error(`Request failed (${res.status})`);
 
         const data = (await res.json()) as {
           conversationId?: string;
@@ -182,6 +152,7 @@ export function ChatLauncher() {
             : "I'm having trouble connecting right now. Please try again or refresh the page if the issue persists.";
         setError(message);
       } finally {
+        clearTimeout(timeout);
         setTyping(false);
       }
     },

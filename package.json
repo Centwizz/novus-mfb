@@ -23,8 +23,5 @@
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
-  "packageManager": "npm@10.8.2",
-  "dependencies": {
-    "novus-mfb": "file:"
-  }
+  "packageManager": "npm@10.8.2"
 }

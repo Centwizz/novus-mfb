@@ -90,7 +90,11 @@ export class ChatbotService {
     { role: 'user' | 'assistant'; content: string }[]
   >();
   private memorySequence = 0;
-  private databaseUnavailable = false;
+  /** Epoch (ms) before which database operations are skipped after a failure. */
+  private databaseRetryAt = 0;
+  private static readonly DATABASE_RETRY_MS = 30_000;
+  /** Upper bound on outage transcripts so anonymous traffic cannot grow memory forever. */
+  private static readonly MAX_MEMORY_CONVERSATIONS = 500;
 
   constructor(
     @Inject(LLM_ADAPTER) private readonly llm: LlmAdapter,
@@ -103,8 +107,16 @@ export class ChatbotService {
     userId?: string;
   }): Promise<ChatReply> {
     const language = detectLanguage(input.message);
+    // A `mem-…` id from a previous process has no transcript here (memory is
+    // process-local), so start a fresh conversation rather than sending an
+    // unknown id to a database that may now be reachable.
+    const staleMemoryId =
+      input.conversationId?.startsWith('mem-') &&
+      !this.isMemoryConversation(input.conversationId);
     const conversationId =
-      input.conversationId ?? (await this.createConversation(input.userId, language));
+      input.conversationId && !staleMemoryId
+        ? input.conversationId
+        : await this.createConversation(input.userId, language);
 
     await this.persistMessage(conversationId, 'CUSTOMER', input.message, language);
 
@@ -114,7 +126,7 @@ export class ChatbotService {
     // Build model context. Retrieved documents are passed as clearly-delimited,
     // untrusted reference material to reduce prompt-injection risk.
     const history = await this.loadHistory(conversationId, 8);
-    const systemPrompt = buildSystemPrompt({ language, knowledge });
+    const systemPrompt = buildSystemPrompt({ language, knowledge, escalated: wantsHuman });
 
     let reply: string;
     let demoMode = false;
@@ -143,11 +155,17 @@ export class ChatbotService {
       }
     }
 
-    await this.persistMessage(conversationId, 'NOVA', reply, language);
-
     const ticketReference = wantsHuman
       ? await this.escalate(conversationId, input.message, input.userId)
       : undefined;
+
+    // The API already escalated the conversation, so surface the reference in
+    // the visible reply rather than returning it in a field the UI ignores.
+    if (ticketReference) {
+      reply = `${reply}\n\nReference: ${ticketReference}`;
+    }
+
+    await this.persistMessage(conversationId, 'NOVA', reply, language);
 
     return {
       conversationId,
@@ -198,8 +216,10 @@ export class ChatbotService {
         return conversation.id;
       },
       () => {
-        const id = `mem-${++this.memorySequence}`;
-        this.memoryTranscripts.set(id, []);
+        // Timestamp keeps ids unique across restarts; the counter keeps them
+        // unique within a burst of requests in the same millisecond.
+        const id = `mem-${Date.now().toString(36)}-${++this.memorySequence}`;
+        this.setMemoryTranscript(id, []);
         return id;
       },
     );
@@ -211,25 +231,38 @@ export class ChatbotService {
     content: string,
     language: SupportedLanguage,
   ) {
+    const remember = () => {
+      const transcript = this.memoryTranscripts.get(conversationId) ?? [];
+      transcript.push({
+        role: sender === 'CUSTOMER' ? 'user' : 'assistant',
+        content,
+      });
+      // Keep each transcript bounded; this is a demo fallback, not a database.
+      this.setMemoryTranscript(conversationId, transcript.slice(-20));
+    };
+
+    // Conversations created during an outage stay in memory even after the
+    // database returns, so their `mem-…` id never reaches a foreign key.
+    if (this.isMemoryConversation(conversationId)) {
+      remember();
+      return;
+    }
+
     await this.withDatabase(
       async () => {
         await this.prisma.conversationMessage.create({
           data: { conversationId, sender, content, language },
         });
       },
-      () => {
-        const transcript = this.memoryTranscripts.get(conversationId) ?? [];
-        transcript.push({
-          role: sender === 'CUSTOMER' ? 'user' : 'assistant',
-          content,
-        });
-        // Keep memory bounded; this is a demo fallback, not a database.
-        this.memoryTranscripts.set(conversationId, transcript.slice(-20));
-      },
+      remember,
     );
   }
 
   private async loadHistory(conversationId: string, limit: number) {
+    if (this.isMemoryConversation(conversationId)) {
+      return (this.memoryTranscripts.get(conversationId) ?? []).slice(-limit);
+    }
+
     return this.withDatabase(
       async () => {
         const messages = await this.prisma.conversationMessage.findMany({
@@ -254,6 +287,11 @@ export class ChatbotService {
     message: string,
     userId: string | undefined,
   ): Promise<string | undefined> {
+    // An outage conversation has no database row to update or attach a ticket
+    // to, so there is no reference to give. The reply still states honestly
+    // that a human is needed.
+    if (this.isMemoryConversation(conversationId)) return undefined;
+
     // Only create a real ticket when we have an authenticated customer AND a
     // database to store it in. Anonymous visitors keep the conversation marked
     // as escalated for an agent instead of being given a fake reference.
@@ -291,26 +329,30 @@ export class ChatbotService {
 
   /**
    * Runs a database operation, falling back to the in-memory path when the
-   * database cannot be reached. The failure is logged once, not on every
-   * message, so a missing PostgreSQL instance does not flood the logs.
+   * database cannot be reached. A connectivity failure pauses database access
+   * for a short cooldown instead of disabling it for the rest of the process,
+   * so persistence resumes automatically once PostgreSQL is back. The pause is
+   * logged once per outage window, not on every message.
    *
-   * Only genuine connectivity errors disable the database for the rest of the
-   * process; a stale conversation id (record not found) simply uses the
-   * fallback for that one call.
+   * A stale conversation id (record not found) is not a connectivity error and
+   * only uses the fallback for that one call.
    */
   private async withDatabase<T>(
     operation: () => Promise<T>,
     fallback: () => T | Promise<T>,
   ): Promise<T> {
-    if (this.databaseUnavailable) return fallback();
+    if (Date.now() < this.databaseRetryAt) return fallback();
 
     try {
-      return await operation();
+      const result = await operation();
+      // A successful call means the database is reachable again.
+      this.databaseRetryAt = 0;
+      return result;
     } catch (error) {
       if (this.isConnectionError(error)) {
-        this.databaseUnavailable = true;
+        this.databaseRetryAt = Date.now() + ChatbotService.DATABASE_RETRY_MS;
         this.logger.warn(
-          `Database unavailable — Nova is answering from the approved knowledge base and keeping the transcript in memory. ${(error as Error).message}`,
+          `Database unavailable — Nova is using the approved knowledge base and keeping the transcript in memory. Retrying in ${ChatbotService.DATABASE_RETRY_MS / 1000}s. ${(error as Error).message}`,
         );
       } else {
         this.logger.debug(
@@ -318,6 +360,33 @@ export class ChatbotService {
         );
       }
       return fallback();
+    }
+  }
+
+  /**
+   * True when a conversation was created during an outage and therefore lives
+   * only in memory. Such a conversation must stay on the memory path even after
+   * the database comes back, otherwise its `mem-…` id would fail a foreign key
+   * check on every turn.
+   */
+  private isMemoryConversation(conversationId: string): boolean {
+    return conversationId.startsWith('mem-') && this.memoryTranscripts.has(conversationId);
+  }
+
+  /**
+   * Stores a transcript and evicts the oldest conversations when the fallback
+   * cache is full. Map iteration preserves insertion order, so the first key is
+   * always the least recently created conversation.
+   */
+  private setMemoryTranscript(
+    conversationId: string,
+    transcript: { role: 'user' | 'assistant'; content: string }[],
+  ): void {
+    this.memoryTranscripts.set(conversationId, transcript);
+    while (this.memoryTranscripts.size > ChatbotService.MAX_MEMORY_CONVERSATIONS) {
+      const oldest = this.memoryTranscripts.keys().next().value as string | undefined;
+      if (!oldest) break;
+      this.memoryTranscripts.delete(oldest);
     }
   }
 
