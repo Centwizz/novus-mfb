@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { MessageCircle, Send, Sparkles, User, X } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { siteConfig } from '@/lib/site-config';
@@ -318,10 +318,113 @@ function MessageBubble({ message }: { message: ChatMessage }) {
             : 'rounded-bl-sm border border-border bg-white text-ink',
         )}
       >
-        {message.content}
+        {isCustomer ? (
+          <span className="whitespace-pre-wrap">{message.content}</span>
+        ) : (
+          <FormattedMessage content={message.content} />
+        )}
       </div>
     </div>
   );
+}
+
+/**
+ * Renders the small amount of Markdown a language model tends to emit, without
+ * ever injecting HTML. Plain text is preferred (see the system prompt), but a
+ * model can still return `**bold**`, `*italic*`, headings or bullets; this keeps
+ * those readable instead of showing the control characters literally.
+ */
+function FormattedMessage({ content }: { content: string }) {
+  const blocks: ReactNode[] = [];
+  let bullets: string[] = [];
+
+  const flushBullets = () => {
+    if (bullets.length === 0) return;
+    blocks.push(
+      <ul key={`ul-${blocks.length}`} className="list-disc space-y-1 pl-5">
+        {bullets.map((item, index) => (
+          <li key={index}>{formatInline(item)}</li>
+        ))}
+      </ul>,
+    );
+    bullets = [];
+  };
+
+  content.split(/\r?\n/).forEach((rawLine, lineIndex) => {
+    const line = rawLine.trim();
+    if (!line) {
+      flushBullets();
+      return;
+    }
+
+    const heading = line.match(/^#{1,6}\s+(.*)$/);
+    if (heading) {
+      flushBullets();
+      blocks.push(
+        <p key={`h-${lineIndex}`} className="font-semibold text-ink">
+          {formatInline(heading[1] ?? '')}
+        </p>,
+      );
+      return;
+    }
+
+    const bullet = line.match(/^[-*+]\s+(.*)$/);
+    if (bullet) {
+      bullets.push(bullet[1] ?? '');
+      return;
+    }
+
+    const numbered = line.match(/^(\d+)[.)]\s+(.*)$/);
+    if (numbered) {
+      flushBullets();
+      blocks.push(
+        <p key={`n-${lineIndex}`}>
+          <span className="font-semibold">{numbered[1]}.</span>{' '}
+          {formatInline(numbered[2] ?? '')}
+        </p>,
+      );
+      return;
+    }
+
+    flushBullets();
+    blocks.push(<p key={`p-${lineIndex}`}>{formatInline(line)}</p>);
+  });
+
+  flushBullets();
+
+  return <div className="space-y-1.5">{blocks}</div>;
+}
+
+const INLINE_PATTERN = /(\*\*[^*\n]+\*\*|__[^_\n]+__|\*[^*\n]+\*|_[^_\n]+_|`[^`\n]+`)/g;
+
+function formatInline(text: string): ReactNode[] {
+  return text.split(INLINE_PATTERN).map((part, index) => {
+    if (!part) return null;
+
+    if (
+      (part.startsWith('**') && part.endsWith('**')) ||
+      (part.startsWith('__') && part.endsWith('__'))
+    ) {
+      return <strong key={index}>{part.slice(2, -2)}</strong>;
+    }
+
+    if (part.startsWith('`') && part.endsWith('`')) {
+      return (
+        <code key={index} className="rounded bg-surface-muted px-1 py-0.5 text-[0.85em]">
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+
+    if (
+      (part.startsWith('*') && part.endsWith('*')) ||
+      (part.startsWith('_') && part.endsWith('_'))
+    ) {
+      return <em key={index}>{part.slice(1, -1)}</em>;
+    }
+
+    return <span key={index}>{part}</span>;
+  });
 }
 
 function TypingDots() {

@@ -94,7 +94,7 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
       reference is appended to the reply; no agent dashboard/queue until Phase 5
 - [x] Security restrictions — no PIN/OTP/card collection, no balance guessing, no transaction
       execution, honest "not available" answers
-- [ ] Tests — unit tests PASS (17/17 across 4 suites); DB-backed conversation tests blocked
+- [ ] Tests — unit tests PASS (20/20 across 5 suites); DB-backed conversation tests blocked
       on PostgreSQL
 
 ### PHASE 7: OPTIONAL BANKING PORTAL
@@ -239,14 +239,18 @@ Build a complete web platform for Novus MFB modeled after https://www.opayweb.co
   false positives (English "connect" was being read as Igbo "nne"). The fallback transcript
   cache is capped at 500 conversations (20 messages each), and `conversationId` now accepts
   only a UUID or an issued `mem-…` id, so arbitrary strings cannot create cache keys.
+  Reply formatting: the prompt asks for plain text, and the chat bubble now renders a safe
+  Markdown subset (bold, italic, inline code, headings, numbered lines and bullets) with
+  React elements, so model replies never show literal `**`/`#` characters.
   Housekeeping: removed a scratch script containing a live provider key (never committed —
   rotate the key anyway), removed a self-referential root dependency, removed the broken
   `apps/api` `test:e2e` script, and fixed pre-existing lint errors (unclosed quote entities
   on the About page, unused `IsUUID` import).
-  Verified: typecheck PASS (4 workspaces); lint 0/0; API unit **17/17** (4 suites, including
-  recovery/escalation/language and conversation-id format tests); web unit **28/28**;
-  production build PASS (29 prerendered pages); Playwright **120/120** PASS on Chromium
-  desktop and Pixel 5 against the production build. Live OpenRouter round-trip verified
+  Verified: typecheck PASS (4 workspaces); lint 0/0; API unit **20/20** (5 suites, including
+  recovery/escalation/language, conversation-id and prompt tests); web unit **28/28**;
+  production build PASS (29 prerendered pages); Playwright **122/122** PASS on Chromium
+  desktop and Pixel 5 against the production build (including a Markdown-rendering
+  regression test). Live OpenRouter round-trip verified
   through both `localhost:4000` and the Next proxy on `localhost:3000` (`demoMode: false`,
   `aiProvider: up`) for greeting, transfer question and escalation; an arbitrary
   `conversationId` is rejected with 400. **Not verified: PostgreSQL persistence (no database

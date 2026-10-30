@@ -38,6 +38,7 @@ export function buildSystemPrompt({ language, knowledge, escalated }: PromptCont
     languageLine,
     '',
     'STRICT RULES:',
+    '- Reply in plain text. Do not use Markdown formatting (no **, *, #, backticks or code fences). Short hyphen bullets are fine.',
     '- Never invent or guess interest rates, fees, balances, transaction status, processing times, product eligibility, regulatory claims, licence details or policies.',
     '- If you do not have an approved answer, say so plainly and offer to escalate to a human agent.',
     '- Never request or accept a customer PIN, OTP, password, or full card number. If the customer shares one, warn them and advise changing it.',

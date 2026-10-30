@@ -38,6 +38,12 @@ Hausa (`ha`). Customers can switch at any time.
 > The keyword lists in `language.ts` are intentionally simple and transparent. They are not an
 > attempt to determine anyone's tribe or ethnicity, and no such claim is made in the UI.
 
+## Reply formatting
+The system prompt asks for plain text and forbids Markdown control characters. As a safety net,
+the chat bubble renders a small Markdown subset itself — bold, italic, inline code, headings,
+numbered lines and bullet lists — using React elements (never `dangerouslySetInnerHTML`). A
+non-compliant or older reply therefore shows readable formatting instead of literal `**`/`#`.
+
 ## Human handoff
 Triggered by explicit requests (e.g. "speak to a human", "escalate"):
 1. The conversation is marked `ESCALATED`.
@@ -85,5 +91,6 @@ and never in a script, test fixture or committed file.
 - `chatbot.service.spec.ts` — outage fallback, 30 s retry, memory-only conversations, stale
   `mem-…` ids, transcript-cache bound and escalation wording.
 - `dto/chat-message.dto.spec.ts` — conversation-id format validation.
+- `prompt.spec.ts` — plain-text instruction, untrusted-reference framing and escalation context.
 
 Multi-turn/provider-timeout/prompt-injection tests against a live provider remain for Phase 6.
